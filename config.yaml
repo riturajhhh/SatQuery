@@ -1,0 +1,200 @@
+# ============================================================
+# SatQuery AI — Central Configuration
+# ============================================================
+# This file contains structured configuration for models,
+# datasets, preprocessing, and system settings.
+# Secrets and API keys belong in .env, not here.
+# ============================================================
+
+app:
+  name: "SatQuery AI"
+  version: "0.1.0"
+  description: "Agentic Vision-Language Assistant for Remote-Sensing Imagery"
+
+# ---- Storage ----
+storage:
+  upload_dir: "./uploads"
+  processed_dir: "./outputs/processed"
+  evidence_dir: "./outputs/evidence"
+  reports_dir: "./reports"
+  models_dir: "./models"
+  temp_dir: "./tmp"
+
+# ---- Preprocessing ----
+preprocessing:
+  max_image_dimension: 4096
+  tile_size: 512
+  tile_overlap: 64
+  thumbnail_size: [256, 256]
+  normalize: true
+  supported_formats:
+    - ".tif"
+    - ".tiff"
+    - ".png"
+    - ".jpg"
+    - ".jpeg"
+  supported_crs:
+    - "EPSG:4326"
+    - "EPSG:32643"
+    - "EPSG:32644"
+
+# ---- Model Registry ----
+models:
+  vqa:
+    name: "blip2-rs-vqa"
+    base_model: "Salesforce/blip2-opt-2.7b"
+    adapter: "lora"
+    adapter_path: "./models/vqa/lora_adapter/"
+    device: "auto"
+    max_length: 512
+    fallback:
+      name: "blip2-demo"
+      base_model: "Salesforce/blip2-opt-2.7b"
+      device: "cpu"
+
+  captioning:
+    name: "blip2-rs-caption"
+    base_model: "Salesforce/blip2-opt-2.7b"
+    adapter: "lora"
+    adapter_path: "./models/captioning/lora_adapter/"
+    device: "auto"
+    max_length: 256
+    fallback:
+      name: "blip2-caption-demo"
+      base_model: "Salesforce/blip2-opt-2.7b"
+      device: "cpu"
+
+  grounding:
+    name: "rs-grounding"
+    base_model: "IDEA-Research/grounding-dino-base"
+    device: "auto"
+    confidence_threshold: 0.3
+    fallback:
+      name: "grounding-demo"
+      base_model: "IDEA-Research/grounding-dino-tiny"
+      device: "cpu"
+
+  change_detection:
+    name: "bit-cd"
+    architecture: "BIT"
+    pretrained_path: "./models/change_detection/"
+    device: "auto"
+    threshold: 0.5
+    fallback:
+      name: "simple-cd"
+      architecture: "pixel_diff"
+      device: "cpu"
+
+  change_vqa:
+    name: "cdvqa-model"
+    base_model: "Salesforce/blip2-opt-2.7b"
+    adapter: "lora"
+    adapter_path: "./models/change_vqa/lora_adapter/"
+    device: "auto"
+    fallback:
+      name: "cdvqa-demo"
+      device: "cpu"
+
+  optical_sar:
+    name: "optical-sar-fusion"
+    architecture: "dual_encoder_fusion"
+    device: "auto"
+    fallback:
+      name: "optical-sar-demo"
+      architecture: "feature_concat"
+      device: "cpu"
+
+# ---- Agent ----
+agent:
+  max_retries: 3
+  timeout_seconds: 300
+  confidence_levels:
+    high: 0.8
+    medium: 0.5
+    low: 0.3
+  task_types:
+    - "vqa"
+    - "captioning"
+    - "grounding"
+    - "change_detection"
+    - "change_vqa"
+    - "optical_sar_analysis"
+
+# ---- Datasets ----
+datasets:
+  bigearthnet:
+    path: "./datasets/bigearthnet_txt/"
+    purpose: "RS image-text adaptation"
+    format: "geotiff_with_labels"
+    bands: 12
+    num_classes: 19
+
+  vrsbench:
+    path: "./datasets/vrsbench/"
+    purpose: "captioning, grounding, VQA"
+    format: "images_with_json"
+    tasks:
+      - "captioning"
+      - "grounding"
+      - "vqa"
+
+  rsvqa:
+    path: "./datasets/rsvqa/"
+    purpose: "single-image VQA"
+    format: "images_with_qa_pairs"
+    variants:
+      - "lr"
+      - "hr"
+
+  cdvqa:
+    path: "./datasets/cdvqa/"
+    purpose: "bi-temporal change VQA"
+    format: "image_pairs_with_qa"
+
+# ---- Evaluation ----
+evaluation:
+  output_dir: "./outputs/evaluation/"
+  metrics:
+    vqa:
+      - "accuracy"
+      - "f1"
+      - "exact_match"
+    captioning:
+      - "bleu"
+      - "rouge"
+      - "cider"
+      - "bertscore"
+    grounding:
+      - "iou"
+      - "precision"
+      - "recall"
+      - "map"
+    change_detection:
+      - "iou"
+      - "f1"
+      - "precision"
+      - "recall"
+    change_vqa:
+      - "accuracy"
+      - "f1"
+      - "semantic_similarity"
+
+# ---- Inference ----
+inference:
+  batch_size: 1
+  use_fp16: true
+  cache_models: true
+  lazy_loading: true
+  default_confidence_threshold: 0.5
+
+# ---- Security ----
+security:
+  max_upload_size_mb: 500
+  allowed_extensions:
+    - ".tif"
+    - ".tiff"
+    - ".png"
+    - ".jpg"
+    - ".jpeg"
+  filename_max_length: 255
+  sanitize_filenames: true

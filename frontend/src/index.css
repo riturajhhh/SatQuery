@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   SatQuery AI — Design System
+   ============================================================ */
+
+@layer base {
+  :root {
+    --gradient-brand: linear-gradient(135deg, #2a87ff 0%, #0c50e1 50%, #8b5cf6 100%);
+    --gradient-dark: linear-gradient(180deg, #0f1117 0%, #1a1d2e 100%);
+    --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+    --glass-bg: rgba(15, 17, 23, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --glass-highlight: rgba(255, 255, 255, 0.05);
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: var(--gradient-dark);
+    color: #e2e8f0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+}
+
+@layer components {
+  /* ---- Glass Card ---- */
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  /* ---- Buttons ---- */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3
+           font-semibold text-white rounded-xl
+           transition-all duration-300 ease-out
+           focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-surface-950;
+    background: var(--gradient-brand);
+    box-shadow: 0 4px 15px rgba(42, 135, 255, 0.3);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 25px rgba(42, 135, 255, 0.4);
+  }
+  .btn-primary:active {
+    transform: translateY(0);
+  }
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5
+           font-medium text-surface-300 rounded-xl
+           border border-surface-700
+           transition-all duration-200
+           hover:text-white hover:border-surface-500 hover:bg-surface-800/50
+           focus:outline-none focus:ring-2 focus:ring-surface-500 focus:ring-offset-2 focus:ring-offset-surface-950;
+  }
+
+  /* ---- Status Badges ---- */
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 text-xs font-semibold rounded-full;
+  }
+  .badge-success {
+    @apply badge bg-emerald-500/15 text-emerald-400 border border-emerald-500/20;
+  }
+  .badge-warning {
+    @apply badge bg-amber-500/15 text-amber-400 border border-amber-500/20;
+  }
+  .badge-error {
+    @apply badge bg-rose-500/15 text-rose-400 border border-rose-500/20;
+  }
+  .badge-info {
+    @apply badge bg-brand-500/15 text-brand-400 border border-brand-500/20;
+  }
+
+  /* ---- Input Fields ---- */
+  .input-field {
+    @apply w-full px-4 py-3 bg-surface-950/50 border border-surface-700
+           rounded-xl text-white placeholder-surface-500
+           transition-all duration-200
+           focus:outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20;
+  }
+
+  /* ---- Section Headers ---- */
+  .section-header {
+    @apply flex items-center gap-3 mb-4;
+  }
+  .section-header h2 {
+    @apply text-sm font-semibold uppercase tracking-wider text-surface-400;
+  }
+  .section-divider {
+    @apply flex-1 h-px bg-gradient-to-r from-surface-700 to-transparent;
+  }
+
+  /* ---- Upload Zone ---- */
+  .upload-zone {
+    @apply relative flex flex-col items-center justify-center p-8
+           border-2 border-dashed border-surface-600 rounded-2xl
+           transition-all duration-300 cursor-pointer;
+    background: rgba(15, 17, 23, 0.4);
+  }
+  .upload-zone:hover {
+    @apply border-brand-500/50;
+    background: rgba(42, 135, 255, 0.05);
+  }
+  .upload-zone.active {
+    @apply border-brand-500 bg-brand-500/10;
+  }
+
+  /* ---- Shimmer Loading ---- */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.03) 25%,
+      rgba(255, 255, 255, 0.08) 50%,
+      rgba(255, 255, 255, 0.03) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+
+  /* ---- Trace Step ---- */
+  .trace-step {
+    @apply flex items-center gap-3 py-2 px-3 rounded-lg;
+    transition: background-color 0.2s ease;
+  }
+  .trace-step:hover {
+    background: rgba(255, 255, 255, 0.03);
+  }
+}
+
+@layer utilities {
+  .text-gradient-brand {
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}

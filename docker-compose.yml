@@ -1,0 +1,90 @@
+# ============================================================
+# SatQuery AI — Docker Compose
+# ============================================================
+# Usage:
+#   docker-compose up --build          # CPU mode
+#   docker-compose --profile gpu up    # GPU mode (requires nvidia-docker)
+# ============================================================
+
+version: "3.9"
+
+services:
+  # ---- Backend API ----
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../docker/Dockerfile.backend
+    container_name: satquery-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./outputs:/app/outputs
+      - ./reports:/app/reports
+      - ./models:/app/models
+      - ./datasets:/app/datasets
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=sqlite:///./satquery.db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # ---- Backend with GPU ----
+  backend-gpu:
+    build:
+      context: ./backend
+      dockerfile: ../docker/Dockerfile.backend.gpu
+    container_name: satquery-backend-gpu
+    profiles:
+      - gpu
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./uploads:/app/uploads
+      - ./outputs:/app/outputs
+      - ./reports:/app/reports
+      - ./models:/app/models
+      - ./datasets:/app/datasets
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=sqlite:///./satquery.db
+      - USE_GPU=true
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  # ---- Frontend ----
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/Dockerfile.frontend
+    container_name: satquery-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://backend:8000
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  uploads:
+  outputs:
+  reports:

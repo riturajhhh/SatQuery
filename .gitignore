@@ -1,0 +1,130 @@
+# ============================================================
+# SatQuery AI — .gitignore
+# ============================================================
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+*.whl
+.eggs/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ---- Virtual environments ----
+venv/
+.venv/
+env/
+ENV/
+backend/venv/
+scratch/
+
+
+# ---- Environment / Secrets ----
+.env
+.env.local
+.env.production
+*.pem
+*.key
+
+# ---- IDE ----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Node / Frontend ----
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.next/
+*.tsbuildinfo
+
+# ---- Model Weights (DO NOT COMMIT) ----
+models/**/*.bin
+models/**/*.pt
+models/**/*.pth
+models/**/*.onnx
+models/**/*.safetensors
+models/**/*.ckpt
+models/**/*.h5
+*.bin
+*.pt
+*.pth
+*.safetensors
+
+# ---- Datasets (DO NOT COMMIT) ----
+datasets/bigearthnet_txt/
+datasets/vrsbench/
+datasets/rsvqa/
+datasets/cdvqa/
+datasets/**/*.tif
+datasets/**/*.tiff
+datasets/**/*.zip
+datasets/**/*.tar.gz
+
+# ---- Outputs / Generated ----
+outputs/
+reports/*.pdf
+reports/*.html
+
+# ---- Uploads / Temporary ----
+uploads/
+tmp/
+temp/
+
+# ---- Database ----
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+satquery.db*
+
+# ---- Logs ----
+logs/
+*.log
+
+# ---- Jupyter Notebooks Checkpoints ----
+.ipynb_checkpoints/
+
+# ---- Docker ----
+docker-compose.override.yml
+*.tar
+
+# ---- Coverage / Testing ----
+htmlcov/
+.coverage
+.coverage.*
+.pytest_cache/
+.tox/
+.nox/
+
+# ---- MyPy / Type Checking ----
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ---- Ruff / Linting ----
+.ruff_cache/
+
+# ---- Large Files ----
+*.zip
+*.tar.gz
+*.7z
+*.rar
