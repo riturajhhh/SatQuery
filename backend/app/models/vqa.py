@@ -64,21 +64,83 @@ class RSVQA_BLIP2(RemoteSensingModel):
         return True
 
     def load(self) -> None:
-        """Attempt to load production weights if available."""
+        """Attempt to load production trained weights if available, otherwise fallback."""
         try:
             import torch
-            from transformers import Blip2ForConditionalGeneration, Blip2Processor
+            import torch.nn as nn
+            import torchvision.transforms as T
+            from pathlib import Path
+
+            adapter_candidates = [
+                Path("models/vqa/rsvqa_adapter.pt"),
+                Path("../models/vqa/rsvqa_adapter.pt"),
+                Path(__file__).resolve().parents[3] / "models" / "vqa" / "rsvqa_adapter.pt",
+            ]
+            adapter_file = next((p for p in adapter_candidates if p.exists()), None)
+            if adapter_file is not None:
+                logger.info("loading_trained_rsvqa_adapter", path=str(adapter_file))
+                checkpoint = torch.load(adapter_file, map_location="cpu")
+                self._ans2idx = checkpoint["ans2idx"]
+                self._idx2ans = checkpoint["idx2ans"]
+                self._word2idx = checkpoint["word2idx"]
+                cfg = checkpoint["config"]
+
+                class _RSVQAModel(nn.Module):
+                    def __init__(self, vocab_size, embed_dim, num_classes):
+                        super().__init__()
+                        self.visual_encoder = nn.Sequential(
+                            nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1),
+                            nn.BatchNorm2d(32),
+                            nn.ReLU(),
+                            nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1),
+                            nn.BatchNorm2d(64),
+                            nn.ReLU(),
+                            nn.Conv2d(64, 128, kernel_size=3, stride=2, padding=1),
+                            nn.BatchNorm2d(128),
+                            nn.ReLU(),
+                            nn.AdaptiveAvgPool2d((1, 1)),
+                            nn.Flatten(),
+                        )
+                        self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
+                        self.gru = nn.GRU(embed_dim, 128, batch_first=True)
+                        self.classifier = nn.Sequential(
+                            nn.Linear(128 + 128, 256),
+                            nn.ReLU(),
+                            nn.Dropout(0.2),
+                            nn.Linear(256, num_classes),
+                        )
+
+                    def forward(self, img, text_ids):
+                        v_feat = self.visual_encoder(img)
+                        emb = self.embedding(text_ids)
+                        _, h_n = self.gru(emb)
+                        t_feat = h_n.squeeze(0)
+                        fused = torch.cat([v_feat, t_feat], dim=1)
+                        return self.classifier(fused)
+
+                self._model = _RSVQAModel(cfg["vocab_size"], cfg["embed_dim"], cfg["num_classes"])
+                self._model.load_state_dict(checkpoint["model_state_dict"])
+                self._model.eval()
+                self._transform = T.Compose([
+                    T.Resize((128, 128)),
+                    T.ToTensor(),
+                    T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+                ])
+                self._is_custom_adapter = True
+                self._loaded = True
+                return
 
             if not torch.cuda.is_available() and self._device != "cpu":
                 raise RuntimeError("CUDA unavailable for production model.")
 
+            from transformers import Blip2ForConditionalGeneration, Blip2Processor
             logger.info("loading_blip2_rs_vqa_weights")
-            # If actual HuggingFace weights are downloaded locally or online
             self._processor = Blip2Processor.from_pretrained("Salesforce/blip2-opt-2.7b")
             self._model = Blip2ForConditionalGeneration.from_pretrained(
                 "Salesforce/blip2-opt-2.7b",
                 torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
             )
+            self._is_custom_adapter = False
             self._loaded = True
         except Exception as e:
             self._loaded = False
@@ -92,6 +154,42 @@ class RSVQA_BLIP2(RemoteSensingModel):
         start_time = time.perf_counter()
         image = model_input.images[0]
         query = model_input.query
+
+        if getattr(self, "_is_custom_adapter", False):
+            import re
+            import torch
+            from PIL import Image
+
+            if isinstance(image, np.ndarray):
+                pil_img = Image.fromarray(image.astype(np.uint8)).convert("RGB")
+            else:
+                pil_img = image.convert("RGB")
+
+            img_tensor = self._transform(pil_img).unsqueeze(0)
+            tokens = re.findall(r"\w+", query.lower())[:24]
+            q_ids = [self._word2idx.get(t, 1) for t in tokens]
+            if len(q_ids) < 24:
+                q_ids += [0] * (24 - len(q_ids))
+            text_tensor = torch.tensor([q_ids], dtype=torch.long)
+
+            with torch.no_grad():
+                logits = self._model(img_tensor, text_tensor)
+                probs = torch.softmax(logits, dim=1)
+                top_prob, top_idx = probs.max(dim=1)
+                answer = self._idx2ans.get(top_idx.item(), "unknown")
+                confidence = float(top_prob.item())
+
+            duration = (time.perf_counter() - start_time) * 1000.0
+            conf_level = ConfidenceLevel.HIGH if confidence > 0.6 else ConfidenceLevel.MEDIUM
+            return ModelOutput(
+                answer=answer,
+                confidence=round(confidence, 3),
+                confidence_level=conf_level,
+                evidence={"predicted_class_id": top_idx.item()},
+                model_info=self.info,
+                execution_time_ms=round(duration, 2),
+                is_fallback=False,
+            )
 
         inputs = self._processor(images=image, text=query, return_tensors="pt")
         generated_ids = self._model.generate(**inputs, max_length=100)

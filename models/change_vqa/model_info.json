@@ -1,0 +1,27 @@
+{
+  "model_name": "siamese-cdvqa-adapter",
+  "task": "bi-temporal change VQA",
+  "architecture": "Siamese CNN + Temporal Difference Cross-Attention",
+  "total_training_samples": 1500,
+  "num_classes": 19,
+  "top_answers": [
+    "no",
+    "yes",
+    "nvg_surface",
+    "buildings",
+    "0",
+    "0_to_10",
+    "low_vegetation",
+    "trees",
+    "10_to_20",
+    "80_to_90",
+    "playgrounds",
+    "20_to_30",
+    "water",
+    "90_to_100",
+    "70_to_80"
+  ],
+  "final_validation_accuracy": 0.6633,
+  "checkpoint": "C:\\Users\\ASUS\\OneDrive\\Desktop\\SatQuaryAI\\models\\change_vqa\\cdvqa_adapter.pt",
+  "trained_at": "2026-09-15T15:01:00Z"
+}

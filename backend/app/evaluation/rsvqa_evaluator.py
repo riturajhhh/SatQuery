@@ -5,8 +5,10 @@ across presence, comparison, count, and land-cover categories.
 """
 
 from dataclasses import dataclass, field
+import json
+from pathlib import Path
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 import numpy as np
 from PIL import Image
 
@@ -102,12 +104,104 @@ class RSVQAEvaluator:
         return suite
 
     @classmethod
+    def load_real_benchmark_suite(
+        cls,
+        dataset_dir: Union[str, Path] = "datasets/rsvqa/lr",
+        split: str = "val",
+        max_samples: int = 10,
+    ) -> List[RSVQAItem]:
+        """Load benchmark samples from downloaded RSVQA dataset."""
+        root = Path(dataset_dir)
+        if not root.exists():
+            for alt in [Path("../") / dataset_dir, Path(__file__).resolve().parents[3] / dataset_dir]:
+                if alt.exists():
+                    root = alt
+                    break
+        images_dir = root / "images"
+        splits_dir = root / "splits"
+        questions_file = splits_dir / f"{split}_questions.json"
+        answers_file = splits_dir / f"{split}_answers.json"
+
+        # Fallback to base files if split-specific files are not present
+        if not questions_file.exists():
+            questions_file = root / "questions" / "questions.json"
+        if not answers_file.exists():
+            answers_file = root / "answers" / "answers.json"
+
+        if not (questions_file.exists() and answers_file.exists() and images_dir.exists()):
+            logger.warning("rsvqa_dataset_not_found", path=str(root))
+            return []
+
+        try:
+            with open(questions_file, "r", encoding="utf-8") as f:
+                q_data = json.load(f).get("questions", [])
+            with open(answers_file, "r", encoding="utf-8") as f:
+                a_data = json.load(f).get("answers", [])
+        except Exception as e:
+            logger.error("failed_to_load_rsvqa_annotations", error=str(e))
+            return []
+
+        # Map answer_id -> answer text
+        ans_map = {a["id"]: a.get("answer", "") for a in a_data if a.get("active", True)}
+
+        items: List[RSVQAItem] = []
+        for q in q_data:
+            if not q.get("active", True):
+                continue
+
+            img_id = q.get("img_id")
+            img_path = None
+            for ext in (".tif", ".tiff", ".png", ".jpg", ".jpeg"):
+                cand = images_dir / f"{img_id}{ext}"
+                if cand.exists():
+                    img_path = cand
+                    break
+
+            if not img_path or not img_path.exists():
+                continue
+
+            ans_ids = q.get("answers_ids", [])
+            answer_text = ans_map.get(ans_ids[0]) if ans_ids else None
+            if not answer_text:
+                continue
+
+            try:
+                with Image.open(img_path) as pil_img:
+                    image_obj = pil_img.convert("RGB")
+            except Exception:
+                continue
+
+            items.append(
+                RSVQAItem(
+                    sample_id=f"rsvqa_{q['id']}",
+                    image=image_obj,
+                    question=q.get("question", ""),
+                    ground_truth_answer=str(answer_text),
+                    category=q.get("type", "general"),
+                )
+            )
+
+            if len(items) >= max_samples:
+                break
+
+        return items
+
+    @classmethod
     def evaluate(
         cls,
         samples: Optional[List[RSVQAItem]] = None,
+        use_real_if_available: bool = True,
+        max_samples: int = 10,
+        dataset_dir: Union[str, Path] = "datasets/rsvqa/lr",
     ) -> RSVQAEvaluationReport:
         """Run complete evaluation over RSVQA items."""
-        items = samples or cls.get_synthetic_benchmark_suite()
+        if samples is not None:
+            items = samples
+        elif use_real_if_available:
+            real_items = cls.load_real_benchmark_suite(dataset_dir=dataset_dir, max_samples=max_samples)
+            items = real_items if real_items else cls.get_synthetic_benchmark_suite()
+        else:
+            items = cls.get_synthetic_benchmark_suite()
         registry = get_model_registry()
         model = registry.select_best_model(TaskType.VQA, InputType.SINGLE_OPTICAL)
 

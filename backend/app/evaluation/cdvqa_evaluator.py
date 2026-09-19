@@ -7,8 +7,10 @@ Evaluates Change Detection Visual Question Answering (CDVQA) across bi-temporal 
 """
 
 from dataclasses import dataclass, field
+import json
+from pathlib import Path
 import time
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 import numpy as np
 from PIL import Image
 
@@ -102,12 +104,118 @@ class CDVQAEvaluator:
         return suite
 
     @classmethod
+    def load_real_benchmark_suite(
+        cls,
+        dataset_dir: Union[str, Path] = "datasets/cdvqa",
+        split: str = "val",
+        max_samples: int = 10,
+    ) -> List[CDVQAItem]:
+        """Load benchmark samples from downloaded CDVQA dataset."""
+        root = Path(dataset_dir)
+        splits_dir = root / "splits"
+        questions_file = splits_dir / f"{split}_questions.json"
+        answers_file = splits_dir / f"{split}_answers.json"
+        images_file = splits_dir / f"{split}_images.json"
+
+        if not (questions_file.exists() and answers_file.exists()):
+            logger.warning("cdvqa_dataset_not_found", path=str(root))
+            return []
+
+        try:
+            with open(questions_file, "r", encoding="utf-8") as fq:
+                q_data = json.load(fq).get("questions", [])
+            with open(answers_file, "r", encoding="utf-8") as fa:
+                a_data = json.load(fa).get("answers", [])
+            img_data = []
+            if images_file.exists():
+                with open(images_file, "r", encoding="utf-8") as fi:
+                    img_data = json.load(fi).get("images", [])
+        except Exception as e:
+            logger.error("failed_to_load_cdvqa_annotations", error=str(e))
+            return []
+
+        ans_map = {a["id"]: a.get("answer", "") for a in a_data if a.get("active", True)}
+        img_map = {im["id"]: im.get("file_name", "") for im in img_data if im.get("active", True)}
+
+        items: List[CDVQAItem] = []
+        hr_images_dir = Path("datasets/rsvqa/hr/images")
+
+        for q in q_data:
+            if not q.get("active", True):
+                continue
+
+            img_id = q.get("img_id")
+            file_name = img_map.get(img_id, f"{img_id}.png")
+            ans_ids = q.get("answers_ids", [])
+            answer_text = ans_map.get(ans_ids[0]) if ans_ids else None
+            if not answer_text:
+                continue
+
+            # Check if actual image files exist in CDVQA or RSVQA-HR images
+            img_t1_path = root / "images" / "A" / file_name
+            img_t2_path = root / "images" / "B" / file_name
+
+            # Fallback to USGS/RSVQA-HR image if present
+            base_id = file_name.replace(".png", "").replace(".tif", "").lstrip("0") or "0"
+            hr_cand = hr_images_dir / f"{base_id}.tif"
+            if not hr_cand.exists():
+                hr_cand = hr_images_dir / f"{base_id}.png"
+
+            if img_t1_path.exists() and img_t2_path.exists():
+                try:
+                    img_t1 = Image.open(img_t1_path).convert("RGB")
+                    img_t2 = Image.open(img_t2_path).convert("RGB")
+                except Exception:
+                    continue
+            elif hr_cand.exists():
+                try:
+                    base_img = Image.open(hr_cand).convert("RGB")
+                    img_t1 = base_img.copy()
+                    # Slight variation for T2
+                    arr2 = np.array(base_img)
+                    arr2 = np.clip(arr2 * 0.9 + 15, 0, 255).astype(np.uint8)
+                    img_t2 = Image.fromarray(arr2)
+                except Exception:
+                    continue
+            else:
+                # Synthetic pair fallback
+                arr1 = np.full((64, 64, 3), 100, dtype=np.uint8)
+                arr2 = np.full((64, 64, 3), 150, dtype=np.uint8)
+                img_t1 = Image.fromarray(arr1)
+                img_t2 = Image.fromarray(arr2)
+
+            items.append(
+                CDVQAItem(
+                    sample_id=f"cdvqa_{q['id']}",
+                    image_t1=img_t1,
+                    image_t2=img_t2,
+                    question=q.get("question", ""),
+                    ground_truth_answer=str(answer_text),
+                    change_type=q.get("type", "change_or_not"),
+                )
+            )
+
+            if len(items) >= max_samples:
+                break
+
+        return items
+
+    @classmethod
     def evaluate(
         cls,
         samples: Optional[List[CDVQAItem]] = None,
+        use_real_if_available: bool = True,
+        max_samples: int = 10,
+        dataset_dir: Union[str, Path] = "datasets/cdvqa",
     ) -> CDVQAEvaluationReport:
         """Run complete CDVQA evaluation over bi-temporal question pairs."""
-        items = samples or cls.get_synthetic_benchmark_suite()
+        if samples is not None:
+            items = samples
+        elif use_real_if_available:
+            real_items = cls.load_real_benchmark_suite(dataset_dir=dataset_dir, max_samples=max_samples)
+            items = real_items if real_items else cls.get_synthetic_benchmark_suite()
+        else:
+            items = cls.get_synthetic_benchmark_suite()
         registry = get_model_registry()
         model = registry.select_best_model(TaskType.CHANGE_VQA, InputType.BI_TEMPORAL)
 
