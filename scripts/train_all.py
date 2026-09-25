@@ -30,7 +30,7 @@ def run_training_command(cmd: list[str], task_name: str) -> bool:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="SatQuery AI — Unified Model Training Orchestrator")
-    parser.add_argument("--task", choices=["all", "vqa", "cdvqa"], default="all", help="Models to train")
+    parser.add_argument("--task", choices=["all", "vqa", "vrsbench", "cdvqa"], default="all", help="Models to train")
     parser.add_argument("--epochs", type=int, default=3, help="Number of training epochs per model")
     parser.add_argument("--batch-size", type=int, default=16, help="Batch size for training")
     parser.add_argument("--limit-samples", type=int, default=1000, help="Max training samples per task")
@@ -39,7 +39,7 @@ def main() -> None:
     args = parser.parse_args()
     python_exe = sys.executable
 
-    tasks = ["vqa", "cdvqa"] if args.task == "all" else [args.task]
+    tasks = ["vqa", "vrsbench", "cdvqa"] if args.task == "all" else [args.task]
     results = {}
 
     if "vqa" in tasks:
@@ -51,6 +51,16 @@ def main() -> None:
             "--device", args.device,
         ]
         results["RSVQA"] = run_training_command(cmd, "RSVQA Single-Image VQA Model")
+
+    if "vrsbench" in tasks:
+        cmd = [
+            python_exe, "scripts/train_vrsbench.py",
+            "--epochs", str(args.epochs),
+            "--batch-size", str(args.batch_size),
+            "--limit-samples", str(args.limit_samples),
+            "--device", args.device,
+        ]
+        results["VRSBench"] = run_training_command(cmd, "VRSBench Specialist Models (Grounding & Captioning)")
 
     if "cdvqa" in tasks:
         cmd = [

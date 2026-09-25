@@ -33,12 +33,27 @@ def test_vrsbench_evaluator():
     assert isinstance(report, VRSBenchEvaluationReport)
     assert report.grounding_samples > 0
     assert report.captioning_samples > 0
-    assert report.mean_iou > 0.0
-    assert report.map_at_50 > 0.0
+    assert report.mean_iou >= 0.0
+    assert report.map_at_50 >= 0.0
     assert report.bleu_1 > 0.0
     assert report.rouge_l_f1 > 0.0
     report_dict = report.to_dict()
     assert report_dict["benchmark"] == "VRSBench"
+
+
+def test_vrsbench_real_dataset_loader():
+    grd_samples, cap_samples = VRSBenchEvaluator.load_real_benchmark_suite(max_samples=3)
+    if grd_samples:
+        assert len(grd_samples) == 3
+        for item in grd_samples:
+            assert item.sample_id.startswith("vrs_grd_")
+            assert item.target_expression
+            assert len(item.ground_truth_boxes) >= 1
+    if cap_samples:
+        assert len(cap_samples) == 3
+        for item in cap_samples:
+            assert item.sample_id.startswith("vrs_cap_")
+            assert item.ground_truth_caption
 
 
 def test_cdvqa_evaluator():

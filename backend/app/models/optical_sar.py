@@ -253,17 +253,14 @@ class RSOpticalSAR_Fallback(RemoteSensingModel):
 
         if cloud_cover_percent > 5.0:
             answer = (
-                f"Cross-modal Optical-SAR fusion successfully pierced cloud cover obscuring "
-                f"{cloud_cover_percent}% of the scene (~{cloud_area_ha} hectares). "
-                f"Synthetic Aperture Radar backscatter revealed underlying {revealed_summary}, "
-                f"enabling continuous all-weather observational continuity."
+                f"SAR radar imaging successfully saw through clouds that were blocking about {cloud_cover_percent}% of the scene "
+                f"(~{cloud_area_ha} hectares). Underneath the cloud layer, the radar reveals {revealed_summary}."
             )
             confidence = 0.90
         else:
             answer = (
-                f"Optical scene exhibits high atmospheric clarity ({cloud_cover_percent}% cloud cover). "
-                f"SAR radar backscatter was synergistically fused with optical multispectral bands, "
-                f"enhancing surface structural boundary contrast and dielectric roughness signatures."
+                f"The optical image is already very clear with minimal cloud cover ({cloud_cover_percent}%). "
+                f"Combining it with SAR radar data highlights sharper outlines of buildings, roads, and surface textures."
             )
             confidence = 0.92
 

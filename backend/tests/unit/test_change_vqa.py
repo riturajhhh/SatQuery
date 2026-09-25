@@ -58,6 +58,53 @@ def test_change_vqa_water_inundation_query():
     assert output.evidence["vqa_reasoning"]["detected_intent"] == "water"
 
 
+def test_change_vqa_urban_expansion_query():
+    """Verify answering questions about built-up area and new building construction."""
+    t1 = np.full((128, 128, 3), [40, 180, 50], dtype=np.uint8)
+    t2 = t1.copy()
+    for r in range(10, 80, 20):
+        for c in range(10, 80, 20):
+            t2[r:r+15, c:c+15] = [210, 210, 210]
+
+    model = RSChangeVQA_Fallback()
+    metadata = {"resolution": {"x": 10.0, "y": 10.0}}
+    output = model.predict(
+        ModelInput(
+            images=[Image.fromarray(t1), Image.fromarray(t2)],
+            query="Has the built-up area increased, decreased, or remained unchanged between the baseline and follow-up scenes?",
+            metadata=metadata,
+        )
+    )
+
+    assert "increased" in output.answer.lower()
+    assert "building" in output.answer.lower() or "built-up" in output.answer.lower()
+    assert "northwestern" in output.answer.lower()
+    assert output.confidence >= 0.85
+    assert output.evidence["vqa_reasoning"]["detected_intent"] == "urban"
+
+
+def test_change_vqa_general_difference_query():
+    """Verify answering general what changed and where queries."""
+    t1 = np.full((128, 128, 3), [40, 180, 50], dtype=np.uint8)
+    t2 = t1.copy()
+    for r in range(10, 80, 20):
+        for c in range(10, 80, 20):
+            t2[r:r+15, c:c+15] = [210, 210, 210]
+
+    model = RSChangeVQA_Fallback()
+    output = model.predict(
+        ModelInput(
+            images=[Image.fromarray(t1), Image.fromarray(t2)],
+            query="What changed between these two dates, and where did the change occur?",
+        )
+    )
+
+    assert "northwestern" in output.answer.lower()
+    assert "change" in output.answer.lower()
+    assert output.confidence >= 0.85
+
+
+
 def test_change_vqa_task_routing():
     """Verify distinction between Change VQA questions and Change Detection commands."""
     # Questions -> CHANGE_VQA

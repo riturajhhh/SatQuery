@@ -217,7 +217,12 @@ def execute_analysis(
 
             # Generate and persist evidence for this tool
             if options.get("generate_evidence", True):
-                evidence_data = step_model.explain(sub_input, sub_output)
+                evidence_data = step_model.explain(sub_input, sub_output) or {}
+                if sub_output.evidence and isinstance(sub_output.evidence, dict):
+                    for k, v in sub_output.evidence.items():
+                        if k not in evidence_data and not (k == "overlay_image" and hasattr(v, "save")):
+                            evidence_data[k] = v
+
                 ev_type = evidence_data.get("evidence_type") or (
                     "optical_sar_fusion"
                     if plan_step.task == TaskType.OPTICAL_SAR

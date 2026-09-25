@@ -144,16 +144,30 @@ export default function ResultPanel({ result, traceSteps = [], isLoading }: Resu
     | Record<string, number>
     | undefined;
 
+  const inputFiles = (result.evidence?.input_files as Array<{ file_id: string; preview_url: string; original_name?: string }>) || [];
+  const primaryPreviewUrl = (result.evidence?.primary_preview_url as string) || (inputFiles[0]?.preview_url) || null;
+  const t1Url = (result.evidence?.t1_preview_url as string) || (inputFiles[0]?.preview_url) || null;
+  const t2Url = (result.evidence?.t2_preview_url as string) || (inputFiles[1]?.preview_url) || primaryPreviewUrl || null;
+
   const groundingEvidence = result.evidence?.grounding_overlay as Record<string, unknown> | undefined;
   const overlayUrl =
     (groundingEvidence?.overlay_url as string) ||
+    (groundingEvidence?.file_url as string) ||
     (result.evidence?.overlay_url as string) ||
     null;
 
   const changeEvidence = result.evidence?.change_detection_map as Record<string, unknown> | undefined;
-  const changeStats = changeEvidence?.statistics as Record<string, unknown> | undefined;
-  const changeMapUrl = (changeEvidence?.change_map_url as string) || null;
-  const changeOverlayUrl = (changeEvidence?.overlay_url as string) || null;
+  const changeStats = (changeEvidence?.statistics || changeEvidence?.change_statistics) as Record<string, unknown> | undefined;
+  const changeMapUrl =
+    (changeEvidence?.change_map_url as string) ||
+    (changeEvidence?.overlay_url as string) ||
+    (changeEvidence?.file_url as string) ||
+    null;
+  const changeOverlayUrl =
+    (changeEvidence?.overlay_url as string) ||
+    (changeEvidence?.change_map_url as string) ||
+    (changeEvidence?.file_url as string) ||
+    null;
 
   const opticalSarEvidence = result.evidence?.optical_sar_fusion as Record<string, unknown> | undefined;
   const opticalSarStats = opticalSarEvidence?.statistics as Record<string, unknown> | undefined;
@@ -495,15 +509,15 @@ export default function ResultPanel({ result, traceSteps = [], isLoading }: Resu
             {/* Change Map Image Display */}
             {changeViewMode === 'slider' ? (
               <ImageCompareSlider
-                beforeImage={changeOverlayUrl || changeMapUrl || ''}
-                afterImage={changeMapUrl || ''}
-                beforeLabel="Surface Anomaly Detection"
-                afterLabel="Temporal Baseline"
+                beforeImage={t1Url || changeOverlayUrl || changeMapUrl || ''}
+                afterImage={t2Url || changeMapUrl || changeOverlayUrl || ''}
+                beforeLabel="T1 (Pre-Event)"
+                afterLabel="T2 (Post-Event)"
               />
             ) : (
               <div className="relative w-full rounded-xl overflow-hidden bg-surface-900 border border-surface-800 flex items-center justify-center">
                 <img
-                  src={changeViewMode === 'banner' ? (changeMapUrl || '') : (changeOverlayUrl || changeMapUrl || '')}
+                  src={changeViewMode === 'banner' ? (changeMapUrl || changeOverlayUrl || t2Url || '') : (changeOverlayUrl || changeMapUrl || t2Url || '')}
                   alt="Bi-Temporal Change Detection Visualization"
                   className="w-full h-auto max-h-[460px] object-contain"
                 />
@@ -703,7 +717,7 @@ export default function ResultPanel({ result, traceSteps = [], isLoading }: Resu
 
             <div className="relative aspect-video max-h-[440px] w-full rounded-xl overflow-hidden bg-surface-900 border border-surface-800 flex items-center justify-center">
               <img
-                src={overlayUrl}
+                src={showOriginal ? (primaryPreviewUrl || overlayUrl) : overlayUrl}
                 alt="Grounding Overlay"
                 className="w-full h-full object-contain transition-opacity duration-150"
                 style={{ opacity: showOriginal ? 1 : overlayOpacity / 100 }}
@@ -792,23 +806,30 @@ export default function ResultPanel({ result, traceSteps = [], isLoading }: Resu
               </div>
             </div>
           </div>
-        ) : !overlayUrl ? (
-          <div className="glass-card p-8 flex items-center justify-center min-h-[160px]">
-            <div className="text-center">
-              <svg
-                width="36"
-                height="36"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-                className="text-surface-700 mx-auto mb-2"
+        ) : primaryPreviewUrl && !changeEvidence && !opticalSarEvidence ? (
+          <div className="glass-card p-6 space-y-4 mb-4">
+            <div className="flex items-center justify-between flex-wrap gap-2">
+              <h3 className="text-xs uppercase tracking-wider font-semibold text-surface-300 flex items-center gap-1.5">
+                <span className="w-2 h-2 rounded-full bg-brand-500" />
+                Analyzed Optical Observation Footprint
+              </h3>
+              <button
+                type="button"
+                onClick={() => setFullscreenImg({ url: primaryPreviewUrl, title: 'Analyzed Optical Scene' })}
+                className="p-1 px-1.5 rounded text-surface-400 hover:text-white hover:bg-surface-700/50 transition-colors"
+                title="Expand to Fullscreen"
               >
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <polyline points="21 15 16 10 5 21" />
-              </svg>
-              <p className="text-surface-600 text-xs">Visual evidence ready</p>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+                </svg>
+              </button>
+            </div>
+            <div className="relative aspect-video max-h-[440px] w-full rounded-xl overflow-hidden bg-surface-900 border border-surface-800 flex items-center justify-center">
+              <img
+                src={primaryPreviewUrl}
+                alt="Analyzed Optical Scene"
+                className="w-full h-full object-contain"
+              />
             </div>
           </div>
         ) : null}

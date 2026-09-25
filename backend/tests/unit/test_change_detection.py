@@ -68,6 +68,37 @@ def test_change_detection_vegetation_loss():
     assert Path(output.evidence["overlay_path"]).exists()
 
 
+def test_change_detection_urban_expansion():
+    """Verify detection and quantification of urban built-up expansion / new buildings."""
+    # T1: Green open field
+    t1 = np.full((128, 128, 3), [40, 180, 50], dtype=np.uint8)
+
+    # T2: New buildings constructed
+    t2 = t1.copy()
+    for r in range(10, 80, 20):
+        for c in range(10, 80, 20):
+            t2[r:r+15, c:c+15] = [210, 210, 210]
+
+    model = RSChangeDetection_Fallback()
+    metadata = {"resolution": {"x": 10.0, "y": 10.0}}
+    output = model.predict(
+        ModelInput(
+            images=[Image.fromarray(t1), Image.fromarray(t2)],
+            query="Detect changes between baseline and follow-up scenes",
+            metadata=metadata,
+        )
+    )
+
+    stats = output.evidence["statistics"]
+    assert stats["changed_percentage"] > 10.0
+    assert stats["changed_pixels"] > 500
+    assert stats["building_count_delta"] > 0
+    assert "Urban" in stats["dominant_transition"] or "Built-up" in stats["dominant_transition"]
+    assert "urban_expansion" in stats["change_type_code"]
+    assert stats["change_sector"] == "northwestern"
+    assert Path(output.evidence["overlay_path"]).exists()
+
+
 def test_change_detection_task_routing():
     """Verify task routing for comparative and change detection queries."""
     assert _determine_task_type("Detect changes between two images", num_files=2) == TaskType.CHANGE_DETECTION
@@ -76,3 +107,4 @@ def test_change_detection_task_routing():
     assert _determine_task_type("Measure deforestation area", num_files=2) == TaskType.CHANGE_DETECTION
     # Default to change detection when 2 files are uploaded
     assert _determine_task_type("Satellite observation analysis", num_files=2) == TaskType.CHANGE_DETECTION
+

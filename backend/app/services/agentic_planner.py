@@ -56,6 +56,10 @@ class AgenticPlanner:
         "bounding box",
         "detect the",
         "detect all",
+        "detect buildings",
+        "building detection",
+        "detect structures",
+        "detect houses",
         "grounding",
         "show me the",
         "box the",
@@ -73,6 +77,8 @@ class AgenticPlanner:
         "tell me about this image",
         "explain this scene",
         "describe scene",
+        "land cover description",
+        "land-cover overview",
     ]
 
     CHANGE_VQA_TRIGGERS = [

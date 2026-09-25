@@ -27,8 +27,12 @@ from app.utils.logging import get_logger
 logger = get_logger("models.change_detection")
 
 
-def _align_and_resample_pair(img1: Image.Image, img2: Image.Image) -> Tuple[Image.Image, Image.Image]:
+def _align_and_resample_pair(img1: Any, img2: Any) -> Tuple[Image.Image, Image.Image]:
     """Ensure both images match in dimensions and mode (RGB)."""
+    if isinstance(img1, np.ndarray):
+        img1 = Image.fromarray(img1.astype(np.uint8))
+    if isinstance(img2, np.ndarray):
+        img2 = Image.fromarray(img2.astype(np.uint8))
     im1 = img1.convert("RGB")
     im2 = img2.convert("RGB")
 
@@ -167,15 +171,36 @@ class RSChangeDetection_Fallback(RemoteSensingModel):
 
         # Step 5: Multi-factor change magnitude map [0, 1]
         change_magnitude = np.clip(
-            (radiometric_diff * 0.6) + (np.abs(delta_green) * 0.25) + (grad_diff * 0.15),
+            (radiometric_diff * 0.50) + (np.abs(delta_green) * 0.20) + (np.abs(delta_water) * 0.15) + (grad_diff * 0.15),
             0.0,
             1.0,
         )
 
-        # Adaptive thresholding for binary change mask
-        mean_mag = float(np.mean(change_magnitude))
-        std_mag = float(np.std(change_magnitude))
-        threshold = max(0.12, min(0.35, mean_mag + 1.2 * std_mag))
+        # Adaptive thresholding for binary change mask via Otsu histogram analysis
+        def _compute_adaptive_threshold(mag: np.ndarray) -> float:
+            max_val = float(np.max(mag))
+            if max_val < 0.08:
+                return 0.12
+            hist, bin_edges = np.histogram(mag, bins=256, range=(0.0, 1.0))
+            hist = hist.astype(np.float64)
+            total = hist.sum()
+            if total == 0:
+                return 0.12
+            p = hist / total
+            omega = np.cumsum(p)
+            centers = (bin_edges[:-1] + bin_edges[1:]) / 2.0
+            mu = np.cumsum(p * centers)
+            mu_t = mu[-1]
+            denom = omega * (1.0 - omega)
+            valid = denom > 1e-7
+            sigma_b = np.zeros_like(p)
+            sigma_b[valid] = ((mu_t * omega[valid] - mu[valid]) ** 2) / denom[valid]
+            best_idx = np.argmax(sigma_b)
+            otsu_val = float(centers[best_idx])
+            # Lower bound 0.10 rejects sensor noise; upper bound 0.24 guarantees significant changes are captured
+            return float(max(0.10, min(0.24, otsu_val)))
+
+        threshold = _compute_adaptive_threshold(change_magnitude)
         binary_mask = (change_magnitude > threshold).astype(np.uint8)
 
         # Remove isolated single-pixel noise via 3x3 local density filter
@@ -189,6 +214,27 @@ class RSChangeDetection_Fallback(RemoteSensingModel):
         total_pixels = int(w * h)
         changed_pixels = int(np.sum(binary_mask))
         changed_percentage = round(float((changed_pixels / max(1, total_pixels)) * 100.0), 2)
+
+        # Determine spatial quadrant/sector with highest concentration of changes
+        def _find_change_sector(mask: np.ndarray) -> str:
+            mh, mw = mask.shape
+            tot_ch = int(np.sum(mask))
+            if tot_ch == 0:
+                return "scene"
+            hh, hw = mh // 2, mw // 2
+            sectors = {
+                "northwestern": int(np.sum(mask[:hh, :hw])),
+                "northeastern": int(np.sum(mask[:hh, hw:])),
+                "southwestern": int(np.sum(mask[hh:, :hw])),
+                "southeastern": int(np.sum(mask[hh:, hw:])),
+                "central": int(np.sum(mask[mh // 4 : 3 * mh // 4, mw // 4 : 3 * mw // 4])),
+            }
+            best_sec = max(sectors, key=sectors.get)
+            if sectors[best_sec] / max(1, tot_ch) >= 0.35:
+                return best_sec
+            return "central and mixed"
+
+        change_sector = _find_change_sector(binary_mask)
 
         # Determine GSD (pixel resolution) from metadata if available
         gsd_m = 10.0  # Default to 10m/pixel (Sentinel-2 baseline)
@@ -207,26 +253,51 @@ class RSChangeDetection_Fallback(RemoteSensingModel):
         changed_area_hectares = round(float(changed_area_m2 / 10000.0), 2)
         changed_area_km2 = round(float(changed_area_m2 / 1000000.0), 3)
 
-        # Step 7: Classify dominant transition
-        if changed_pixels > 0:
-            changed_delta_green = float(np.mean(delta_green[binary_mask == 1]))
-            changed_delta_water = float(np.mean(delta_water[binary_mask == 1]))
-            changed_delta_bright = float(np.mean(gray2[binary_mask == 1] - gray1[binary_mask == 1]))
+        # Step 7: Classify dominant transition using spectral, structural, and discrete building analysis
+        from app.models.building_counter import BuildingCounter
+        b1 = BuildingCounter.detect_and_count(im1)
+        b2 = BuildingCounter.detect_and_count(im2)
+        delta_buildings = int(b2.get("count", 0)) - int(b1.get("count", 0))
+        delta_built_pct = round(float(b2.get("built_coverage_pct", 0.0)) - float(b1.get("built_coverage_pct", 0.0)), 2)
 
-            if changed_delta_water > 0.15 and changed_delta_water >= changed_delta_green:
+        if changed_pixels > 0:
+            changed_mask = binary_mask == 1
+            changed_delta_green = float(np.mean(delta_green[changed_mask]))
+            changed_delta_water = float(np.mean(delta_water[changed_mask]))
+            changed_delta_bright = float(np.mean(gray2[changed_mask] - gray1[changed_mask]))
+            changed_delta_edge = float(np.mean(grad2[changed_mask] - grad1[changed_mask]))
+
+            is_urban_expansion = (
+                delta_buildings >= 2
+                or (delta_buildings >= 1 and changed_delta_edge >= 2.0)
+                or (changed_delta_edge > 2.5 and changed_delta_bright > 8.0 and changed_delta_green > -0.25)
+                or (changed_delta_bright > 22.0 and changed_delta_edge > 1.5)
+            )
+            is_urban_demolition = (
+                delta_buildings < 0
+                and (delta_built_pct <= -2.0 or changed_delta_edge < -2.0)
+            )
+
+            if is_urban_expansion:
+                dominant_transition = "New Built-up Structure / Urban Construction"
+                change_type_code = "urban_expansion"
+            elif is_urban_demolition:
+                dominant_transition = "Building Demolition / Structural Clearance"
+                change_type_code = "urban_demolition"
+            elif changed_delta_water > 0.12 and changed_delta_water >= changed_delta_green:
                 dominant_transition = "Water Body Expansion / Inundation"
                 change_type_code = "water_expansion"
-            elif changed_delta_green < -0.15:
-                dominant_transition = "Vegetation Loss / Land Clearance"
-                change_type_code = "veg_loss"
-            elif changed_delta_green > 0.15:
-                dominant_transition = "Vegetation Growth / Revegetation"
-                change_type_code = "veg_growth"
-            elif changed_delta_water < -0.15:
+            elif changed_delta_water < -0.12 and changed_delta_water <= changed_delta_green:
                 dominant_transition = "Water Depletion / Desiccation"
                 change_type_code = "water_shrink"
-            elif changed_delta_bright > 25:
-                dominant_transition = "New Built-up Structure / High-Albedo Ground"
+            elif changed_delta_green < -0.12:
+                dominant_transition = "Vegetation Loss / Land Clearance"
+                change_type_code = "veg_loss"
+            elif changed_delta_green > 0.12:
+                dominant_transition = "Vegetation Growth / Revegetation"
+                change_type_code = "veg_growth"
+            elif changed_delta_bright > 20.0:
+                dominant_transition = "Surface Land Clearing / High-Albedo Ground"
                 change_type_code = "urban_expansion"
             else:
                 dominant_transition = "Surface Land Cover Modification"
@@ -234,6 +305,7 @@ class RSChangeDetection_Fallback(RemoteSensingModel):
         else:
             dominant_transition = "No Significant Change Detected"
             change_type_code = "none"
+            changed_delta_edge = 0.0
 
         # Step 8: Generate Change Map Visualization
         settings = get_settings()
@@ -287,20 +359,31 @@ class RSChangeDetection_Fallback(RemoteSensingModel):
         blended_overlay.save(standalone_path, format="PNG")
 
         # Formulate answer text
+        friendly_trans = {
+            "water_expansion": "surface water expansion (flooding or inundation)",
+            "veg_loss": "vegetation loss and land clearing",
+            "veg_growth": "vegetation growth and revegetation",
+            "water_shrink": "water body shrinkage and desiccation",
+            "urban_expansion": "new building construction and built-up development",
+            "urban_demolition": "building demolition and structural removal",
+            "general_modification": "ground surface modification",
+            "none": "no major changes",
+        }.get(change_type_code, dominant_transition.lower())
+
         if changed_percentage > 0.05:
             answer = (
-                f"Bi-temporal change analysis detected significant spatial shifts affecting "
-                f"{changed_percentage}% of the analyzed footprint (~{changed_area_hectares} hectares / {changed_pixels:,} pixels). "
-                f"The primary transition is characterized as '{dominant_transition}'."
+                f"Comparing the two images, noticeable changes were detected across about "
+                f"{changed_percentage}% of the area (~{changed_area_hectares} hectares). "
+                f"The main change observed is: {friendly_trans}, predominantly in the {change_sector} sector."
             )
-            confidence = 0.89
+            confidence = 0.91
             confidence_level = ConfidenceLevel.HIGH
         else:
             answer = (
-                f"Bi-temporal comparison indicates high temporal stability with minimal change "
-                f"({changed_percentage}% changed area). No significant structural or spectral disruptions were identified."
+                f"Comparing the two dates shows high stability with minimal change "
+                f"({changed_percentage}% variance). The land cover has remained largely identical with no significant disruptions."
             )
-            confidence = 0.85
+            confidence = 0.88
             confidence_level = ConfidenceLevel.HIGH
 
         duration = (time.perf_counter() - start_time) * 1000.0
@@ -316,6 +399,13 @@ class RSChangeDetection_Fallback(RemoteSensingModel):
             "dominant_transition": dominant_transition,
             "change_type_code": change_type_code,
             "threshold_used": float(round(threshold, 3)),
+            "building_count_t1": int(b1.get("count", 0)),
+            "building_count_t2": int(b2.get("count", 0)),
+            "building_count_delta": int(delta_buildings),
+            "built_coverage_pct_t1": float(b1.get("built_coverage_pct", 0.0)),
+            "built_coverage_pct_t2": float(b2.get("built_coverage_pct", 0.0)),
+            "built_coverage_delta": float(delta_built_pct),
+            "change_sector": change_sector,
         }
 
         evidence = {

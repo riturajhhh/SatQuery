@@ -206,9 +206,47 @@ def get_analysis_endpoint(
     evidence_dict: Dict[str, Any] = {}
     evidence_items = crud.get_evidence_for_analysis(db, analysis_id)
     if evidence_items:
-        evidence_dict = {
-            item.evidence_type: item.metadata_json for item in evidence_items
-        }
+        for item in evidence_items:
+            m_data = dict(item.metadata_json or {})
+            if item.file_path:
+                fp = str(item.file_path).replace("\\", "/")
+                fn = Path(fp).name
+                if "evidence" in fp:
+                    url = f"/api/files/evidence/{fn}"
+                elif "previews" in fp:
+                    url = f"/api/files/processed/previews/{fn}"
+                elif "thumbnails" in fp:
+                    url = f"/api/files/processed/thumbnails/{fn}"
+                else:
+                    url = f"/api/files/uploads/{fn}"
+                m_data.setdefault("file_url", url)
+                if not m_data.get("overlay_url") and ("evidence" in fp or "overlay" in fp or "change" in fp):
+                    m_data["overlay_url"] = url
+                if item.evidence_type == "change_detection_map":
+                    m_data.setdefault("change_map_url", url)
+                    m_data.setdefault("overlay_url", url)
+            evidence_dict[item.evidence_type] = m_data
+
+    # Populate raw input file references for UI toggles and comparison sliders
+    input_files_meta = []
+    for f in analysis.uploaded_files or []:
+        p_url = None
+        if f.preview_path:
+            p_url = f"/api/files/processed/previews/{Path(f.preview_path).name}"
+        elif f.stored_path:
+            p_url = f"/api/files/uploads/{Path(f.stored_path).name}"
+        input_files_meta.append({
+            "file_id": f.id,
+            "original_name": f.original_name,
+            "modality": f.modality,
+            "preview_url": p_url,
+        })
+    if input_files_meta:
+        evidence_dict["input_files"] = input_files_meta
+        evidence_dict.setdefault("primary_preview_url", input_files_meta[0]["preview_url"])
+        if len(input_files_meta) >= 2:
+            evidence_dict.setdefault("t1_preview_url", input_files_meta[0]["preview_url"])
+            evidence_dict.setdefault("t2_preview_url", input_files_meta[1]["preview_url"])
 
     answer_info = None
     if analysis.answer_text:

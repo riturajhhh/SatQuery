@@ -65,8 +65,10 @@ def load_dataset_samples(
     data_dir: Path,
     split: str = "train",
     limit: Optional[int] = None,
+    include_vrsbench: bool = True,
 ) -> Tuple[List[Dict[str, Any]], Path]:
-    """Load question-answer records and images folder."""
+    """Load question-answer records and images folder with category stratification."""
+    import random
     images_dir = data_dir / "images"
     splits_dir = data_dir / "splits"
     q_file = splits_dir / f"{split}_questions.json"
@@ -84,7 +86,12 @@ def load_dataset_samples(
 
     ans_map = {a["id"]: str(a.get("answer", "")).strip().lower() for a in a_data if a.get("active", True)}
 
-    samples = []
+    # Group questions by category to ensure balanced representation
+    cat_buckets: Dict[str, List[Dict[str, Any]]] = {}
+    
+    # Pre-scan image existence to avoid disk overhead
+    existing_images = set(os.listdir(images_dir)) if images_dir.exists() else set()
+
     for q in q_data:
         if not q.get("active", True):
             continue
@@ -94,25 +101,74 @@ def load_dataset_samples(
             continue
 
         img_id = q.get("img_id")
-        img_path = None
+        img_filename = None
         for ext in (".tif", ".tiff", ".png", ".jpg"):
-            cand = images_dir / f"{img_id}{ext}"
-            if cand.exists():
-                img_path = cand
+            cand_name = f"{img_id}{ext}"
+            if cand_name in existing_images:
+                img_filename = cand_name
                 break
 
-        if not img_path:
+        if not img_filename:
             continue
 
-        samples.append({
-            "img_path": img_path,
+        cat = q.get("type", "general")
+        if cat not in cat_buckets:
+            cat_buckets[cat] = []
+
+        cat_buckets[cat].append({
+            "img_path": images_dir / img_filename,
             "question": q.get("question", ""),
             "answer": ans,
-            "category": q.get("type", "general"),
+            "category": cat,
         })
 
-        if limit and len(samples) >= limit:
-            break
+    # Stratified sampling across categories
+    rng = random.Random(42)
+    samples: List[Dict[str, Any]] = []
+
+    target_total = limit or 2500
+    num_cats = max(1, len(cat_buckets))
+    per_cat = max(20, target_total // num_cats)
+
+    for cat, items in cat_buckets.items():
+        from collections import defaultdict
+        ans_groups = defaultdict(list)
+        for it in items:
+            ans_groups[it["answer"]].append(it)
+        balanced_cat_items = []
+        max_per_ans = max(5, int(per_cat * 0.35))
+        for it_list in ans_groups.values():
+            rng.shuffle(it_list)
+            balanced_cat_items.extend(it_list[:max_per_ans])
+        rng.shuffle(balanced_cat_items)
+        samples.extend(balanced_cat_items[:per_cat])
+
+    # If limit allows and VRSBench VQA exists, integrate VRSBench samples for cross-domain generalization
+    if include_vrsbench:
+        vrs_vqa_file = Path("datasets/vrsbench/VRSBench_EVAL_vqa.json")
+        vrs_zip_file = Path("datasets/vrsbench/Images_val.zip")
+        if vrs_vqa_file.exists() and vrs_zip_file.exists():
+            try:
+                import zipfile
+                with open(vrs_vqa_file, "r", encoding="utf-8") as vf:
+                    vrs_data = json.load(vf)
+                vrs_count = min(300, len(vrs_data))
+                for v_item in vrs_data[:vrs_count]:
+                    ans = str(v_item.get("ground_truth", "")).strip().lower()
+                    if ans:
+                        samples.append({
+                            "zip_source": str(vrs_zip_file),
+                            "zip_inner_path": f"Images_val/{v_item.get('image_id')}",
+                            "question": v_item.get("question", ""),
+                            "answer": ans,
+                            "category": v_item.get("type", "vrsbench_vqa"),
+                        })
+            except Exception as e:
+                print(f"[WARN] Could not mix VRSBench VQA: {e}")
+
+    rng.shuffle(samples)
+    if limit:
+        samples = samples[:limit]
 
     return samples, images_dir
 
@@ -121,8 +177,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="SatQuery AI — RSVQA Training Pipeline")
     parser.add_argument("--data-dir", type=str, default="./datasets/rsvqa/lr")
     parser.add_argument("--output-dir", type=str, default="./models/vqa")
-    parser.add_argument("--epochs", type=int, default=3)
-    parser.add_argument("--batch-size", type=int, default=16)
+    parser.add_argument("--epochs", type=int, default=5)
+    parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--lr", type=float, default=1e-3)
     parser.add_argument("--limit-samples", type=int, default=1000)
     parser.add_argument("--device", type=str, default="auto")
@@ -173,14 +229,28 @@ def main() -> None:
     class RSVQA_TorchDataset(Dataset):
         def __init__(self, samples):
             self.samples = [s for s in samples if s["answer"] in ans2idx]
+            self._zip_handles = {}
+
+        def _get_zip(self, zip_path):
+            import zipfile
+            if zip_path not in self._zip_handles:
+                self._zip_handles[zip_path] = zipfile.ZipFile(zip_path, "r")
+            return self._zip_handles[zip_path]
 
         def __len__(self):
             return len(self.samples)
 
         def __getitem__(self, idx):
+            import io
             item = self.samples[idx]
-            with Image.open(item["img_path"]) as img:
-                img_t = transform(img.convert("RGB"))
+            if "zip_source" in item:
+                zf = self._get_zip(item["zip_source"])
+                with zf.open(item["zip_inner_path"]) as img_f:
+                    with Image.open(io.BytesIO(img_f.read())) as img:
+                        img_t = transform(img.convert("RGB"))
+            else:
+                with Image.open(item["img_path"]) as img:
+                    img_t = transform(img.convert("RGB"))
             q_ids = torch.tensor(word_vocab.transform(item["question"]), dtype=torch.long)
             target = torch.tensor(ans2idx[item["answer"]], dtype=torch.long)
             return img_t, q_ids, target

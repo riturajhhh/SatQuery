@@ -78,40 +78,51 @@ class RSChangeVQA_Model(RemoteSensingModel):
                 self._idx2ans = checkpoint["idx2ans"]
                 self._word2idx = checkpoint["word2idx"]
                 cfg = checkpoint["config"]
+                arch = checkpoint.get("architecture", "SiameseCDVQAModel")
 
-                class _SiameseCDVQAModel(nn.Module):
-                    def __init__(self, vocab_size, embed_dim, num_classes):
-                        super().__init__()
-                        self.feature_extractor = nn.Sequential(
-                            nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1),
-                            nn.BatchNorm2d(32),
-                            nn.ReLU(),
-                            nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1),
-                            nn.BatchNorm2d(64),
-                            nn.ReLU(),
-                            nn.AdaptiveAvgPool2d((1, 1)),
-                            nn.Flatten(),
-                        )
-                        self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
-                        self.gru = nn.GRU(embed_dim, 64, batch_first=True)
-                        self.fusion_classifier = nn.Sequential(
-                            nn.Linear(64 * 3 + 64, 128),
-                            nn.ReLU(),
-                            nn.Dropout(0.2),
-                            nn.Linear(128, num_classes),
-                        )
+                if arch == "ResSiameseCDVQAModel":
+                    from app.models.cdvqa_net import ResSiameseCDVQAModel
+                    self._model = ResSiameseCDVQAModel(
+                        vocab_size=cfg["vocab_size"],
+                        embed_dim=cfg["embed_dim"],
+                        num_classes=cfg["num_classes"],
+                        hidden_dim=cfg.get("hidden_dim", 128),
+                    )
+                else:
+                    class _SiameseCDVQAModel(nn.Module):
+                        def __init__(self, vocab_size, embed_dim, num_classes):
+                            super().__init__()
+                            self.feature_extractor = nn.Sequential(
+                                nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1),
+                                nn.BatchNorm2d(32),
+                                nn.ReLU(),
+                                nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1),
+                                nn.BatchNorm2d(64),
+                                nn.ReLU(),
+                                nn.AdaptiveAvgPool2d((1, 1)),
+                                nn.Flatten(),
+                            )
+                            self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
+                            self.gru = nn.GRU(embed_dim, 64, batch_first=True)
+                            self.fusion_classifier = nn.Sequential(
+                                nn.Linear(64 * 3 + 64, 128),
+                                nn.ReLU(),
+                                nn.Dropout(0.2),
+                                nn.Linear(128, num_classes),
+                            )
 
-                    def forward(self, t1, t2, text_ids):
-                        f1 = self.feature_extractor(t1)
-                        f2 = self.feature_extractor(t2)
-                        diff = torch.abs(f2 - f1)
-                        emb = self.embedding(text_ids)
-                        _, h = self.gru(emb)
-                        t_feat = h.squeeze(0)
-                        fused = torch.cat([f1, f2, diff, t_feat], dim=1)
-                        return self.fusion_classifier(fused)
+                        def forward(self, t1, t2, text_ids):
+                            f1 = self.feature_extractor(t1)
+                            f2 = self.feature_extractor(t2)
+                            diff = torch.abs(f2 - f1)
+                            emb = self.embedding(text_ids)
+                            _, h = self.gru(emb)
+                            t_feat = h.squeeze(0)
+                            fused = torch.cat([f1, f2, diff, t_feat], dim=1)
+                            return self.fusion_classifier(fused)
 
-                self._model = _SiameseCDVQAModel(cfg["vocab_size"], cfg["embed_dim"], cfg["num_classes"])
+                    self._model = _SiameseCDVQAModel(cfg["vocab_size"], cfg["embed_dim"], cfg["num_classes"])
+
                 self._model.load_state_dict(checkpoint["model_state_dict"])
                 self._model.eval()
                 self._transform = T.Compose([
@@ -170,38 +181,157 @@ class RSChangeVQA_Model(RemoteSensingModel):
             cd_output = cd_engine.predict(model_input)
             stats = cd_output.evidence.get("statistics", {}) if cd_output.evidence else {}
             change_code = stats.get("change_type_code", "none")
+            changed_pct = stats.get("changed_percentage", 0.0)
+            changed_ha = stats.get("changed_area_hectares", 0.0)
+            dominant_trans = stats.get("dominant_transition", "observable surface changes")
+            delta_bld = stats.get("building_count_delta", 0)
+            change_sector = stats.get("change_sector", "central and mixed")
 
-            q = model_input.query.lower()
-            if "water" in q and ("inundat" in q or "flood" in q or "expan" in q):
-                if raw_ans.lower() in ("yes", "1") or change_code == "water_gain":
-                    answer = "Surface water expansion and flood inundation observed across the monitored area."
+            q = model_input.query.lower().strip()
+            raw = raw_ans.lower().strip()
+
+            is_water = any(w in q for w in ["water", "river", "lake", "reservoir", "flood", "inundat", "pond", "wetland", "drain", "drying"])
+            is_veg = any(w in q for w in ["vegetation", "forest", "tree", "plant", "green", "canopy", "deforest", "crop", "clearing", "revegetat"])
+            is_urban = any(w in q for w in ["building", "urban", "construction", "structure", "built", "road", "house", "built-up", "infrastructure", "demoli"])
+            is_how_much = any(w in q for w in ["how much", "how many", "area", "percentage", "hectares", "quantify", "extent"])
+            is_where = any(w in q for w in ["where", "which area", "which part", "location", "sector", "quadrant"])
+            is_shrink_expand = any(w in q for w in ["expand or shrink", "shrink or expand", "increase or decrease", "decrease or increase", "increased, decreased, or remained unchanged"])
+
+            if is_urban:
+                if change_code == "urban_expansion" or delta_bld > 0 or (raw in ("yes", "buildings") and changed_pct >= 0.5):
+                    bld_info = f" (net increase of ~{delta_bld} discrete structures)" if delta_bld > 0 else ""
+                    if is_shrink_expand:
+                        answer = (
+                            f"The built-up area has increased between the baseline and follow-up scenes. "
+                            f"New building construction and infrastructure development were identified across "
+                            f"about {changed_pct}% of the scene (~{changed_ha} hectares){bld_info}, "
+                            f"predominantly in the {change_sector} sector."
+                        )
+                    else:
+                        answer = (
+                            f"Yes, new buildings and infrastructure construction were detected between the two dates, "
+                            f"covering about {changed_pct}% of the area (~{changed_ha} hectares){bld_info}, "
+                            f"concentrated in the {change_sector} sector."
+                        )
+                elif change_code == "urban_demolition" or delta_bld < 0:
+                    answer = (
+                        f"The built-up area has decreased between the baseline and follow-up scenes. "
+                        f"Building demolition and structural removal were identified across about "
+                        f"{changed_pct}% of the scene (~{changed_ha} hectares)."
+                    )
+                elif changed_pct < 0.5:
+                    answer = (
+                        f"The built-up area remained unchanged between the baseline and follow-up scenes. "
+                        f"No significant new building construction was identified (scene stability: {round(100.0 - changed_pct, 1)}%)."
+                    )
                 else:
-                    answer = "No significant water expansion or flood inundation observed."
-            elif any(w in q for w in ["forest", "vegetation", "tree", "plant"]):
-                if raw_ans.lower() in ("yes", "trees", "low_vegetation", "nvg_surface") or change_code == "veg_loss":
-                    answer = "Vegetation loss and land clearance detected between observation periods."
+                    answer = (
+                        f"The built-up area remained largely unchanged; the observed changes across {changed_pct}% "
+                        f"of the scene (~{changed_ha} hectares) were primarily driven by {dominant_trans.lower()}, "
+                        f"rather than new building construction."
+                    )
+
+            elif is_veg:
+                if change_code == "veg_loss" or (raw in ("yes", "trees", "low_vegetation", "nvg_surface") and changed_pct >= 0.5):
+                    if is_shrink_expand:
+                        answer = (
+                            f"The vegetation cover experienced a notable decrease (shrinkage) affecting "
+                            f"about {changed_pct}% of the analyzed footprint (~{changed_ha} hectares). "
+                            f"Noticeable canopy loss and land clearance occurred, predominantly in the {change_sector} sector."
+                        )
+                    else:
+                        answer = (
+                            f"Yes, noticeable vegetation loss and land clearing occurred between the two dates, "
+                            f"with canopy shrinkage affecting about {changed_pct}% of the area (~{changed_ha} hectares), "
+                            f"predominantly in the {change_sector} sector."
+                        )
+                elif change_code == "veg_growth":
+                    answer = (
+                        f"Vegetation has expanded with healthy green growth observed across about "
+                        f"{changed_pct}% of the area (~{changed_ha} hectares), "
+                        f"predominantly in the {change_sector} sector."
+                    )
+                elif changed_pct < 0.5:
+                    answer = (
+                        f"No major changes in vegetation were detected; green cover has remained stable "
+                        f"(overall scene stability: {round(100.0 - changed_pct, 1)}%)."
+                    )
                 else:
-                    answer = "No significant vegetation change detected between observation periods."
-            elif any(w in q for w in ["building", "urban", "construction", "structure"]):
-                if raw_ans.lower() in ("yes", "buildings") or change_code == "urban_expansion":
-                    answer = "Urban infrastructure and building expansion detected between observation periods."
+                    answer = (
+                        f"Vegetation canopy remained largely unchanged; the detected temporal changes across {changed_pct}% "
+                        f"of the area (~{changed_ha} hectares) correspond to {dominant_trans.lower()}."
+                    )
+
+            elif is_water:
+                if change_code in ("water_expansion", "water_gain") or (raw in ("yes", "water", "1") and changed_pct >= 0.5):
+                    answer = (
+                        f"Yes, surface water body expanded noticeably across the area, with inundation covering about "
+                        f"{changed_pct}% of the land (~{changed_ha} hectares), "
+                        f"predominantly in the {change_sector} sector."
+                    )
+                elif change_code == "water_shrink":
+                    answer = (
+                        f"Water levels have dropped between the two dates; water bodies shrank across about "
+                        f"{changed_pct}% of the area (~{changed_ha} hectares), "
+                        f"predominantly in the {change_sector} sector."
+                    )
+                elif changed_pct < 0.5:
+                    answer = (
+                        f"Surface water boundaries remained stable between the two dates with no flooding or "
+                        f"reservoir depletion observed (scene stability: {round(100.0 - changed_pct, 1)}%)."
+                    )
                 else:
-                    answer = "No significant building expansion detected."
+                    answer = (
+                        f"Surface water boundaries remained largely stable; the primary temporal shift ({changed_pct}% of the area) "
+                        f"was driven by {dominant_trans.lower()}."
+                    )
+
+            elif changed_pct < 0.5:
+                answer = (
+                    f"No significant changes were detected between the two images. The surveyed area has "
+                    f"remained very stable (high consistency: {round(100.0 - changed_pct, 1)}%)."
+                )
+
+            elif is_where or "where" in q:
+                answer = (
+                    f"The detected changes affect about {changed_pct}% of the area (~{changed_ha} hectares) "
+                    f"and are predominantly located in the {change_sector} sector of the scene, "
+                    f"characterized by {dominant_trans.lower()}."
+                )
+
+            elif is_how_much:
+                answer = (
+                    f"Quantitative analysis shows that approximately {changed_pct}% of the scene footprint "
+                    f"(~{changed_ha} hectares) underwent noticeable change, "
+                    f"primarily consisting of {dominant_trans.lower()}."
+                )
+
             else:
-                answer = raw_ans
+                answer = (
+                    f"Comparing the two dates reveals significant changes across about {changed_pct}% of the area "
+                    f"(~{changed_ha} hectares), primarily characterized by {dominant_trans.lower()}, "
+                    f"concentrated in the {change_sector} sector."
+                )
 
             latency = (time.perf_counter() - t0) * 1000.0
             conf_level = ConfidenceLevel.HIGH if confidence > 0.6 else ConfidenceLevel.MEDIUM
+
+            # Retain spatial change map URLs and detailed metrics from change detection engine
+            evidence_payload = dict(cd_output.evidence or {}) if cd_output and cd_output.evidence else {}
+            evidence_payload.update({
+                "predicted_class_id": top_idx.item(),
+                "raw_class": raw_ans,
+                "change_detected": raw_ans.lower() not in ("no", "none") or change_code != "none",
+                "change_statistics": stats,
+                "statistics": stats,
+                "evidence_type": "change_detection_map",
+            })
+
             return ModelOutput(
                 answer=answer,
                 confidence=round(confidence, 3),
                 confidence_level=conf_level,
-                evidence={
-                    "predicted_class_id": top_idx.item(),
-                    "raw_class": raw_ans,
-                    "change_detected": raw_ans.lower() not in ("no", "none") or change_code != "none",
-                    "change_statistics": stats,
-                },
+                evidence=evidence_payload,
                 model_info=self.info,
                 execution_time_ms=round(latency, 2),
                 is_fallback=False,
@@ -266,19 +396,56 @@ class RSChangeVQA_Fallback(RemoteSensingModel):
         changed_px = stats.get("changed_pixels", 0)
         dominant_trans = stats.get("dominant_transition", "Observed Shift")
         change_code = stats.get("change_type_code", "none")
+        delta_bld = stats.get("building_count_delta", 0)
+        change_sector = stats.get("change_sector", "central and mixed")
 
         q = model_input.query.lower().strip()
 
         # Step 2: Semantic Intent Parsing & Grounded Answer Synthesis
-        is_veg_question = any(w in q for w in ["vegetation", "forest", "tree", "plant", "canopy", "green", "deforest"])
-        is_water_question = any(w in q for w in ["water", "river", "lake", "reservoir", "flood", "inundat", "pond", "wetland", "drain"])
-        is_urban_question = any(w in q for w in ["building", "urban", "construct", "structure", "built", "road", "infrastructure"])
-        is_shrink_expand = any(w in q for w in ["expand or shrink", "shrink or expand", "increase or decrease", "decrease or increase"])
-        is_how_much = any(w in q for w in ["how much", "what percentage", "what area", "how many"])
-        is_yes_no = any(q.startswith(w) for w in ["did", "has", "is there", "are there", "was there", "can you see"])
+        is_veg_question = any(w in q for w in ["vegetation", "forest", "tree", "plant", "canopy", "green", "deforest", "crop", "clearing", "revegetat"])
+        is_water_question = any(w in q for w in ["water", "river", "lake", "reservoir", "flood", "inundat", "pond", "wetland", "drain", "drying"])
+        is_urban_question = any(w in q for w in ["building", "urban", "construct", "structure", "built", "road", "infrastructure", "house", "built-up", "demoli"])
+        is_shrink_expand = any(w in q for w in ["expand or shrink", "shrink or expand", "increase or decrease", "decrease or increase", "increased, decreased, or remained unchanged"])
+        is_how_much = any(w in q for w in ["how much", "what percentage", "what area", "how many", "area", "hectares", "quantify", "extent"])
+        is_where = any(w in q for w in ["where", "which area", "which part", "location", "sector", "quadrant"])
+        is_yes_no = any(q.startswith(w) for w in ["did", "has", "is there", "are there", "was there", "can you see", "is ", "are "])
 
-        # Construct specific answer based on question type
-        if is_veg_question:
+        if is_urban_question:
+            if change_code == "urban_expansion" or delta_bld > 0:
+                bld_info = f" (net increase of ~{delta_bld} discrete structures)" if delta_bld > 0 else ""
+                if is_shrink_expand:
+                    answer = (
+                        f"The built-up area has increased between the baseline and follow-up scenes. "
+                        f"New building construction and infrastructure development were identified across "
+                        f"about {changed_pct}% of the scene (~{changed_ha} hectares / {changed_px:,} pixels){bld_info}, "
+                        f"predominantly in the {change_sector} sector."
+                    )
+                else:
+                    answer = (
+                        f"Yes, new built-up structures and ground modifications were detected across "
+                        f"{changed_pct}% of the scene (~{changed_ha} hectares / {changed_px:,} pixels){bld_info}, "
+                        f"concentrated in the {change_sector} sector."
+                    )
+            elif change_code == "urban_demolition" or delta_bld < 0:
+                answer = (
+                    f"The built-up area has decreased between the baseline and follow-up scenes. "
+                    f"Building demolition and structural removal were identified across about "
+                    f"{changed_pct}% of the scene (~{changed_ha} hectares / {changed_px:,} pixels)."
+                )
+            elif changed_pct < 0.5:
+                answer = (
+                    f"The built-up area remained unchanged between the baseline and follow-up scenes. "
+                    f"No prominent new urban infrastructure or major building construction was identified "
+                    f"(scene stability: {round(100.0 - changed_pct, 1)}%)."
+                )
+            else:
+                answer = (
+                    f"The built-up area remained largely unchanged; the observed changes across {changed_pct}% "
+                    f"of the scene (~{changed_ha} hectares) were primarily driven by {dominant_trans.lower()}, "
+                    f"rather than new building construction."
+                )
+
+        elif is_veg_question:
             if change_code == "veg_loss":
                 if is_shrink_expand:
                     answer = (
@@ -295,48 +462,55 @@ class RSChangeVQA_Fallback(RemoteSensingModel):
                 else:
                     answer = (
                         f"Vegetation analysis reveals canopy loss and land clearance affecting {changed_pct}% "
-                        f"of the analyzed scene (~{changed_ha} hectares / {changed_px:,} pixels)."
+                        f"of the analyzed scene (~{changed_ha} hectares / {changed_px:,} pixels), "
+                        f"predominantly in the {change_sector} sector."
                     )
             elif change_code == "veg_growth":
                 answer = (
                     f"Vegetation expanded with active revegetation observed across {changed_pct}% "
                     f"of the analyzed footprint (~{changed_ha} hectares). Normalized greenness indices increased significantly."
                 )
-            else:
+            elif changed_pct < 0.5:
                 answer = (
                     f"No significant net loss or gain in vegetation cover was detected between the two observations. "
                     f"Vegetation canopy remained stable ({changed_pct}% overall scene variance)."
+                )
+            else:
+                answer = (
+                    f"Vegetation canopy remained largely unchanged; the detected temporal changes across {changed_pct}% "
+                    f"of the area (~{changed_ha} hectares) correspond to {dominant_trans.lower()}."
                 )
 
         elif is_water_question:
             if change_code == "water_expansion":
                 answer = (
                     f"The water body expanded significantly between the two dates, with surface inundation "
-                    f"extending across {changed_pct}% of the analyzed footprint (~{changed_ha} hectares)."
+                    f"extending across {changed_pct}% of the analyzed footprint (~{changed_ha} hectares), "
+                    f"predominantly in the {change_sector} sector."
                 )
             elif change_code == "water_shrink":
                 answer = (
                     f"The water body shrank noticeably between the two dates. Desiccation or water level reduction "
-                    f"affected {changed_pct}% of the footprint (~{changed_ha} hectares)."
+                    f"affected {changed_pct}% of the footprint (~{changed_ha} hectares), "
+                    f"predominantly in the {change_sector} sector."
                 )
-            else:
+            elif changed_pct < 0.5:
                 answer = (
                     f"Surface water boundaries remained stable between the two observations with no major flooding "
                     f"or reservoir depletion observed ({changed_pct}% total scene variance)."
                 )
-
-        elif is_urban_question:
-            if change_code == "urban_expansion":
-                answer = (
-                    f"Yes, new built-up structures and ground modifications were detected across "
-                    f"{changed_pct}% of the scene (~{changed_ha} hectares / {changed_px:,} pixels), "
-                    f"indicated by heightened spatial edge density and high-albedo ground reflectance."
-                )
             else:
                 answer = (
-                    f"No prominent new urban infrastructure or major building construction was identified "
-                    f"between the two temporal scenes ({changed_pct}% overall change)."
+                    f"Surface water boundaries remained largely stable; the primary temporal shift ({changed_pct}% of the area) "
+                    f"was driven by {dominant_trans.lower()}."
                 )
+
+        elif is_where or "where" in q:
+            answer = (
+                f"The detected changes affect about {changed_pct}% of the area (~{changed_ha} hectares) "
+                f"and are predominantly located in the {change_sector} sector of the scene, "
+                f"characterized by {dominant_trans.lower()}."
+            )
 
         elif is_how_much:
             answer = (
@@ -349,7 +523,8 @@ class RSChangeVQA_Fallback(RemoteSensingModel):
             if changed_pct > 0.1:
                 answer = (
                     f"Yes, noticeable temporal modifications were detected across {changed_pct}% of the scene footprint "
-                    f"(~{changed_ha} hectares / {changed_px:,} pixels), primarily driven by {dominant_trans.lower()}."
+                    f"(~{changed_ha} hectares / {changed_px:,} pixels), primarily driven by {dominant_trans.lower()} "
+                    f"in the {change_sector} sector."
                 )
             else:
                 answer = (
@@ -361,7 +536,8 @@ class RSChangeVQA_Fallback(RemoteSensingModel):
             # General query
             answer = (
                 f"Comparing the two temporal images reveals spatial shifts across {changed_pct}% of the footprint "
-                f"(~{changed_ha} hectares). The dominant change is '{dominant_trans}'."
+                f"(~{changed_ha} hectares), primarily characterized by '{dominant_trans}', "
+                f"concentrated in the {change_sector} sector."
             )
 
         duration = (time.perf_counter() - start_time) * 1000.0
