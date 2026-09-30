@@ -119,6 +119,19 @@ def create_app() -> FastAPI:
         name="evidence",
     )
 
+    sample_images_candidates = [
+        Path("sample_images"),
+        Path("../sample_images"),
+        Path(__file__).resolve().parents[2] / "sample_images",
+    ]
+    sample_images_dir = next((p for p in sample_images_candidates if p.exists()), None)
+    if sample_images_dir:
+        app.mount(
+            "/api/files/sample_images",
+            StaticFiles(directory=str(sample_images_dir)),
+            name="sample_images",
+        )
+
     return app
 
 

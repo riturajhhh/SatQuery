@@ -247,7 +247,20 @@ async def upload_satellite_images(
             input_type = "single"
         else:
             rec = compatibility.get("details", {}).get("workflow_recommendation")
-            input_type = rec if rec else "bi_temporal"
+            input_type = "optical_sar" if rec == "optical_sar_fusion" else "bi_temporal"
+    elif input_type in ("optical_sar_fusion", "optical_sar"):
+        input_type = "optical_sar"
+
+    if input_type == "optical_sar" and len(file_infos) == 2:
+        # Ensure files reflect optical and SAR modalities in file_infos
+        if "sar" not in modalities:
+            file_infos[1].modality = "sar"
+            modalities[1] = "sar"
+            from app.database.models import UploadedFile
+            db_f2 = db.query(UploadedFile).filter(UploadedFile.id == file_infos[1].file_id).first()
+            if db_f2:
+                db_f2.modality = "sar"
+                db.commit()
 
     return UploadResponse(
         upload_id=upload_id,
@@ -256,3 +269,104 @@ async def upload_satellite_images(
         compatibility=compatibility,
         timestamp=datetime.now(timezone.utc),
     )
+
+
+@router.get(
+    "/sample-pairs",
+    summary="Get available sample image pairs",
+    description="Returns pre-bundled sample datasets for single, bi-temporal, and optical-sar analysis.",
+)
+def get_sample_pairs():
+    return {
+        "datasets": [
+            {
+                "id": "levir_cd_sample",
+                "title": "LEVIR-CD Urban Building Expansion (0.5m VHR)",
+                "mode": "bitemporal",
+                "files": [
+                    {
+                        "filename": "levir_cd_t1_pre.tif",
+                        "url": "/api/files/sample_images/levir_cd_t1_pre.tif",
+                        "label": "T1 • Baseline (Rural / Agricultural)",
+                        "modality": "optical",
+                    },
+                    {
+                        "filename": "levir_cd_t2_post.tif",
+                        "url": "/api/files/sample_images/levir_cd_t2_post.tif",
+                        "label": "T2 • Follow-up (New Built-up Structures)",
+                        "modality": "optical",
+                    },
+                ],
+                "recommended_queries": [
+                    "Detect and delineate all new residential and industrial building structures between T1 and T2.",
+                    "Quantify the total footprint area, hectares, and spatial cluster count of newly constructed buildings.",
+                    "Did urban buildings expand or decline between the two observations?",
+                ],
+            },
+            {
+                "id": "bitemporal_sample",
+                "title": "Bi-Temporal Land Cover Change (2022 vs 2024)",
+                "mode": "bitemporal",
+                "files": [
+                    {
+                        "filename": "change_before_2022.tif",
+                        "url": "/api/files/sample_images/change_before_2022.tif",
+                        "label": "T1 • Baseline (2022)",
+                        "modality": "optical",
+                    },
+                    {
+                        "filename": "change_after_2024.tif",
+                        "url": "/api/files/sample_images/change_after_2024.tif",
+                        "label": "T2 • Follow-up (2024)",
+                        "modality": "optical",
+                    },
+                ],
+                "recommended_queries": [
+                    "What changed between these two dates, and where did the change occur?",
+                    "Has the built-up area increased, decreased, or remained unchanged between the baseline and follow-up scenes?",
+                    "Measure the total area and hectares of new building construction.",
+                ],
+            },
+            {
+                "id": "optical_sar_sample",
+                "title": "Optical-SAR Cross-Modal Fusion (Cartosat + RISAT-1A)",
+                "mode": "optical_sar",
+                "files": [
+                    {
+                        "filename": "cartosat_pune_urban.tif",
+                        "url": "/api/files/sample_images/cartosat_pune_urban.tif",
+                        "label": "Optical Multispectral (0.65m)",
+                        "modality": "optical",
+                    },
+                    {
+                        "filename": "risat_sar_radar.tif",
+                        "url": "/api/files/sample_images/risat_sar_radar.tif",
+                        "label": "SAR Microwave Radar (C-band)",
+                        "modality": "sar",
+                    },
+                ],
+                "recommended_queries": [
+                    "Use optical and SAR fusion to identify built-up and water-covered regions through cloud layers.",
+                    "Analyze C-band SAR backscatter anomalies to identify water bodies and double-bounce structures regardless of clouds.",
+                    "Pierce cloud cover and extract sub-cloud structural footprints.",
+                ],
+            },
+            {
+                "id": "single_optical_sample",
+                "title": "High-Resolution Optical Scene (Forest & Built-up)",
+                "mode": "single",
+                "files": [
+                    {
+                        "filename": "forest_vegetation.tif",
+                        "url": "/api/files/sample_images/forest_vegetation.tif",
+                        "label": "Optical Multispectral Scene",
+                        "modality": "optical",
+                    },
+                ],
+                "recommended_queries": [
+                    "Describe the land-cover, vegetation, and major human-made objects visible in this satellite scene.",
+                    "Locate and pinpoint all airport runways and aircraft in the image with spatial bounding coordinates.",
+                ],
+            },
+        ]
+    }

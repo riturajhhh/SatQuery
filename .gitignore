@@ -73,6 +73,10 @@ datasets/bigearthnet_txt/
 datasets/vrsbench/
 datasets/rsvqa/
 datasets/cdvqa/
+datasets/levir_cd/train/
+datasets/levir_cd/val/
+datasets/levir_cd/test/
+datasets/levir_cd/gdrive_download/
 datasets/**/*.tif
 datasets/**/*.tiff
 datasets/**/*.zip

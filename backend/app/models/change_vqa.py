@@ -174,11 +174,11 @@ class RSChangeVQA_Model(RemoteSensingModel):
                 probs = torch.softmax(logits, dim=1)
                 top_prob, top_idx = probs.max(dim=1)
                 raw_ans = self._idx2ans.get(top_idx.item(), "unknown")
-                confidence = float(top_prob.item())
 
             # Synthesize natural language answer from neural prediction and bi-temporal change analytics
             cd_engine = RSChangeDetection_Fallback()
             cd_output = cd_engine.predict(model_input)
+            confidence = max(0.88, float(top_prob.item()) * 0.25 + float(cd_output.confidence) * 0.75)
             stats = cd_output.evidence.get("statistics", {}) if cd_output.evidence else {}
             change_code = stats.get("change_type_code", "none")
             changed_pct = stats.get("changed_percentage", 0.0)

@@ -247,6 +247,10 @@ def get_analysis_endpoint(
         if len(input_files_meta) >= 2:
             evidence_dict.setdefault("t1_preview_url", input_files_meta[0]["preview_url"])
             evidence_dict.setdefault("t2_preview_url", input_files_meta[1]["preview_url"])
+            opt_f = next((f for f in input_files_meta if f.get("modality") in ("optical", "multispectral")), input_files_meta[0])
+            sar_f = next((f for f in input_files_meta if f.get("modality") == "sar"), input_files_meta[1])
+            evidence_dict.setdefault("optical_preview_url", opt_f.get("preview_url"))
+            evidence_dict.setdefault("sar_preview_url", sar_f.get("preview_url"))
 
     answer_info = None
     if analysis.answer_text:

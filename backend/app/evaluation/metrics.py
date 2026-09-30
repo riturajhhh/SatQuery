@@ -207,3 +207,90 @@ def compute_routing_accuracy(
         1 for p, g in zip(predicted_tasks, ground_truth_tasks) if p.lower() == g.lower()
     )
     return round(correct / len(predicted_tasks), 4)
+
+
+# ==============================================================================
+# 4. Pixel-Level Change Detection Metrics (LEVIR-CD / Remote Sensing)
+# ==============================================================================
+
+def compute_mask_iou(
+    pred_mask: Any,
+    target_mask: Any,
+    threshold: float = 0.5,
+) -> float:
+    """Compute Intersection over Union (IoU) for binary change masks."""
+    import numpy as np
+
+    p = np.asarray(pred_mask) > threshold
+    t = np.asarray(target_mask) > threshold
+
+    intersection = np.logical_and(p, t).sum()
+    union = np.logical_or(p, t).sum()
+
+    if union == 0:
+        return 1.0 if intersection == 0 else 0.0
+
+    return round(float(intersection / union), 4)
+
+
+def compute_change_detection_metrics(
+    pred_mask: Any,
+    target_mask: Any,
+    threshold: float = 0.5,
+) -> Dict[str, float]:
+    """Compute comprehensive remote-sensing change detection metrics:
+    - Change IoU
+    - Precision (TP / (TP + FP))
+    - Recall (TP / (TP + FN))
+    - F1-Score (2 * P * R / (P + R))
+    - Overall Accuracy (OA)
+    - Cohen's Kappa
+    """
+    import numpy as np
+
+    p = (np.asarray(pred_mask) > threshold).astype(bool)
+    t = (np.asarray(target_mask) > threshold).astype(bool)
+
+    if p.shape != t.shape:
+        # Resize or resample if slight dimension mismatch
+        from PIL import Image
+        p_img = Image.fromarray(p.astype(np.uint8) * 255).resize((t.shape[1], t.shape[0]), Image.NEAREST)
+        p = np.array(p_img) > 127
+
+    tp = float(np.logical_and(p, t).sum())
+    fp = float(np.logical_and(p, ~t).sum())
+    fn = float(np.logical_and(~p, t).sum())
+    tn = float(np.logical_and(~p, ~t).sum())
+
+    total = tp + fp + fn + tn
+    if total == 0:
+        return {"iou": 0.0, "precision": 0.0, "recall": 0.0, "f1": 0.0, "oa": 1.0, "kappa": 1.0}
+
+    # IoU
+    union = tp + fp + fn
+    iou = tp / union if union > 0 else (1.0 if total == tn else 0.0)
+
+    # Precision & Recall
+    precision = tp / (tp + fp) if (tp + fp) > 0 else (1.0 if (tp + fn) == 0 else 0.0)
+    recall = tp / (tp + fn) if (tp + fn) > 0 else (1.0 if (tp + fp) == 0 else 0.0)
+
+    # F1 Score
+    f1 = (2 * precision * recall) / (precision + recall) if (precision + recall) > 0 else 0.0
+
+    # Overall Accuracy
+    oa = (tp + tn) / total
+
+    # Cohen's Kappa
+    pe = ((tp + fp) * (tp + fn) + (fn + tn) * (fp + tn)) / (total * total)
+    po = oa
+    kappa = (po - pe) / (1.0 - pe) if (1.0 - pe) != 0 else 1.0
+
+    return {
+        "iou": round(float(iou), 4),
+        "precision": round(float(precision), 4),
+        "recall": round(float(recall), 4),
+        "f1": round(float(f1), 4),
+        "oa": round(float(oa), 4),
+        "kappa": round(float(kappa), 4),
+    }
+

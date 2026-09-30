@@ -84,14 +84,25 @@ def execute_analysis(
         t0 = time.perf_counter()
         modality = primary_file.modality or "optical"
         modalities = [f.modality for f in uploaded_files if f.modality]
+        # Detect optical-sar pair from modalities, options, or query triggers
+        explicit_optical_sar = (
+            options.get("input_type") in ("optical_sar", "optical_sar_pair", "optical_sar_fusion")
+            or (len(uploaded_files) >= 2 and any(t in query.lower() for t in AgenticPlanner.OPTICAL_SAR_TRIGGERS))
+        )
         is_optical_sar_pair = (
             len(uploaded_files) >= 2
-            and ("sar" in modalities)
-            and ("optical" in modalities or "multispectral" in modalities)
+            and (
+                ("sar" in modalities and ("optical" in modalities or "multispectral" in modalities))
+                or explicit_optical_sar
+            )
         )
 
         if is_optical_sar_pair:
             input_type = InputType.OPTICAL_SAR_PAIR
+            if "sar" not in modalities:
+                modalities.append("sar")
+            if "optical" not in modalities:
+                modalities.append("optical")
         elif len(uploaded_files) > 1:
             input_type = InputType.BI_TEMPORAL
         elif modality == "sar":
@@ -144,8 +155,11 @@ def execute_analysis(
         # Load images for inference
         pil_images = []
         if is_optical_sar_pair:
-            opt_file = next((f for f in uploaded_files if f.modality in ("optical", "multispectral")), uploaded_files[0])
-            sar_file = next((f for f in uploaded_files if f.modality == "sar"), uploaded_files[1])
+            opt_file = next((f for f in uploaded_files if f.modality in ("optical", "multispectral")), None)
+            sar_file = next((f for f in uploaded_files if f.modality == "sar"), None)
+            if not opt_file or not sar_file or opt_file == sar_file:
+                opt_file = uploaded_files[0]
+                sar_file = uploaded_files[1]
             for uf in [opt_file, sar_file]:
                 img_p = uf.preview_path or uf.stored_path
                 pil_images.append(Image.open(img_p))

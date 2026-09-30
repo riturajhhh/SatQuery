@@ -14,6 +14,7 @@ SatQuery AI integrates four benchmark remote-sensing datasets for model training
 | VRSBench | Captioning, Grounding, VQA | Caption, Ground, VQA | Images + JSON | ~5GB |
 | RSVQA | Single-image VQA | VQA | Images + QA pairs | ~1-15GB |
 | CDVQA | Change-based VQA | Change VQA | Image pairs + QA | ~3GB |
+| LEVIR-CD | VHR Bi-Temporal Building Change Detection | Building Change Detection | 0.5m Image pairs + binary masks | ~4GB |
 
 ---
 
@@ -311,7 +312,54 @@ cdvqa:
 
 ---
 
-## 7. Dataset Loader Interface
+## 7. LEVIR-CD
+
+### 7.1 Description
+
+LEVIR-CD is the global gold-standard benchmark dataset for very-high-resolution (VHR) remote-sensing bi-temporal building change detection. It features 637 pairs of $1024 \times 1024$ optical satellite images at 0.5m/pixel resolution captured across 5 to 14 year intervals with pixel-accurate binary masks of building construction and demolition.
+
+### 7.2 Source
+
+- **Google Drive Distribution:** https://drive.google.com/drive/folders/1dLuzldMRmbBNKPpUkX8Z53hi6NHLrWim
+- **Paper:** Chen, H., & Shi, Z. (2020). *A Spatial-Temporal Attention-Based Method and a New Dataset for Remote Sensing Image Change Detection*. Remote Sensing, 12(10), 1662.
+
+### 7.3 Format
+
+```text
+datasets/levir_cd/
+├── metadata.json
+├── README.md
+├── train/
+│   ├── A/       # Pre-event optical imagery (T1)
+│   ├── B/       # Post-event optical imagery (T2)
+│   └── label/   # Binary building change ground truth masks
+├── val/
+│   ├── A/
+│   ├── B/
+│   └── label/
+└── test/
+    ├── A/
+    ├── B/
+    └── label/
+```
+
+### 7.4 Configuration
+
+```yaml
+levir_cd:
+  path: "./datasets/levir_cd/"
+  purpose: "VHR bi-temporal building change detection"
+  format: "image_pairs_with_binary_masks"
+  source_url: "https://drive.google.com/drive/folders/1dLuzldMRmbBNKPpUkX8Z53hi6NHLrWim"
+  gsd_meters: 0.5
+  tasks:
+    - "change_detection"
+    - "change_vqa"
+```
+
+---
+
+## 8. Dataset Loader Interface
 
 All dataset loaders implement a common interface:
 
@@ -342,14 +390,15 @@ class DatasetLoader(ABC):
 
 ---
 
-## 8. Data Download Scripts
+## 9. Data Download Scripts
 
 ```bash
-# Download scripts (to be created in scripts/)
+# Ingestion & Download scripts
 python scripts/download_bigearthnet.py --output ./datasets/bigearthnet_txt/
 python scripts/download_vrsbench.py --output ./datasets/vrsbench/
 python scripts/download_rsvqa.py --variant lr --output ./datasets/rsvqa/
 python scripts/download_cdvqa.py --output ./datasets/cdvqa/
+python scripts/download_levir_cd.py --download-drive --generate-samples
 ```
 
 ---

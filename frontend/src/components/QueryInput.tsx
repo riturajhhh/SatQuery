@@ -73,6 +73,22 @@ const DEMO_QUERIES: EnrichedDemoQuery[] = [
     requirement: 'Optical + SAR Pair',
     badgeClass: 'text-sky-400 bg-sky-500/10 border-sky-500/30',
   },
+  {
+    label: 'SAR Cloud Penetration',
+    query: 'Pierce cloud cover with SAR radar backscatter to uncover sub-cloud structures and water bodies.',
+    category: 'optical_sar',
+    icon: '🛰️',
+    requirement: 'Optical + SAR Pair',
+    badgeClass: 'text-sky-400 bg-sky-500/10 border-sky-500/30',
+  },
+  {
+    label: 'Quantify Change Footprint',
+    query: 'Measure and quantify the total area and hectares of building construction and land clearance between these dates.',
+    category: 'change',
+    icon: '📊',
+    requirement: '2 Temporal Images',
+    badgeClass: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
+  },
 ];
 
 type CategoryFilter = 'all' | 'single' | 'change' | 'optical_sar' | 'isro';

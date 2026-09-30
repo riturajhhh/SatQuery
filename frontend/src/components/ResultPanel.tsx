@@ -72,7 +72,7 @@ export function TraceStepRow({ step }: { step: TraceStep }) {
 export default function ResultPanel({ result, traceSteps = [], isLoading }: ResultPanelProps) {
   const [showOriginal, setShowOriginal] = useState(false);
   const [changeViewMode, setChangeViewMode] = useState<'banner' | 'overlay' | 'slider'>('banner');
-  const [sarViewMode, setSarViewMode] = useState<'banner' | 'fused' | 'slider'>('banner');
+  const [sarViewMode, setSarViewMode] = useState<'banner' | 'fused' | 'scattering' | 'slider'>('banner');
   const [overlayOpacity, setOverlayOpacity] = useState<number>(85);
   const [fullscreenImg, setFullscreenImg] = useState<{ url: string; title: string } | null>(null);
 
@@ -172,7 +172,10 @@ export default function ResultPanel({ result, traceSteps = [], isLoading }: Resu
   const opticalSarEvidence = result.evidence?.optical_sar_fusion as Record<string, unknown> | undefined;
   const opticalSarStats = opticalSarEvidence?.statistics as Record<string, unknown> | undefined;
   const opticalSarBannerUrl = (opticalSarEvidence?.change_map_url as string) || null;
-  const opticalSarOverlayUrl = (opticalSarEvidence?.overlay_url as string) || null;
+  const opticalSarOverlayUrl = (opticalSarEvidence?.overlay_url as string) || (opticalSarEvidence?.fused_url as string) || null;
+  const opticalSarScatteringUrl = (opticalSarEvidence?.scattering_map_url as string) || null;
+  const opticalPreviewUrl = (result.evidence?.optical_preview_url as string) || t1Url || primaryPreviewUrl || null;
+  const sarPreviewUrl = (result.evidence?.sar_preview_url as string) || t2Url || null;
 
 
   const calibEvidence = result.evidence?.confidence_calibration as Record<string, unknown> | undefined;
@@ -539,7 +542,7 @@ export default function ResultPanel({ result, traceSteps = [], isLoading }: Resu
                   Radar Microwave Penetration: <strong className="text-white">Active All-Weather Sensing Continuity</strong>
                 </p>
               </div>
-              <div className="flex items-center gap-1.5 bg-surface-800/80 p-1 rounded-lg border border-surface-700/50">
+              <div className="flex items-center gap-1.5 bg-surface-800/80 p-1 rounded-lg border border-surface-700/50 flex-wrap">
                 <button
                   type="button"
                   onClick={() => setSarViewMode('banner')}
@@ -564,6 +567,17 @@ export default function ResultPanel({ result, traceSteps = [], isLoading }: Resu
                 </button>
                 <button
                   type="button"
+                  onClick={() => setSarViewMode('scattering')}
+                  className={`px-2.5 py-1 rounded text-xs transition-colors ${
+                    sarViewMode === 'scattering'
+                      ? 'bg-sky-500 text-white font-medium shadow-sm'
+                      : 'text-surface-400 hover:text-white'
+                  }`}
+                >
+                  Radar Scattering
+                </button>
+                <button
+                  type="button"
                   onClick={() => setSarViewMode('slider')}
                   className={`px-2.5 py-1 rounded text-xs transition-colors ${
                     sarViewMode === 'slider'
@@ -577,7 +591,12 @@ export default function ResultPanel({ result, traceSteps = [], isLoading }: Resu
                   type="button"
                   onClick={() =>
                     setFullscreenImg({
-                      url: sarViewMode === 'fused' ? (opticalSarOverlayUrl || opticalSarBannerUrl || '') : (opticalSarBannerUrl || ''),
+                      url:
+                        sarViewMode === 'fused'
+                          ? (opticalSarOverlayUrl || opticalSarBannerUrl || '')
+                          : sarViewMode === 'scattering'
+                          ? (opticalSarScatteringUrl || opticalSarOverlayUrl || '')
+                          : (opticalSarBannerUrl || ''),
                       title: 'Optical-SAR Multi-Sensor Cross-Modal Visualization',
                     })
                   }
@@ -632,19 +651,48 @@ export default function ResultPanel({ result, traceSteps = [], isLoading }: Resu
                   100%
                 </span>
                 <span className="text-[10px] text-surface-500 block mt-1">
-                  Cross-modal continuity
+                  AG-MFD Cross-Modal Continuity
                 </span>
               </div>
             </div>
 
+            {/* Radar Scattering Legend when in scattering mode */}
+            {sarViewMode === 'scattering' && (
+              <div className="p-2.5 rounded-xl bg-surface-900/80 border border-surface-800 flex items-center justify-between flex-wrap gap-2 text-xs">
+                <span className="text-[11px] text-surface-400 font-medium">Dielectric Polarimetric Legend:</span>
+                <div className="flex items-center gap-3">
+                  <span className="flex items-center gap-1.5 text-blue-300 text-[11px]">
+                    <span className="w-2.5 h-2.5 rounded-full bg-blue-600 inline-block"></span>
+                    Specular Water
+                  </span>
+                  <span className="flex items-center gap-1.5 text-emerald-300 text-[11px]">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 inline-block"></span>
+                    Vegetation Canopy
+                  </span>
+                  <span className="flex items-center gap-1.5 text-amber-300 text-[11px]">
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                    Double-Bounce Structures
+                  </span>
+                </div>
+              </div>
+            )}
+
             {/* Optical-SAR Image Display */}
             {sarViewMode === 'slider' ? (
               <ImageCompareSlider
-                beforeImage={opticalSarOverlayUrl || opticalSarBannerUrl || ''}
-                afterImage={opticalSarBannerUrl || ''}
-                beforeLabel="SAR Microwave Penetration"
-                afterLabel="Optical Multispectral"
+                beforeImage={opticalPreviewUrl || t1Url || ''}
+                afterImage={opticalSarOverlayUrl || sarPreviewUrl || opticalSarBannerUrl || ''}
+                beforeLabel="Optical RGB (Cloud Obscured)"
+                afterLabel="Cross-Modal Fused (Penetrated)"
               />
+            ) : sarViewMode === 'scattering' ? (
+              <div className="relative w-full rounded-xl overflow-hidden bg-surface-900 border border-surface-800 flex items-center justify-center">
+                <img
+                  src={opticalSarScatteringUrl || opticalSarOverlayUrl || ''}
+                  alt="Polarimetric Radar Backscatter Scattering Classification"
+                  className="w-full h-auto max-h-[460px] object-contain"
+                />
+              </div>
             ) : (
               <div className="relative w-full rounded-xl overflow-hidden bg-surface-900 border border-surface-800 flex items-center justify-center">
                 <img

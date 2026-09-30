@@ -105,14 +105,17 @@ See [docs/architecture.md](docs/architecture.md) for detailed architecture docum
 ## 3. Features
 
 - **Agentic Task Routing** — automatic detection of VQA, captioning, grounding, change, or SAR analysis intent
+- **Unified Foundation VLM (Microsoft Florence-2)** — single 0.77B multi-task vision-language model for dense captioning, open-vocabulary grounding with `<loc_0>` to `<loc_999>` tokens, and VQA
+- **HSPD-Change Engine** — Hierarchical Structural-Phenological Decoupled change detection with Relative Radiometric Normalization (RRN), gradient tensor structural dissimilarity, and discrete building counter delta tracking
+- **AG-MFD Optical-SAR Engine** — Adaptive Geophysical Multi-Scale Frequency Decomposition with Lee local-variance speckle filter, Dynamic Spectral Cloud Index (DSCI), 3-class polarimetric backscatter decomposition, and Laplacian pyramid cross-fusion
 - **Multi-Modal Support** — optical, multispectral, SAR, and cross-modal image pairs
 - **GeoTIFF Processing** — full metadata extraction, CRS detection, band inspection, tiling
-- **Interactive Map Viewer** — zoom, pan, before/after comparison, overlay, opacity control
+- **Interactive Map Viewer** — zoom, pan, split-slider before/after & optical/radar comparison, overlay, opacity control
 - **Evidence Visualization** — bounding boxes, masks, change maps, highlighted regions
 - **Confidence Estimation** — calibrated uncertainty with explicit confidence levels
 - **Hallucination Control** — model confidence + evidence availability + consistency checks
 - **Execution Trace** — step-by-step auditable record of every analysis
-- **Benchmark Evaluation** — integrated evaluation on VRSBench, RSVQA, CDVQA
+- **Benchmark Evaluation** — integrated evaluation on LEVIR-CD, VRSBench, RSVQA, CDVQA
 - **Downloadable Reports** — PDF/HTML with full analysis, evidence, and metadata
 - **Fallback Mode** — graceful degradation with clearly labelled demo inference
 
@@ -125,7 +128,7 @@ See [docs/architecture.md](docs/architecture.md) for detailed architecture docum
 - Python 3.10+
 - Node.js 18+
 - GDAL system library
-- (Optional) NVIDIA GPU with CUDA 11.8+
+- (Optional) NVIDIA GPU with CUDA 11.8+ (Florence-2 / BIT / BLIP-2)
 
 ### Backend Setup
 
@@ -154,18 +157,23 @@ cp .env.example .env
 
 ## 5. Dataset Setup
 
-SatQuery AI supports four benchmark datasets. See [docs/dataset_config.md](docs/dataset_config.md) for download links and format details.
+SatQuery AI integrates five benchmark remote-sensing datasets. See [docs/dataset_config.md](docs/dataset_config.md) for download links and format details.
 
-| Dataset | Purpose | Format |
-|---------|---------|--------|
-| BigEarthNet | RS image-text adaptation | GeoTIFF + labels |
-| VRSBench | Captioning, grounding, VQA | Images + JSON annotations |
-| RSVQA | Single-image VQA | Images + QA pairs |
-| CDVQA | Bi-temporal change VQA | Image pairs + QA pairs |
+| Dataset | Purpose | Tasks | Format | Size |
+|---------|---------|-------|--------|------|
+| **LEVIR-CD** | VHR Bi-Temporal Building Change Detection | Building Change Detection, Change VQA | 0.5m Optical pairs + binary masks | ~4GB |
+| **BigEarthNet** | RS image-text adaptation | Multi-label classification | GeoTIFF + labels | ~66GB (S2) |
+| **VRSBench** | Captioning, grounding, VQA | Caption, Ground, VQA | Images + JSON annotations | ~5GB |
+| **RSVQA** | Single-image VQA | VQA | Images + QA pairs | ~1-15GB |
+| **CDVQA** | Bi-temporal change VQA | Change VQA | Image pairs + QA pairs | ~3GB |
 
 ```bash
+# Ingest or generate LEVIR-CD sample pairs:
+python scripts/download_levir_cd.py --generate-samples
+
 # Place datasets in:
 datasets/
+├── levir_cd/
 ├── bigearthnet_txt/
 ├── vrsbench/
 ├── rsvqa/
@@ -207,22 +215,26 @@ At least one VLM component is adapted to remote sensing using BigEarthNet with L
 
 ## 8. Evaluation
 
+SatQuery AI includes automated benchmark evaluators for all core tasks:
+
 ```bash
-# Run evaluation pipelines independently
-python -m backend.app.evaluation.run --dataset vrsbench --task vqa
-python -m backend.app.evaluation.run --dataset rsvqa --task vqa
-python -m backend.app.evaluation.run --dataset cdvqa --task change_vqa
+# Run benchmark evaluation runner (from backend/ directory or root with PYTHONPATH):
+python -m app.evaluation.runner --benchmark levir_cd
+python -m app.evaluation.runner --benchmark vrsbench
+python -m app.evaluation.runner --benchmark rsvqa
+python -m app.evaluation.runner --benchmark cdvqa
+python -m app.evaluation.runner --benchmark all
 ```
 
 Metrics generated per task:
 
-| Task | Metrics |
-|------|---------|
-| VQA | Accuracy, F1, Exact Match |
-| Captioning | BLEU, ROUGE, CIDEr, BERTScore |
-| Grounding | IoU, Precision, Recall, mAP |
-| Change Detection | IoU, F1, Precision, Recall |
-| Change VQA | Accuracy, F1, Semantic Similarity |
+| Task / Benchmark | Primary Metrics |
+|---|---|
+| **LEVIR-CD** (Building Change Detection) | Change IoU, Recall, Precision, F1-Score, Overall Accuracy (OA), Cohen's Kappa |
+| **VRSBench** (VQA, Captioning, Grounding) | Accuracy, BLEU-4, ROUGE-L, CIDEr, Box IoU, Precision@0.5 |
+| **RSVQA** (High-Resolution VQA) | Accuracy, Macro F1, Per-Category Accuracy |
+| **CDVQA** (Bi-Temporal Change VQA) | Answer Accuracy, F1, Semantic Similarity |
+| **Optical-SAR / Cross-Modal** | Alignment IoU, Structural Similarity (SSIM), Modal Consistency Score |
 
 ---
 

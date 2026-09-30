@@ -1,0 +1,32 @@
+{
+  "name": "LEVIR-CD",
+  "full_name": "Large-scale Building Change Detection Dataset for Remote Sensing",
+  "source_url": "https://drive.google.com/drive/folders/1dLuzldMRmbBNKPpUkX8Z53hi6NHLrWim",
+  "original_paper": "Chen, H., & Shi, Z. (2020). A Spatial-Temporal Attention-Based Method and a New Dataset for Remote Sensing Image Change Detection. Remote Sensing, 12(10), 1662.",
+  "paper_doi": "10.3390/rs12101662",
+  "gsd_meters": 0.5,
+  "sensor_type": "Very-High-Resolution (VHR) Optical Satellite",
+  "image_dimensions": [1024, 1024],
+  "channels": 3,
+  "modality": "optical",
+  "total_pairs": 637,
+  "splits": {
+    "train": 445,
+    "val": 64,
+    "test": 128
+  },
+  "annotated_features": [
+    "building_construction",
+    "building_expansion",
+    "structural_demolition"
+  ],
+  "satquery_integration": {
+    "task": "change_detection",
+    "input_type": "bi_temporal",
+    "models": [
+      "HSPD-Change (Hierarchical Structural-Phenological Decoupled Change Engine)",
+      "RSChangeDetection_BIT (Bitemporal Image Transformer)"
+    ],
+    "evaluator": "app.evaluation.levir_cd_evaluator.LEVIRCDCEvaluator"
+  }
+}

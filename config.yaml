@@ -40,6 +40,17 @@ preprocessing:
 
 # ---- Model Registry ----
 models:
+  florence2:
+    name: "florence2-rs-unified"
+    model_id: "microsoft/Florence-2-base"
+    unified_tasks:
+      - "captioning"
+      - "grounding"
+      - "vqa"
+    device: "auto"
+    use_fp16: true
+    max_new_tokens: 1024
+
   vqa:
     name: "blip2-rs-vqa"
     base_model: "Salesforce/blip2-opt-2.7b"
@@ -150,6 +161,16 @@ datasets:
     path: "./datasets/cdvqa/"
     purpose: "bi-temporal change VQA"
     format: "image_pairs_with_qa"
+
+  levir_cd:
+    path: "./datasets/levir_cd/"
+    purpose: "VHR bi-temporal building change detection"
+    format: "image_pairs_with_binary_masks"
+    source_url: "https://drive.google.com/drive/folders/1dLuzldMRmbBNKPpUkX8Z53hi6NHLrWim"
+    gsd_meters: 0.5
+    tasks:
+      - "change_detection"
+      - "change_vqa"
 
 # ---- Evaluation ----
 evaluation:

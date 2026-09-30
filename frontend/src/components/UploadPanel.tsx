@@ -1,13 +1,13 @@
 /**
  * SatQuery AI — Upload Panel Component.
  *
- * Supports independent uploads for:
+ * Supports independent uploads and dedicated workflows for:
  * 1. Single Optical/Multispectral scenes (VQA, Object Grounding, Scene Description)
- * 2. Bi-Temporal Image Pairs with dedicated, separate slots for:
- *    - Image 1 (T1: Pre-Event / Baseline)
- *    - Image 2 (T2: Post-Event / Follow-up)
- * Includes independent drag-and-drop, separate file pickers, real-time geospatial
- * metadata extraction, temporal swapping, and bitemporal compatibility checks.
+ * 2. Bi-Temporal Image Pairs (T1 Pre-Event vs T2 Post-Event Change Detection)
+ * 3. Cross-Modal Optical + SAR Image Pairs (Optical Visible + Microwave Radar Cloud Penetration)
+ *
+ * Includes drag-and-drop, separate slot pickers, geospatial metadata inspection,
+ * one-click sample dataset presets, and pair compatibility verification.
  */
 
 import { useState, useCallback, useRef, useEffect } from 'react';
@@ -20,7 +20,7 @@ interface UploadPanelProps {
   maxFiles?: number;
 }
 
-type UploadMode = 'single' | 'bitemporal';
+export type UploadMode = 'single' | 'bitemporal' | 'optical_sar';
 
 export default function UploadPanel({
   onFilesSelected,
@@ -33,6 +33,7 @@ export default function UploadPanel({
   const [uploadResponse, setUploadResponse] = useState<UploadResponse | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
+  const [isLoadingSample, setIsLoadingSample] = useState(false);
 
   // Independent drag states
   const [isDragActiveSingle, setIsDragActiveSingle] = useState(false);
@@ -57,9 +58,14 @@ export default function UploadPanel({
       setUploadError(null);
 
       try {
-        const inputType = currentMode === 'bitemporal' && filesToUpload.length === 2
-          ? 'bi_temporal'
-          : 'single';
+        let inputType = 'single';
+        if (filesToUpload.length === 2) {
+          if (currentMode === 'optical_sar') {
+            inputType = 'optical_sar';
+          } else if (currentMode === 'bitemporal') {
+            inputType = 'bi_temporal';
+          }
+        }
 
         const response = await uploadFiles(filesToUpload, inputType);
         setUploadResponse(response);
@@ -98,17 +104,17 @@ export default function UploadPanel({
     setUploadError(null);
   };
 
-  // Handlers for Slot 1 (T1)
+  // Handlers for Slot 1
   const setSlot1 = (file: File | null) => {
     setFile1(file);
   };
 
-  // Handlers for Slot 2 (T2)
+  // Handlers for Slot 2
   const setSlot2 = (file: File | null) => {
     setFile2(file);
   };
 
-  // Swap T1 and T2
+  // Swap Slot 1 and Slot 2
   const swapFiles = () => {
     if (!file1 && !file2) return;
     const temp = file1;
@@ -123,6 +129,63 @@ export default function UploadPanel({
     setUploadError(null);
   };
 
+  // Helper to load sample files from backend
+  const loadSamplePreset = async (preset: 'levir_cd' | 'bitemporal' | 'optical_sar' | 'single') => {
+    setIsLoadingSample(true);
+    setUploadError(null);
+    try {
+      if (preset === 'levir_cd') {
+        setMode('bitemporal');
+        const [res1, res2] = await Promise.all([
+          fetch('/api/files/sample_images/levir_cd_t1_pre.tif'),
+          fetch('/api/files/sample_images/levir_cd_t2_post.tif'),
+        ]);
+        const blob1 = await res1.blob();
+        const blob2 = await res2.blob();
+        const f1 = new File([blob1], 'levir_cd_t1_pre.tif', { type: 'image/tiff' });
+        const f2 = new File([blob2], 'levir_cd_t2_post.tif', { type: 'image/tiff' });
+        setFile1(f1);
+        setFile2(f2);
+      } else if (preset === 'bitemporal') {
+        setMode('bitemporal');
+        const [res1, res2] = await Promise.all([
+          fetch('/api/files/sample_images/change_before_2022.tif'),
+          fetch('/api/files/sample_images/change_after_2024.tif'),
+        ]);
+        const blob1 = await res1.blob();
+        const blob2 = await res2.blob();
+        const f1 = new File([blob1], 'change_before_2022.tif', { type: 'image/tiff' });
+        const f2 = new File([blob2], 'change_after_2024.tif', { type: 'image/tiff' });
+        setFile1(f1);
+        setFile2(f2);
+      } else if (preset === 'optical_sar') {
+        setMode('optical_sar');
+        const [res1, res2] = await Promise.all([
+          fetch('/api/files/sample_images/cartosat_pune_urban.tif'),
+          fetch('/api/files/sample_images/risat_sar_radar.tif'),
+        ]);
+        const blob1 = await res1.blob();
+        const blob2 = await res2.blob();
+        const f1 = new File([blob1], 'cartosat_pune_urban.tif', { type: 'image/tiff' });
+        const f2 = new File([blob2], 'risat_sar_radar.tif', { type: 'image/tiff' });
+        setFile1(f1);
+        setFile2(f2);
+      } else {
+        setMode('single');
+        const res = await fetch('/api/files/sample_images/forest_vegetation.tif');
+        const blob = await res.blob();
+        const f = new File([blob], 'forest_vegetation.tif', { type: 'image/tiff' });
+        setFile1(f);
+        setFile2(null);
+      }
+    } catch (e) {
+      console.warn('Could not load sample file directly via HTTP:', e);
+      setUploadError('Failed to load sample dataset. Ensure backend server is reachable.');
+    } finally {
+      setIsLoadingSample(false);
+    }
+  };
+
   const formatSize = (bytes?: number | null): string => {
     if (!bytes) return '0 B';
     if (bytes < 1024) return `${bytes} B`;
@@ -133,7 +196,7 @@ export default function UploadPanel({
   const getModalityBadge = (modality?: string | null) => {
     switch (modality?.toLowerCase()) {
       case 'sar':
-        return <span className="badge badge-warning text-[10px]">📡 SAR</span>;
+        return <span className="badge badge-warning text-[10px]">📡 SAR Microwave</span>;
       case 'multispectral':
         return <span className="badge badge-success text-[10px]">🌈 Multispectral</span>;
       case 'optical':
@@ -148,7 +211,7 @@ export default function UploadPanel({
     fileInfo: FileInfo | undefined,
     slotLabel: string,
     slotTag: string,
-    themeColor: 'cyan' | 'purple' | 'brand',
+    themeColor: 'cyan' | 'purple' | 'sky' | 'brand',
     onRemove: () => void,
     onReplace: () => void
   ) => {
@@ -160,6 +223,8 @@ export default function UploadPanel({
         ? 'border-cyan-500/40 hover:border-cyan-500/70 shadow-cyan-500/5'
         : themeColor === 'purple'
         ? 'border-purple-500/40 hover:border-purple-500/70 shadow-purple-500/5'
+        : themeColor === 'sky'
+        ? 'border-sky-500/40 hover:border-sky-500/70 shadow-sky-500/5'
         : 'border-brand-500/40 hover:border-brand-500/70 shadow-brand-500/5';
 
     const badgeClass =
@@ -167,6 +232,8 @@ export default function UploadPanel({
         ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30'
         : themeColor === 'purple'
         ? 'bg-purple-500/20 text-purple-300 border-purple-500/30'
+        : themeColor === 'sky'
+        ? 'bg-sky-500/20 text-sky-300 border-sky-500/30'
         : 'bg-brand-500/20 text-brand-300 border-brand-500/30';
 
     return (
@@ -271,7 +338,7 @@ export default function UploadPanel({
     slotTag: string,
     slotTitle: string,
     slotSubtitle: string,
-    themeColor: 'cyan' | 'purple' | 'brand',
+    themeColor: 'cyan' | 'purple' | 'sky' | 'brand',
     isDragActive: boolean,
     onDragOver: (e: React.DragEvent) => void,
     onDragLeave: () => void,
@@ -281,18 +348,36 @@ export default function UploadPanel({
     const borderClass = isDragActive
       ? themeColor === 'cyan'
         ? 'border-cyan-400 bg-cyan-500/10'
-        : 'border-purple-400 bg-purple-500/10'
+        : themeColor === 'purple'
+        ? 'border-purple-400 bg-purple-500/10'
+        : themeColor === 'sky'
+        ? 'border-sky-400 bg-sky-500/10'
+        : 'border-brand-400 bg-brand-500/10'
       : themeColor === 'cyan'
       ? 'border-cyan-500/30 hover:border-cyan-400/60 bg-cyan-950/10'
-      : 'border-purple-500/30 hover:border-purple-400/60 bg-purple-950/10';
+      : themeColor === 'purple'
+      ? 'border-purple-500/30 hover:border-purple-400/60 bg-purple-950/10'
+      : themeColor === 'sky'
+      ? 'border-sky-500/30 hover:border-sky-400/60 bg-sky-950/10'
+      : 'border-brand-500/30 hover:border-brand-400/60 bg-surface-900/40';
 
     const iconColor =
-      themeColor === 'cyan' ? 'text-cyan-400' : themeColor === 'purple' ? 'text-purple-400' : 'text-brand-400';
+      themeColor === 'cyan'
+        ? 'text-cyan-400'
+        : themeColor === 'purple'
+        ? 'text-purple-400'
+        : themeColor === 'sky'
+        ? 'text-sky-400'
+        : 'text-brand-400';
 
     const badgeClass =
       themeColor === 'cyan'
         ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/30'
-        : 'bg-purple-500/20 text-purple-300 border-purple-500/30';
+        : themeColor === 'purple'
+        ? 'bg-purple-500/20 text-purple-300 border-purple-500/30'
+        : themeColor === 'sky'
+        ? 'bg-sky-500/20 text-sky-300 border-sky-500/30'
+        : 'bg-brand-500/20 text-brand-300 border-brand-500/30';
 
     return (
       <div
@@ -360,7 +445,57 @@ export default function UploadPanel({
               : 'text-surface-400 hover:text-surface-200 hover:bg-surface-800/40'
           }`}
         >
-          <span>⏱️</span> Bi-Temporal Pair (T1 & T2)
+          <span>⏱️</span> Bi-Temporal (T1 / T2)
+        </button>
+        <button
+          type="button"
+          onClick={() => handleModeChange('optical_sar')}
+          className={`flex-1 py-1.5 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition-all ${
+            mode === 'optical_sar'
+              ? 'bg-gradient-to-r from-teal-600 to-sky-600 text-white shadow-md shadow-sky-500/25'
+              : 'text-surface-400 hover:text-surface-200 hover:bg-surface-800/40'
+          }`}
+        >
+          <span>📡</span> Optical + SAR
+        </button>
+      </div>
+
+      {/* Quick Sample Preset Bar */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 text-xs">
+        <span className="text-[10px] text-surface-500 uppercase tracking-wider font-semibold whitespace-nowrap">
+          Quick Presets:
+        </span>
+        <button
+          type="button"
+          disabled={isLoadingSample || isUploading}
+          onClick={() => loadSamplePreset('levir_cd')}
+          className="px-2.5 py-1 rounded-md bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 hover:text-amber-200 border border-amber-500/30 text-[11px] whitespace-nowrap transition flex items-center gap-1 font-medium"
+        >
+          <span>🏗️</span> LEVIR-CD Urban Expansion (0.5m)
+        </button>
+        <button
+          type="button"
+          disabled={isLoadingSample || isUploading}
+          onClick={() => loadSamplePreset('bitemporal')}
+          className="px-2.5 py-1 rounded-md bg-surface-800/70 hover:bg-surface-700 text-surface-300 hover:text-white border border-surface-700/50 text-[11px] whitespace-nowrap transition flex items-center gap-1"
+        >
+          <span>⏱️</span> Bi-Temporal Pair (2022 vs 2024)
+        </button>
+        <button
+          type="button"
+          disabled={isLoadingSample || isUploading}
+          onClick={() => loadSamplePreset('optical_sar')}
+          className="px-2.5 py-1 rounded-md bg-surface-800/70 hover:bg-surface-700 text-surface-300 hover:text-white border border-surface-700/50 text-[11px] whitespace-nowrap transition flex items-center gap-1"
+        >
+          <span>📡</span> Optical + SAR (Cartosat + RISAT)
+        </button>
+        <button
+          type="button"
+          disabled={isLoadingSample || isUploading}
+          onClick={() => loadSamplePreset('single')}
+          className="px-2.5 py-1 rounded-md bg-surface-800/70 hover:bg-surface-700 text-surface-300 hover:text-white border border-surface-700/50 text-[11px] whitespace-nowrap transition flex items-center gap-1"
+        >
+          <span>🛰️</span> Single Scene
         </button>
       </div>
 
@@ -415,7 +550,7 @@ export default function UploadPanel({
 
           {/* Side-by-Side Dual Image Slots */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {/* ---- SLOT 1: Image 1 (T1) ---- */}
+            {/* Slot 1: T1 */}
             <div>
               {file1 ? (
                 renderImageCard(
@@ -455,7 +590,7 @@ export default function UploadPanel({
               />
             </div>
 
-            {/* ---- SLOT 2: Image 2 (T2) ---- */}
+            {/* Slot 2: T2 */}
             <div>
               {file2 ? (
                 renderImageCard(
@@ -543,6 +678,158 @@ export default function UploadPanel({
         </div>
       )}
 
+      {/* ---- OPTICAL + SAR MODE: 2 CROSS-MODAL IMAGE SLOTS ---- */}
+      {mode === 'optical_sar' && (
+        <div className="space-y-3">
+          {/* Sub-header with helper & Swap button */}
+          <div className="flex items-center justify-between text-xs px-1">
+            <span className="text-surface-400 text-[11px]">
+              Add <strong className="text-cyan-400 font-semibold">Optical Scene</strong> and <strong className="text-sky-400 font-semibold">SAR Radar Scene</strong>:
+            </span>
+            {(file1 || file2) && (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={swapFiles}
+                  disabled={!file1 || !file2 || isUploading}
+                  className="text-[11px] text-sky-400 hover:text-sky-300 flex items-center gap-1 font-medium bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20 hover:bg-sky-500/20 transition disabled:opacity-40"
+                  title="Swap Optical and SAR slots"
+                >
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M7 16V4M7 4L3 8M7 4L11 8M17 8v12M17 20l4-4M17 20l-4-4" />
+                  </svg>
+                  Swap Slots
+                </button>
+                <button
+                  type="button"
+                  onClick={clearAll}
+                  disabled={isUploading}
+                  className="text-[11px] text-surface-500 hover:text-rose-400 transition"
+                >
+                  Clear Both
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Side-by-Side Dual Cross-Modal Slots */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {/* Slot 1: Optical Multispectral */}
+            <div>
+              {file1 ? (
+                renderImageCard(
+                  file1,
+                  uploadResponse?.files[0],
+                  'Optical Multispectral Scene',
+                  'OPTICAL • VISIBLE',
+                  'cyan',
+                  () => setSlot1(null),
+                  () => inputRef1.current?.click()
+                )
+              ) : (
+                renderEmptySlot(
+                  'OPTICAL • SENSOR',
+                  'Upload Optical Scene',
+                  'Visible / multispectral image (Cartosat, Sentinel-2, Landsat)',
+                  'cyan',
+                  isDragActive1,
+                  (e) => { e.preventDefault(); setIsDragActive1(true); },
+                  () => setIsDragActive1(false),
+                  (e) => {
+                    e.preventDefault();
+                    setIsDragActive1(false);
+                    if (e.dataTransfer.files?.[0]) setSlot1(e.dataTransfer.files[0]);
+                  },
+                  () => inputRef1.current?.click()
+                )
+              )}
+              <input
+                ref={inputRef1}
+                type="file"
+                className="hidden"
+                accept=".tif,.tiff,.geotiff,.png,.jpg,.jpeg"
+                onChange={(e) => {
+                  if (e.target.files?.[0]) setSlot1(e.target.files[0]);
+                }}
+              />
+            </div>
+
+            {/* Slot 2: SAR Microwave Radar */}
+            <div>
+              {file2 ? (
+                renderImageCard(
+                  file2,
+                  uploadResponse?.files[uploadResponse.files.length > 1 ? 1 : 0],
+                  'SAR Microwave Radar',
+                  'SAR • MICROWAVE',
+                  'sky',
+                  () => setSlot2(null),
+                  () => inputRef2.current?.click()
+                )
+              ) : (
+                renderEmptySlot(
+                  'SAR • RADAR',
+                  'Upload SAR Radar Scene',
+                  'C/L-band radar backscatter (RISAT-1A, Sentinel-1, TerraSAR)',
+                  'sky',
+                  isDragActive2,
+                  (e) => { e.preventDefault(); setIsDragActive2(true); },
+                  () => setIsDragActive2(false),
+                  (e) => {
+                    e.preventDefault();
+                    setIsDragActive2(false);
+                    if (e.dataTransfer.files?.[0]) setSlot2(e.dataTransfer.files[0]);
+                  },
+                  () => inputRef2.current?.click()
+                )
+              )}
+              <input
+                ref={inputRef2}
+                type="file"
+                className="hidden"
+                accept=".tif,.tiff,.geotiff,.png,.jpg,.jpeg"
+                onChange={(e) => {
+                  if (e.target.files?.[0]) setSlot2(e.target.files[0]);
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Optical-SAR Cross-Modal Status Banner */}
+          {file1 && file2 ? (
+            <div className="p-3 rounded-xl border border-sky-500/25 bg-sky-500/10 text-sky-200 text-xs flex items-start gap-2.5 transition-all">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="flex-shrink-0 mt-0.5 text-sky-400">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+              </svg>
+              <div className="flex-1">
+                <div className="font-semibold text-white mb-0.5 flex items-center gap-1.5">
+                  <span>Cross-Modal Pair Ready: Optical (Visible) ⨂ SAR (Microwave All-Weather)</span>
+                </div>
+                <p className="text-[11px] opacity-90 text-sky-200/90 leading-relaxed">
+                  Ready for AG-MFD frequency pyramid fusion, cloud penetration, dielectric water boundary detection, and double-bounce urban structure mapping.
+                </p>
+              </div>
+            </div>
+          ) : (
+            <div className="p-2.5 rounded-xl border border-surface-800 bg-surface-900/50 text-[11px] text-surface-400 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-500"></span>
+                </span>
+                <span>
+                  {!file1 && !file2
+                    ? 'Upload 1 Optical scene and 1 SAR radar image to run cross-modal fusion.'
+                    : !file1
+                    ? 'Please upload Optical image in the left slot.'
+                    : 'Please upload SAR radar image in the right slot.'}
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
       {/* ---- SINGLE IMAGE MODE ---- */}
       {mode === 'single' && (
         <div className="space-y-3">
@@ -558,16 +845,26 @@ export default function UploadPanel({
                 () => inputRefSingle.current?.click()
               )}
 
-              {/* Quick Prompt to switch to Bi-Temporal if needed */}
+              {/* Quick Prompt to switch to Bi-Temporal or Optical-SAR if needed */}
               <div className="mt-3 p-2.5 rounded-xl bg-surface-900/60 border border-surface-800 flex items-center justify-between text-xs text-surface-400">
-                <span>Want to compare this with another date?</span>
-                <button
-                  type="button"
-                  onClick={() => setMode('bitemporal')}
-                  className="text-brand-400 hover:text-brand-300 font-medium hover:underline text-[11px] flex items-center gap-1"
-                >
-                  Switch to Bi-Temporal Pair ➔
-                </button>
+                <span>Want to compare dates or fuse with radar?</span>
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setMode('bitemporal')}
+                    className="text-cyan-400 hover:text-cyan-300 font-medium hover:underline text-[11px]"
+                  >
+                    Bi-Temporal ➔
+                  </button>
+                  <span>•</span>
+                  <button
+                    type="button"
+                    onClick={() => setMode('optical_sar')}
+                    className="text-sky-400 hover:text-sky-300 font-medium hover:underline text-[11px]"
+                  >
+                    Optical + SAR ➔
+                  </button>
+                </div>
               </div>
             </div>
           ) : (

@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence
 
 from app.evaluation.cdvqa_evaluator import CDVQAEvaluator
+from app.evaluation.levir_cd_evaluator import LEVIRCDCEvaluator
 from app.evaluation.metrics import compute_routing_accuracy
 from app.evaluation.rsvqa_evaluator import RSVQAEvaluator
 from app.evaluation.vrsbench_evaluator import VRSBenchEvaluator
@@ -88,7 +89,13 @@ def run_benchmarks(
         cdvqa_report = CDVQAEvaluator.evaluate()
         summary["benchmarks"]["cdvqa"] = cdvqa_report.to_dict()
 
-    # 4. Agentic Routing Evaluation
+    # 4. LEVIR-CD (High-Resolution Building Change Detection)
+    if do_all or "levir_cd" in benchmarks:
+        logger.info("evaluating_benchmark", name="LEVIR-CD")
+        levir_report = LEVIRCDCEvaluator.evaluate()
+        summary["benchmarks"]["levir_cd"] = levir_report.to_dict()
+
+    # 5. Agentic Routing Evaluation
     logger.info("evaluating_benchmark", name="AgenticRouting")
     routing_results = evaluate_agentic_routing()
     summary["benchmarks"]["agentic_routing"] = routing_results
@@ -138,6 +145,11 @@ def generate_markdown_report(summary: Dict[str, Any], output_path: Path):
         lines.append(
             f"| **CDVQA** | Bi-Temporal Change Q&A | Token Accuracy | {c['overall_token_accuracy'] * 100:.1f}% | {c['average_latency_ms']:.1f}ms |"
         )
+    if "levir_cd" in bms:
+        l = bms["levir_cd"]
+        lines.append(
+            f"| **LEVIR-CD** | Building Change Detection | Change IoU / F1 | IoU: {l['mean_change_iou']:.3f} (F1: {l['mean_f1']:.3f}, OA: {l['mean_overall_accuracy'] * 100:.1f}%) | {l['average_latency_ms']:.1f}ms |"
+        )
     if "agentic_routing" in bms:
         ar = bms["agentic_routing"]
         lines.append(
@@ -176,6 +188,17 @@ def generate_markdown_report(summary: Dict[str, Any], output_path: Path):
             lines.append(f"| {ctype.replace('_', ' ').title()} | {scores['count']} | {scores['token_accuracy'] * 100:.1f}% |")
         lines.append("")
 
+    if "levir_cd" in bms:
+        l = bms["levir_cd"]
+        lines.append("### LEVIR-CD Building Change Detection")
+        lines.append(f"- **Mean Change IoU:** {l['mean_change_iou']:.4f}")
+        lines.append(f"- **Mean Precision:** {l['mean_precision']:.4f}")
+        lines.append(f"- **Mean Recall:** {l['mean_recall']:.4f}")
+        lines.append(f"- **Mean F1 Score:** {l['mean_f1']:.4f}")
+        lines.append(f"- **Overall Accuracy (OA):** {l['mean_overall_accuracy'] * 100:.2f}%")
+        lines.append(f"- **Cohen's Kappa:** {l['mean_kappa']:.4f}")
+        lines.append("")
+
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
 
@@ -187,7 +210,7 @@ def main():
         "-b",
         nargs="+",
         default=["all"],
-        choices=["all", "rsvqa", "vrsbench", "cdvqa"],
+        choices=["all", "rsvqa", "vrsbench", "cdvqa", "levir_cd"],
         help="Benchmarks to evaluate (default: all)",
     )
     parser.add_argument(
@@ -203,6 +226,9 @@ def main():
     print(f"    - RSVQA Token Acc: {res['benchmarks'].get('rsvqa', {}).get('overall_token_accuracy', 'N/A')}")
     print(f"    - VRSBench Mean IoU: {res['benchmarks'].get('vrsbench', {}).get('grounding', {}).get('mean_iou', 'N/A')}")
     print(f"    - CDVQA Token Acc: {res['benchmarks'].get('cdvqa', {}).get('overall_token_accuracy', 'N/A')}")
+    if "levir_cd" in res["benchmarks"]:
+        l = res["benchmarks"]["levir_cd"]
+        print(f"    - LEVIR-CD Change IoU: {l.get('mean_change_iou', 'N/A')} (F1: {l.get('mean_f1', 'N/A')})")
     print(f"    - Agent Routing Acc: {res['benchmarks'].get('agentic_routing', {}).get('routing_accuracy', 'N/A')}\n")
 
 
