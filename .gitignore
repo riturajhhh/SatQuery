@@ -67,8 +67,10 @@ models/**/*.h5
 *.pt
 *.pth
 *.safetensors
+!models/optical_sar/sar_sentinel1_adapter.pt
 
 # ---- Datasets (DO NOT COMMIT) ----
+datasets/bigearthnet_sar/images/
 datasets/bigearthnet_txt/
 datasets/vrsbench/
 datasets/rsvqa/

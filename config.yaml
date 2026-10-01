@@ -69,6 +69,16 @@ models:
       - "Qwen/Qwen2-VL-2B-Instruct"
     device: "auto"
 
+  sar_specialist:
+    name: "sar-sentinel1-specialist"
+    base_model: "Sentinel1SARNet"
+    adapter_path: "./models/optical_sar/sar_sentinel1_adapter.pt"
+    dataset: "BigEarthNet-Sentinel-1-SAR"
+    polarizations:
+      - "VV"
+      - "VH"
+    device: "auto"
+
   vqa:
     name: "blip2-rs-vqa"
     base_model: "Salesforce/blip2-opt-2.7b"

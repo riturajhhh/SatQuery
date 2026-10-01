@@ -280,6 +280,24 @@ def get_sample_pairs():
     return {
         "datasets": [
             {
+                "id": "sentinel1_sar_sample",
+                "title": "Sentinel-1 Dual-Pol SAR (Trained Polarimetric Model)",
+                "mode": "single",
+                "files": [
+                    {
+                        "filename": "sentinel1_sar_urban_water.tif",
+                        "url": "/api/files/sample_images/sentinel1_sar_urban_water.tif",
+                        "label": "Sentinel-1 C-Band SAR (VV + VH Dual-Pol)",
+                        "modality": "sar",
+                    }
+                ],
+                "recommended_queries": [
+                    "Perform polarimetric radar decomposition to identify urban double-bounce structures and surface water.",
+                    "What is the calibrated VV and VH backscatter in decibels, and what land-cover does it indicate?",
+                    "Identify all vessels and double-bounce high-intensity structures in this SAR radar scene.",
+                ],
+            },
+            {
                 "id": "levir_cd_sample",
                 "title": "LEVIR-CD Urban Building Expansion (0.5m VHR)",
                 "mode": "bitemporal",

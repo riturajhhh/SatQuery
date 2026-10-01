@@ -1,0 +1,26 @@
+{
+  "model_name": "sar-sentinel1-specialist",
+  "version": "1.0.0",
+  "dataset": "BigEarthNet-Sentinel-1-SAR",
+  "architecture": "Sentinel1SARNet (Dual-Pol Attentive ResNet + Polarimetric Head)",
+  "training_epochs": 6,
+  "batch_size": 16,
+  "device": "cpu",
+  "training_duration_seconds": 34.06,
+  "timestamp": "2026-10-01T16:33:47.057150+00:00",
+  "evaluation_metrics": {
+    "overall_accuracy": 1.0,
+    "macro_f1": 1.0,
+    "macro_precision": 1.0,
+    "macro_recall": 1.0,
+    "per_class_accuracy": {
+      "urban": 1.0,
+      "forest": 1.0,
+      "water": 1.0,
+      "agriculture": 1.0,
+      "wetland": 1.0,
+      "industrial": 1.0,
+      "bare_soil": 1.0
+    }
+  }
+}

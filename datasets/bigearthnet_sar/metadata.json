@@ -1,0 +1,22 @@
+{
+  "dataset_name": "BigEarthNet-Sentinel-1-SAR",
+  "total_samples": 600,
+  "split_counts": {
+    "train": 420,
+    "val": 90,
+    "test": 90
+  },
+  "categories": [
+    "urban",
+    "forest",
+    "water",
+    "agriculture",
+    "wetland",
+    "industrial",
+    "bare_soil"
+  ],
+  "polarizations": [
+    "VV",
+    "VH"
+  ]
+}

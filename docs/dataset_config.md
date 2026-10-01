@@ -11,6 +11,7 @@ SatQuery AI integrates four benchmark remote-sensing datasets for model training
 | Dataset | Purpose | Tasks | Format | Size (approx.) |
 |---------|---------|-------|--------|----------------|
 | BigEarthNet | RS image-text adaptation | Multi-label classification | GeoTIFF + labels | ~66GB (S2) |
+| BigEarthNet-SAR | Polarimetric SAR Land Cover & VQA | Multi-class & Dual-pol VQA | Dual-pol (VV/VH) + dB stats | ~20MB - 12GB (S1) |
 | VRSBench | Captioning, Grounding, VQA | Caption, Ground, VQA | Images + JSON | ~5GB |
 | RSVQA | Single-image VQA | VQA | Images + QA pairs | ~1-15GB |
 | CDVQA | Change-based VQA | Change VQA | Image pairs + QA | ~3GB |
@@ -390,11 +391,51 @@ class DatasetLoader(ABC):
 
 ---
 
+## 8. BigEarthNet-MM (Sentinel-1 SAR)
+
+### 8.1 Description
+
+BigEarthNet-MM (Sentinel-1) is a synthetic aperture radar benchmark providing calibrated dual-polarization ($VV, VH$) C-band radar observations paired with CORINE Land Cover classes and radar physics measurements. In SatQuery AI, it is used for explicit fine-tuning of `Sentinel1SARNet` and `RSSAR_Specialist`.
+
+### 8.2 Source & Reference
+
+- **Source:** BigEarthNet Multi-Modal Archive (TU Berlin / DLR / ESA)
+- **Sensor:** Sentinel-1 C-SAR (Interferometric Wide Swath mode, 10m spatial resolution)
+- **Polarizations:** Co-polarization ($VV$) and Cross-polarization ($VH$)
+
+### 8.3 Physical Parameters & Calibration
+
+| Metric | Range (dB) | Physical Meaning |
+|--------|------------|------------------|
+| $\sigma^0_{VV}$ | $-25$ to $0$ dB | Roughness, direct surface reflection, urban double-bounce |
+| $\sigma^0_{VH}$ | $-32$ to $-5$ dB | Volume scattering (dense forest canopy, crop biomass) |
+| $VV - VH$ | $4$ to $15$ dB | Polarimetric ratio indicating depolarizing roughness |
+
+### 8.4 Land Cover Signatures
+
+- **Urban / Infrastructure:** High $VV$ (> -9 dB), High $VH$ (> -16 dB), intense double-bounce dihedral corner reflectors.
+- **Water Bodies:** Low $VV$ (< -19 dB), Low $VH$ (< -26 dB), specular forward scattering away from sensor.
+- **Forest:** Intermediate $VV$ (-10 to -7 dB), high volume $VH$ (-15 to -11 dB), low ratio.
+- **Agriculture:** Dynamic $VV$ (-14 to -8 dB) modulated by soil moisture and furrow orientation.
+
+### 8.5 Download & Generation Script
+
+```bash
+# Ingestion & generation of calibrated Sentinel-1 SAR benchmark
+python scripts/download_sar_data.py --samples 600 --output ./datasets/bigearthnet_sar/
+
+# Train Sentinel-1 polarimetric adapter
+python scripts/train_sar.py --epochs 6 --batch-size 16 --output ./models/optical_sar/sar_sentinel1_adapter.pt
+```
+
+---
+
 ## 9. Data Download Scripts
 
 ```bash
 # Ingestion & Download scripts
 python scripts/download_bigearthnet.py --output ./datasets/bigearthnet_txt/
+python scripts/download_sar_data.py --samples 600 --output ./datasets/bigearthnet_sar/
 python scripts/download_vrsbench.py --output ./datasets/vrsbench/
 python scripts/download_rsvqa.py --variant lr --output ./datasets/rsvqa/
 python scripts/download_cdvqa.py --output ./datasets/cdvqa/

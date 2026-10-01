@@ -130,11 +130,18 @@ export default function UploadPanel({
   };
 
   // Helper to load sample files from backend
-  const loadSamplePreset = async (preset: 'levir_cd' | 'bitemporal' | 'optical_sar' | 'single') => {
+  const loadSamplePreset = async (preset: 'sar_sentinel1' | 'levir_cd' | 'bitemporal' | 'optical_sar' | 'single') => {
     setIsLoadingSample(true);
     setUploadError(null);
     try {
-      if (preset === 'levir_cd') {
+      if (preset === 'sar_sentinel1') {
+        setMode('single');
+        const res = await fetch('/api/files/sample_images/sentinel1_sar_urban_water.tif');
+        const blob = await res.blob();
+        const f = new File([blob], 'sentinel1_sar_urban_water.tif', { type: 'image/tiff' });
+        setFile1(f);
+        setFile2(null);
+      } else if (preset === 'levir_cd') {
         setMode('bitemporal');
         const [res1, res2] = await Promise.all([
           fetch('/api/files/sample_images/levir_cd_t1_pre.tif'),
@@ -465,6 +472,14 @@ export default function UploadPanel({
         <span className="text-[10px] text-surface-500 uppercase tracking-wider font-semibold whitespace-nowrap">
           Quick Presets:
         </span>
+        <button
+          type="button"
+          disabled={isLoadingSample || isUploading}
+          onClick={() => loadSamplePreset('sar_sentinel1')}
+          className="px-2.5 py-1 rounded-md bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 hover:text-emerald-200 border border-emerald-500/30 text-[11px] whitespace-nowrap transition flex items-center gap-1 font-medium"
+        >
+          <span>⚡</span> Sentinel-1 SAR (Dual-Pol VV/VH)
+        </button>
         <button
           type="button"
           disabled={isLoadingSample || isUploading}

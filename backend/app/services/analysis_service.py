@@ -182,7 +182,14 @@ def execute_analysis(
                 sub_input_type = input_type
                 sub_images = pil_images
 
-            step_model = registry.select_best_model(plan_step.task, sub_input_type)
+            if sub_input_type == InputType.SINGLE_SAR:
+                sar_spec = registry.get_model("sar-sentinel1-specialist")
+                if sar_spec and plan_step.task in sar_spec.info.supported_tasks:
+                    step_model = sar_spec
+                else:
+                    step_model = registry.select_best_model(plan_step.task, sub_input_type)
+            else:
+                step_model = registry.select_best_model(plan_step.task, sub_input_type)
 
             sub_query = (
                 plan_step.target_phrase

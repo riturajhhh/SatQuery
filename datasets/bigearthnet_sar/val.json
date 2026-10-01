@@ -1,0 +1,1352 @@
+[
+  {
+    "sample_id": "s1_sar_00123",
+    "image_path": "images/s1_sar_00123_wetland.png",
+    "category": "wetland",
+    "question": "Does the radar detect a mixture of specular water and emergent vegetation?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.24,
+      "mean_vh_db": -20.89,
+      "vv_vh_ratio_db": 6.65,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00029",
+    "image_path": "images/s1_sar_00029_forest.png",
+    "category": "forest",
+    "question": "What radar scattering mechanism dominates this vegetated area?",
+    "answer": "volume scattering",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.5,
+      "mean_vh_db": -14.01,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00122",
+    "image_path": "images/s1_sar_00122_agriculture.png",
+    "category": "agriculture",
+    "question": "Is this an open agricultural landscape?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -11.01,
+      "mean_vh_db": -18.41,
+      "vv_vh_ratio_db": 7.4,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00157",
+    "image_path": "images/s1_sar_00157_agriculture.png",
+    "category": "agriculture",
+    "question": "What causes the moderate surface backscatter across field boundaries?",
+    "answer": "surface roughness",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -11.01,
+      "mean_vh_db": -18.41,
+      "vv_vh_ratio_db": 7.4,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00413",
+    "image_path": "images/s1_sar_00413_urban.png",
+    "category": "urban",
+    "question": "Does this image exhibit high dihedral double-bounce radar backscatter?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -5.24,
+      "mean_vh_db": -11.76,
+      "vv_vh_ratio_db": 6.52,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00499",
+    "image_path": "images/s1_sar_00499_water.png",
+    "category": "water",
+    "question": "Are there dense buildings present in the low backscatter zone?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -22.0,
+      "mean_vh_db": -29.0,
+      "vv_vh_ratio_db": 7.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00461",
+    "image_path": "images/s1_sar_00461_bare_soil.png",
+    "category": "bare_soil",
+    "question": "Is dense vegetation canopy present in this scene?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.49,
+      "mean_vh_db": -22.49,
+      "vv_vh_ratio_db": 8.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00009",
+    "image_path": "images/s1_sar_00009_water.png",
+    "category": "water",
+    "question": "Why is the radar backscatter signal very low in this scene?",
+    "answer": "specular reflection",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -22.0,
+      "mean_vh_db": -29.0,
+      "vv_vh_ratio_db": 7.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00533",
+    "image_path": "images/s1_sar_00533_forest.png",
+    "category": "forest",
+    "question": "What radar scattering mechanism dominates this vegetated area?",
+    "answer": "volume scattering",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.5,
+      "mean_vh_db": -14.0,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00165",
+    "image_path": "images/s1_sar_00165_wetland.png",
+    "category": "wetland",
+    "question": "Does the radar detect a mixture of specular water and emergent vegetation?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.26,
+      "mean_vh_db": -20.91,
+      "vv_vh_ratio_db": 6.65,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00306",
+    "image_path": "images/s1_sar_00306_industrial.png",
+    "category": "industrial",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "industrial commercial structures",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -3.34,
+      "mean_vh_db": -9.33,
+      "vv_vh_ratio_db": 5.99,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00000",
+    "image_path": "images/s1_sar_00000_urban.png",
+    "category": "urban",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "urban and built-up",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -5.24,
+      "mean_vh_db": -11.77,
+      "vv_vh_ratio_db": 6.53,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00512",
+    "image_path": "images/s1_sar_00512_forest.png",
+    "category": "forest",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "dense forest and tree canopy",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.51,
+      "mean_vh_db": -14.01,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00398",
+    "image_path": "images/s1_sar_00398_bare_soil.png",
+    "category": "bare_soil",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "bare soil and open ground",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.5,
+      "mean_vh_db": -22.5,
+      "vv_vh_ratio_db": 8.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00529",
+    "image_path": "images/s1_sar_00529_wetland.png",
+    "category": "wetland",
+    "question": "Does the radar detect a mixture of specular water and emergent vegetation?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.25,
+      "mean_vh_db": -20.91,
+      "vv_vh_ratio_db": 6.65,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00082",
+    "image_path": "images/s1_sar_00082_industrial.png",
+    "category": "industrial",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "industrial commercial structures",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -3.37,
+      "mean_vh_db": -9.36,
+      "vv_vh_ratio_db": 5.99,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00450",
+    "image_path": "images/s1_sar_00450_water.png",
+    "category": "water",
+    "question": "Does this image show water or land?",
+    "answer": "water",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -22.0,
+      "mean_vh_db": -29.0,
+      "vv_vh_ratio_db": 7.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00191",
+    "image_path": "images/s1_sar_00191_water.png",
+    "category": "water",
+    "question": "Are there dense buildings present in the low backscatter zone?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -22.0,
+      "mean_vh_db": -29.0,
+      "vv_vh_ratio_db": 7.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00489",
+    "image_path": "images/s1_sar_00489_bare_soil.png",
+    "category": "bare_soil",
+    "question": "Is dense vegetation canopy present in this scene?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.5,
+      "mean_vh_db": -22.5,
+      "vv_vh_ratio_db": 8.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00101",
+    "image_path": "images/s1_sar_00101_agriculture.png",
+    "category": "agriculture",
+    "question": "Is this an open agricultural landscape?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -11.01,
+      "mean_vh_db": -18.42,
+      "vv_vh_ratio_db": 7.4,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00311",
+    "image_path": "images/s1_sar_00311_agriculture.png",
+    "category": "agriculture",
+    "question": "Is this an open agricultural landscape?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -11.0,
+      "mean_vh_db": -18.39,
+      "vv_vh_ratio_db": 7.4,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00454",
+    "image_path": "images/s1_sar_00454_bare_soil.png",
+    "category": "bare_soil",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "bare soil and open ground",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.5,
+      "mean_vh_db": -22.5,
+      "vv_vh_ratio_db": 8.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00327",
+    "image_path": "images/s1_sar_00327_industrial.png",
+    "category": "industrial",
+    "question": "Are intense metallic specular reflections detected?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -3.36,
+      "mean_vh_db": -9.35,
+      "vv_vh_ratio_db": 5.99,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00430",
+    "image_path": "images/s1_sar_00430_agriculture.png",
+    "category": "agriculture",
+    "question": "What causes the moderate surface backscatter across field boundaries?",
+    "answer": "surface roughness",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -10.99,
+      "mean_vh_db": -18.39,
+      "vv_vh_ratio_db": 7.4,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00152",
+    "image_path": "images/s1_sar_00152_industrial.png",
+    "category": "industrial",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "industrial commercial structures",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -3.36,
+      "mean_vh_db": -9.35,
+      "vv_vh_ratio_db": 5.99,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00320",
+    "image_path": "images/s1_sar_00320_industrial.png",
+    "category": "industrial",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "industrial commercial structures",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -3.36,
+      "mean_vh_db": -9.35,
+      "vv_vh_ratio_db": 5.99,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00445",
+    "image_path": "images/s1_sar_00445_wetland.png",
+    "category": "wetland",
+    "question": "Does the radar detect a mixture of specular water and emergent vegetation?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.25,
+      "mean_vh_db": -20.9,
+      "vv_vh_ratio_db": 6.65,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00054",
+    "image_path": "images/s1_sar_00054_industrial.png",
+    "category": "industrial",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "industrial commercial structures",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -3.35,
+      "mean_vh_db": -9.34,
+      "vv_vh_ratio_db": 5.99,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00259",
+    "image_path": "images/s1_sar_00259_urban.png",
+    "category": "urban",
+    "question": "What is the dominant scattering mechanism?",
+    "answer": "double-bounce scattering",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -5.25,
+      "mean_vh_db": -11.78,
+      "vv_vh_ratio_db": 6.53,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00091",
+    "image_path": "images/s1_sar_00091_urban.png",
+    "category": "urban",
+    "question": "What is the dominant scattering mechanism?",
+    "answer": "double-bounce scattering",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -5.25,
+      "mean_vh_db": -11.77,
+      "vv_vh_ratio_db": 6.53,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00390",
+    "image_path": "images/s1_sar_00390_industrial.png",
+    "category": "industrial",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "industrial commercial structures",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -3.36,
+      "mean_vh_db": -9.35,
+      "vv_vh_ratio_db": 5.99,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00256",
+    "image_path": "images/s1_sar_00256_wetland.png",
+    "category": "wetland",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "wetland and marshland",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.25,
+      "mean_vh_db": -20.91,
+      "vv_vh_ratio_db": 6.65,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00506",
+    "image_path": "images/s1_sar_00506_water.png",
+    "category": "water",
+    "question": "Does this image show water or land?",
+    "answer": "water",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -22.0,
+      "mean_vh_db": -29.0,
+      "vv_vh_ratio_db": 7.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00368",
+    "image_path": "images/s1_sar_00368_wetland.png",
+    "category": "wetland",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "wetland and marshland",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.27,
+      "mean_vh_db": -20.92,
+      "vv_vh_ratio_db": 6.65,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00448",
+    "image_path": "images/s1_sar_00448_urban.png",
+    "category": "urban",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "urban and built-up",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -5.26,
+      "mean_vh_db": -11.78,
+      "vv_vh_ratio_db": 6.53,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00471",
+    "image_path": "images/s1_sar_00471_water.png",
+    "category": "water",
+    "question": "Are there dense buildings present in the low backscatter zone?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -21.99,
+      "mean_vh_db": -28.99,
+      "vv_vh_ratio_db": 7.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00001",
+    "image_path": "images/s1_sar_00001_forest.png",
+    "category": "forest",
+    "question": "What radar scattering mechanism dominates this vegetated area?",
+    "answer": "volume scattering",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.51,
+      "mean_vh_db": -14.01,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00232",
+    "image_path": "images/s1_sar_00232_forest.png",
+    "category": "forest",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "dense forest and tree canopy",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.52,
+      "mean_vh_db": -14.03,
+      "vv_vh_ratio_db": 4.51,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00555",
+    "image_path": "images/s1_sar_00555_water.png",
+    "category": "water",
+    "question": "Are there dense buildings present in the low backscatter zone?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -22.0,
+      "mean_vh_db": -29.0,
+      "vv_vh_ratio_db": 7.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00222",
+    "image_path": "images/s1_sar_00222_industrial.png",
+    "category": "industrial",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "industrial commercial structures",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -3.44,
+      "mean_vh_db": -9.43,
+      "vv_vh_ratio_db": 5.99,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00150",
+    "image_path": "images/s1_sar_00150_agriculture.png",
+    "category": "agriculture",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "agriculture and cultivated land",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -10.99,
+      "mean_vh_db": -18.39,
+      "vv_vh_ratio_db": 7.4,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00526",
+    "image_path": "images/s1_sar_00526_forest.png",
+    "category": "forest",
+    "question": "Is the cross-polarization VH backscatter elevated due to canopy depolarization?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.5,
+      "mean_vh_db": -14.0,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00174",
+    "image_path": "images/s1_sar_00174_bare_soil.png",
+    "category": "bare_soil",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "bare soil and open ground",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.49,
+      "mean_vh_db": -22.49,
+      "vv_vh_ratio_db": 8.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00328",
+    "image_path": "images/s1_sar_00328_bare_soil.png",
+    "category": "bare_soil",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "bare soil and open ground",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.49,
+      "mean_vh_db": -22.49,
+      "vv_vh_ratio_db": 8.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00393",
+    "image_path": "images/s1_sar_00393_forest.png",
+    "category": "forest",
+    "question": "What radar scattering mechanism dominates this vegetated area?",
+    "answer": "volume scattering",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.51,
+      "mean_vh_db": -14.01,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00136",
+    "image_path": "images/s1_sar_00136_agriculture.png",
+    "category": "agriculture",
+    "question": "What causes the moderate surface backscatter across field boundaries?",
+    "answer": "surface roughness",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -11.01,
+      "mean_vh_db": -18.41,
+      "vv_vh_ratio_db": 7.4,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00384",
+    "image_path": "images/s1_sar_00384_bare_soil.png",
+    "category": "bare_soil",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "bare soil and open ground",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.51,
+      "mean_vh_db": -22.51,
+      "vv_vh_ratio_db": 8.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00521",
+    "image_path": "images/s1_sar_00521_agriculture.png",
+    "category": "agriculture",
+    "question": "Is this an open agricultural landscape?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -11.0,
+      "mean_vh_db": -18.39,
+      "vv_vh_ratio_db": 7.4,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00453",
+    "image_path": "images/s1_sar_00453_industrial.png",
+    "category": "industrial",
+    "question": "Are intense metallic specular reflections detected?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -3.36,
+      "mean_vh_db": -9.35,
+      "vv_vh_ratio_db": 5.99,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00349",
+    "image_path": "images/s1_sar_00349_bare_soil.png",
+    "category": "bare_soil",
+    "question": "Is dense vegetation canopy present in this scene?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.52,
+      "mean_vh_db": -22.52,
+      "vv_vh_ratio_db": 8.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00058",
+    "image_path": "images/s1_sar_00058_water.png",
+    "category": "water",
+    "question": "Does this image show water or land?",
+    "answer": "water",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -22.01,
+      "mean_vh_db": -29.01,
+      "vv_vh_ratio_db": 7.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00369",
+    "image_path": "images/s1_sar_00369_industrial.png",
+    "category": "industrial",
+    "question": "Are intense metallic specular reflections detected?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -3.36,
+      "mean_vh_db": -9.35,
+      "vv_vh_ratio_db": 5.99,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00485",
+    "image_path": "images/s1_sar_00485_water.png",
+    "category": "water",
+    "question": "Why is the radar backscatter signal very low in this scene?",
+    "answer": "specular reflection",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -22.01,
+      "mean_vh_db": -29.01,
+      "vv_vh_ratio_db": 7.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00005",
+    "image_path": "images/s1_sar_00005_industrial.png",
+    "category": "industrial",
+    "question": "Are intense metallic specular reflections detected?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -3.37,
+      "mean_vh_db": -9.36,
+      "vv_vh_ratio_db": 5.99,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00491",
+    "image_path": "images/s1_sar_00491_forest.png",
+    "category": "forest",
+    "question": "Are open water bodies dominant in this scene?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.5,
+      "mean_vh_db": -14.0,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00283",
+    "image_path": "images/s1_sar_00283_agriculture.png",
+    "category": "agriculture",
+    "question": "What causes the moderate surface backscatter across field boundaries?",
+    "answer": "surface roughness",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -11.0,
+      "mean_vh_db": -18.41,
+      "vv_vh_ratio_db": 7.4,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00128",
+    "image_path": "images/s1_sar_00128_water.png",
+    "category": "water",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "surface water body",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -21.99,
+      "mean_vh_db": -28.99,
+      "vv_vh_ratio_db": 7.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00561",
+    "image_path": "images/s1_sar_00561_forest.png",
+    "category": "forest",
+    "question": "What radar scattering mechanism dominates this vegetated area?",
+    "answer": "volume scattering",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.48,
+      "mean_vh_db": -13.98,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00239",
+    "image_path": "images/s1_sar_00239_forest.png",
+    "category": "forest",
+    "question": "Are open water bodies dominant in this scene?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.51,
+      "mean_vh_db": -14.01,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00483",
+    "image_path": "images/s1_sar_00483_urban.png",
+    "category": "urban",
+    "question": "What is the dominant scattering mechanism?",
+    "answer": "double-bounce scattering",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -5.25,
+      "mean_vh_db": -11.78,
+      "vv_vh_ratio_db": 6.53,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00195",
+    "image_path": "images/s1_sar_00195_bare_soil.png",
+    "category": "bare_soil",
+    "question": "Is dense vegetation canopy present in this scene?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.5,
+      "mean_vh_db": -22.5,
+      "vv_vh_ratio_db": 8.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00197",
+    "image_path": "images/s1_sar_00197_forest.png",
+    "category": "forest",
+    "question": "What radar scattering mechanism dominates this vegetated area?",
+    "answer": "volume scattering",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.48,
+      "mean_vh_db": -13.97,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00524",
+    "image_path": "images/s1_sar_00524_bare_soil.png",
+    "category": "bare_soil",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "bare soil and open ground",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.5,
+      "mean_vh_db": -22.5,
+      "vv_vh_ratio_db": 8.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00305",
+    "image_path": "images/s1_sar_00305_wetland.png",
+    "category": "wetland",
+    "question": "Does the radar detect a mixture of specular water and emergent vegetation?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.25,
+      "mean_vh_db": -20.9,
+      "vv_vh_ratio_db": 6.65,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00519",
+    "image_path": "images/s1_sar_00519_forest.png",
+    "category": "forest",
+    "question": "Are open water bodies dominant in this scene?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.5,
+      "mean_vh_db": -14.0,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00572",
+    "image_path": "images/s1_sar_00572_industrial.png",
+    "category": "industrial",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "industrial commercial structures",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -3.37,
+      "mean_vh_db": -9.36,
+      "vv_vh_ratio_db": 5.99,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00515",
+    "image_path": "images/s1_sar_00515_wetland.png",
+    "category": "wetland",
+    "question": "Does the radar detect a mixture of specular water and emergent vegetation?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.27,
+      "mean_vh_db": -20.92,
+      "vv_vh_ratio_db": 6.65,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00547",
+    "image_path": "images/s1_sar_00547_forest.png",
+    "category": "forest",
+    "question": "Are open water bodies dominant in this scene?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.5,
+      "mean_vh_db": -14.0,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00321",
+    "image_path": "images/s1_sar_00321_bare_soil.png",
+    "category": "bare_soil",
+    "question": "Is dense vegetation canopy present in this scene?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.49,
+      "mean_vh_db": -22.49,
+      "vv_vh_ratio_db": 8.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00078",
+    "image_path": "images/s1_sar_00078_forest.png",
+    "category": "forest",
+    "question": "Is the cross-polarization VH backscatter elevated due to canopy depolarization?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.51,
+      "mean_vh_db": -14.01,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00056",
+    "image_path": "images/s1_sar_00056_urban.png",
+    "category": "urban",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "urban and built-up",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -5.25,
+      "mean_vh_db": -11.78,
+      "vv_vh_ratio_db": 6.53,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00440",
+    "image_path": "images/s1_sar_00440_bare_soil.png",
+    "category": "bare_soil",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "bare soil and open ground",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.51,
+      "mean_vh_db": -22.51,
+      "vv_vh_ratio_db": 8.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00024",
+    "image_path": "images/s1_sar_00024_agriculture.png",
+    "category": "agriculture",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "agriculture and cultivated land",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -10.99,
+      "mean_vh_db": -18.39,
+      "vv_vh_ratio_db": 7.4,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00386",
+    "image_path": "images/s1_sar_00386_forest.png",
+    "category": "forest",
+    "question": "Is the cross-polarization VH backscatter elevated due to canopy depolarization?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.49,
+      "mean_vh_db": -13.99,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00550",
+    "image_path": "images/s1_sar_00550_wetland.png",
+    "category": "wetland",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "wetland and marshland",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.23,
+      "mean_vh_db": -20.87,
+      "vv_vh_ratio_db": 6.64,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00252",
+    "image_path": "images/s1_sar_00252_urban.png",
+    "category": "urban",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "urban and built-up",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -5.25,
+      "mean_vh_db": -11.78,
+      "vv_vh_ratio_db": 6.53,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00260",
+    "image_path": "images/s1_sar_00260_forest.png",
+    "category": "forest",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "dense forest and tree canopy",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.49,
+      "mean_vh_db": -13.98,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00070",
+    "image_path": "images/s1_sar_00070_urban.png",
+    "category": "urban",
+    "question": "Are buildings and road infrastructure present?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -5.25,
+      "mean_vh_db": -11.77,
+      "vv_vh_ratio_db": 6.53,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00112",
+    "image_path": "images/s1_sar_00112_urban.png",
+    "category": "urban",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "urban and built-up",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -5.23,
+      "mean_vh_db": -11.75,
+      "vv_vh_ratio_db": 6.52,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00185",
+    "image_path": "images/s1_sar_00185_agriculture.png",
+    "category": "agriculture",
+    "question": "Is this an open agricultural landscape?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -11.01,
+      "mean_vh_db": -18.41,
+      "vv_vh_ratio_db": 7.4,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00204",
+    "image_path": "images/s1_sar_00204_forest.png",
+    "category": "forest",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "dense forest and tree canopy",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.51,
+      "mean_vh_db": -14.02,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00298",
+    "image_path": "images/s1_sar_00298_wetland.png",
+    "category": "wetland",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "wetland and marshland",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.26,
+      "mean_vh_db": -20.92,
+      "vv_vh_ratio_db": 6.65,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00577",
+    "image_path": "images/s1_sar_00577_agriculture.png",
+    "category": "agriculture",
+    "question": "What causes the moderate surface backscatter across field boundaries?",
+    "answer": "surface roughness",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -11.01,
+      "mean_vh_db": -18.41,
+      "vv_vh_ratio_db": 7.4,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00219",
+    "image_path": "images/s1_sar_00219_water.png",
+    "category": "water",
+    "question": "Are there dense buildings present in the low backscatter zone?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -21.99,
+      "mean_vh_db": -28.99,
+      "vv_vh_ratio_db": 7.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00299",
+    "image_path": "images/s1_sar_00299_industrial.png",
+    "category": "industrial",
+    "question": "Are intense metallic specular reflections detected?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -3.36,
+      "mean_vh_db": -9.35,
+      "vv_vh_ratio_db": 5.99,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00382",
+    "image_path": "images/s1_sar_00382_wetland.png",
+    "category": "wetland",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "wetland and marshland",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -14.27,
+      "mean_vh_db": -20.92,
+      "vv_vh_ratio_db": 6.65,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00134",
+    "image_path": "images/s1_sar_00134_forest.png",
+    "category": "forest",
+    "question": "Is the cross-polarization VH backscatter elevated due to canopy depolarization?",
+    "answer": "yes",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -9.5,
+      "mean_vh_db": -14.0,
+      "vv_vh_ratio_db": 4.5,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00275",
+    "image_path": "images/s1_sar_00275_water.png",
+    "category": "water",
+    "question": "Are there dense buildings present in the low backscatter zone?",
+    "answer": "no",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -22.0,
+      "mean_vh_db": -29.0,
+      "vv_vh_ratio_db": 7.0,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00287",
+    "image_path": "images/s1_sar_00287_urban.png",
+    "category": "urban",
+    "question": "What is the dominant scattering mechanism?",
+    "answer": "double-bounce scattering",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -5.22,
+      "mean_vh_db": -11.74,
+      "vv_vh_ratio_db": 6.52,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  },
+  {
+    "sample_id": "s1_sar_00381",
+    "image_path": "images/s1_sar_00381_agriculture.png",
+    "category": "agriculture",
+    "question": "What is the primary land-cover type detected in this SAR radar scene?",
+    "answer": "agriculture and cultivated land",
+    "metadata": {
+      "sensor": "Sentinel-1 C-Band SAR",
+      "polarization": "Dual-Pol (VV + VH)",
+      "mean_vv_db": -11.01,
+      "mean_vh_db": -18.41,
+      "vv_vh_ratio_db": 7.4,
+      "frequency_band": "C-band (5.405 GHz)"
+    }
+  }
+]
