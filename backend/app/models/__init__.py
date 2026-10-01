@@ -14,12 +14,17 @@ from app.models.base import (
 )
 from app.models.registry import ModelNotFoundError, ModelRegistry, get_model_registry
 from app.models.vqa import RSVQA_BLIP2, RSVQA_Fallback
-from app.models.captioning import RSCaptioning_BLIP2, RSCaptioning_Fallback
+from app.models.captioning import (
+    RSAdaptiveDualCaptioner,
+    RSCaptioning_BLIP2,
+    RSCaptioning_Fallback,
+)
 from app.models.grounding import RSGrounding_GroundingDINO, RSGrounding_Fallback
 from app.models.change_detection import RSChangeDetection_BIT, RSChangeDetection_Fallback
 from app.models.change_vqa import RSChangeVQA_Model, RSChangeVQA_Fallback
 from app.models.optical_sar import RSOpticalSAR_Model, RSOpticalSAR_Fallback
 from app.models.florence2 import RSFlorence2_Unified
+from app.models.qwen2_vl import RSQwen2VL_Model
 
 
 def init_default_models():
@@ -33,7 +38,19 @@ def init_default_models():
         pass
     registry.register(RSVQA_Fallback())
 
-    # 2. Register Captioning adapters
+    # 2. Register Captioning Foundation & Adaptive Models (Whichever answers best)
+    try:
+        registry.register(RSAdaptiveDualCaptioner())
+    except Exception:
+        pass
+    try:
+        registry.register(RSQwen2VL_Model())
+    except Exception:
+        pass
+    try:
+        registry.register(RSFlorence2_Unified())
+    except Exception:
+        pass
     try:
         registry.register(RSCaptioning_BLIP2())
     except Exception:
@@ -68,12 +85,6 @@ def init_default_models():
         pass
     registry.register(RSOpticalSAR_Fallback())
 
-    # 7. Register Florence-2 Unified Foundation Model (Multi-Task: VQA, Captioning, Grounding)
-    try:
-        registry.register(RSFlorence2_Unified())
-    except Exception:
-        pass
-
 
 # Initialize default models on package import
 init_default_models()
@@ -92,6 +103,8 @@ __all__ = [
     "RSVQA_BLIP2",
     "RSVQA_Fallback",
     "RSFlorence2_Unified",
+    "RSQwen2VL_Model",
+    "RSAdaptiveDualCaptioner",
     "RSCaptioning_BLIP2",
     "RSCaptioning_Fallback",
     "RSGrounding_GroundingDINO",

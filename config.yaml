@@ -51,6 +51,24 @@ models:
     use_fp16: true
     max_new_tokens: 1024
 
+  qwen2_vl:
+    name: "qwen2-vl-2b-instruct"
+    model_id: "Qwen/Qwen2-VL-2B-Instruct"
+    unified_tasks:
+      - "captioning"
+      - "grounding"
+      - "vqa"
+    device: "auto"
+    max_new_tokens: 512
+
+  adaptive_captioner:
+    name: "adaptive-rs-captioner"
+    evaluator: "dual-vlm-arbiter"
+    models:
+      - "microsoft/Florence-2-base"
+      - "Qwen/Qwen2-VL-2B-Instruct"
+    device: "auto"
+
   vqa:
     name: "blip2-rs-vqa"
     base_model: "Salesforce/blip2-opt-2.7b"

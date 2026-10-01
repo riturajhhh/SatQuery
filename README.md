@@ -105,7 +105,9 @@ See [docs/architecture.md](docs/architecture.md) for detailed architecture docum
 ## 3. Features
 
 - **Agentic Task Routing** — automatic detection of VQA, captioning, grounding, change, or SAR analysis intent
-- **Unified Foundation VLM (Microsoft Florence-2)** — single 0.77B multi-task vision-language model for dense captioning, open-vocabulary grounding with `<loc_0>` to `<loc_999>` tokens, and VQA
+- **Adaptive Dual Foundation VLMs (Qwen2-VL-2B + Microsoft Florence-2)** — intelligent arbiter (`adaptive-rs-captioner`) querying both state-of-the-art vision-language models to select whichever outputs richer, non-repetitive descriptions with zero mode collapse:
+  - **Qwen2-VL-2B-Instruct**: Native dynamic resolution preserving native satellite aspect ratios, fine-grained multi-paragraph land-use narratives, and zero-shot VQA.
+  - **Microsoft Florence-2-base / large**: Granular `<MORE_DETAILED_CAPTION>` and sub-pixel spatial coordinate grounding (`<loc_0>` to `<loc_999>`).
 - **HSPD-Change Engine** — Hierarchical Structural-Phenological Decoupled change detection with Relative Radiometric Normalization (RRN), gradient tensor structural dissimilarity, and discrete building counter delta tracking
 - **AG-MFD Optical-SAR Engine** — Adaptive Geophysical Multi-Scale Frequency Decomposition with Lee local-variance speckle filter, Dynamic Spectral Cloud Index (DSCI), 3-class polarimetric backscatter decomposition, and Laplacian pyramid cross-fusion
 - **Multi-Modal Support** — optical, multispectral, SAR, and cross-modal image pairs
