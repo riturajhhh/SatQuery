@@ -10,29 +10,166 @@ import { useState } from 'react';
 export interface EnrichedDemoQuery {
   label: string;
   query: string;
-  category: 'single' | 'change' | 'optical_sar' | 'isro';
+  category: 'single' | 'sar' | 'optical_sar' | 'change' | 'isro';
   icon: string;
   requirement: string;
   badgeClass: string;
 }
 
 const DEMO_QUERIES: EnrichedDemoQuery[] = [
+  // --- Single Optical ---
   {
-    label: 'Land Cover Description',
-    query: 'Describe the land-cover, vegetation, and major human-made objects visible in this satellite scene.',
+    label: 'Crop Health & NDVI Vigor',
+    query: 'Calculate NDVI vegetation health, assess chlorophyll vigor, and classify crop growth stages across agricultural parcels.',
+    category: 'single',
+    icon: '🌿',
+    requirement: '1 Optical / Multispectral',
+    badgeClass: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+  },
+  {
+    label: 'Land Cover & Terrain Overview',
+    query: 'Describe the land-cover classes, natural vegetation density, and human settlements visible in this optical scene.',
     category: 'single',
     icon: '🌍',
     requirement: '1 Optical Image',
     badgeClass: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
   },
   {
+    label: 'Urban & Built-Up Footprint',
+    query: 'Identify built-up density, residential clusters, asphalt roads, and commercial building footprints.',
+    category: 'single',
+    icon: '🏙️',
+    requirement: '1 Optical Image',
+    badgeClass: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+  },
+  {
+    label: 'Water Bodies & Shorelines (NDWI)',
+    query: 'Delineate lakes, river channels, and canals using NDWI spectral absorption and water boundary extraction.',
+    category: 'single',
+    icon: '💧',
+    requirement: '1 Optical / Multispectral',
+    badgeClass: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+  },
+  {
     label: 'Runway & Aircraft Grounding',
-    query: 'Locate and pinpoint all airport runways and aircraft in the image with spatial bounding coordinates.',
+    query: 'Locate and pinpoint all airport runways, taxiways, and parked aircraft in the image with spatial bounding coordinates.',
     category: 'single',
     icon: '🎯',
     requirement: '1 Optical Image',
     badgeClass: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
   },
+  {
+    label: 'Forest Canopy & Clearings',
+    query: 'Analyze dense forest canopy cover, woodland boundaries, and identify signs of potential clearings or tree health stress.',
+    category: 'single',
+    icon: '🌲',
+    requirement: '1 Optical Image',
+    badgeClass: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
+  },
+
+  // --- Single SAR Radar ---
+  {
+    label: 'Calibrated Backscatter (dB)',
+    query: 'Compute calibrated VV and VH backscatter in decibels (dB), evaluate the polarimetric ratio, and analyze surface roughness.',
+    category: 'sar',
+    icon: '📡',
+    requirement: '1 SAR Image (Dual-Pol)',
+    badgeClass: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
+  },
+  {
+    label: 'All-Weather Flood Inundation',
+    query: 'Identify surface water bodies and flood inundation zones using specular radar scattering regardless of cloud cover.',
+    category: 'sar',
+    icon: '🌊',
+    requirement: '1 SAR Image',
+    badgeClass: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
+  },
+  {
+    label: 'Double-Bounce Urban Reflector',
+    query: 'Detect high-intensity double-bounce corner reflections from high-rise buildings and metallic infrastructure.',
+    category: 'sar',
+    icon: '🏢',
+    requirement: '1 SAR Image',
+    badgeClass: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
+  },
+  {
+    label: 'Maritime & Vessel Detection',
+    query: 'Detect maritime vessels, ships, and offshore structures via radar dielectric contrast against dark open sea.',
+    category: 'sar',
+    icon: '🚢',
+    requirement: '1 SAR Image',
+    badgeClass: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
+  },
+  {
+    label: 'Volumetric Canopy Scattering',
+    query: 'Analyze cross-polarization VH return to assess volumetric vegetation scattering and forest biomass density.',
+    category: 'sar',
+    icon: '🌳',
+    requirement: '1 SAR Image (Dual-Pol)',
+    badgeClass: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
+  },
+
+  // --- Optical + SAR Cross-Modal Fusion ---
+  {
+    label: 'Cloud-Piercing Ground Truth',
+    query: 'Pierce optical cloud cover with SAR radar backscatter to uncover sub-cloud ground truth and water bodies.',
+    category: 'optical_sar',
+    icon: '⚡',
+    requirement: 'Optical + SAR Pair',
+    badgeClass: 'text-sky-400 bg-sky-500/10 border-sky-500/30',
+  },
+  {
+    label: 'Urban Spectral-Geometric Fusion',
+    query: 'Fuse optical spectral reflectance with SAR double-bounce geometry to map urban building envelopes and road networks.',
+    category: 'optical_sar',
+    icon: '🏙️',
+    requirement: 'Optical + SAR Pair',
+    badgeClass: 'text-sky-400 bg-sky-500/10 border-sky-500/30',
+  },
+  {
+    label: 'Wetlands & Sub-Canopy Water',
+    query: 'Combine optical vegetation greenness with radar sub-canopy penetration to map wetlands and flooded agricultural fields.',
+    category: 'optical_sar',
+    icon: '🌾',
+    requirement: 'Optical + SAR Pair',
+    badgeClass: 'text-sky-400 bg-sky-500/10 border-sky-500/30',
+  },
+  {
+    label: 'All-Weather Terrain Verification',
+    query: 'Reconcile optical multispectral observations with microwave radar signatures for verified terrain intelligence.',
+    category: 'optical_sar',
+    icon: '🛰️',
+    requirement: 'Optical + SAR Pair',
+    badgeClass: 'text-sky-400 bg-sky-500/10 border-sky-500/30',
+  },
+
+  // --- Bi-Temporal Change Detection ---
+  {
+    label: 'Urban Expansion & Construction',
+    query: 'Has the built-up area increased, decreased, or remained unchanged between the baseline and follow-up scenes?',
+    category: 'change',
+    icon: '🏗️',
+    requirement: '2 Temporal Images',
+    badgeClass: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
+  },
+  {
+    label: 'Surface Shift & Change Map',
+    query: 'What changed between these two dates, and where did the change occur?',
+    category: 'change',
+    icon: '🔄',
+    requirement: '2 Temporal Images',
+    badgeClass: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
+  },
+  {
+    label: 'Quantify Change Footprint',
+    query: 'Measure and quantify the total area and hectares of building construction and land clearance between these dates.',
+    category: 'change',
+    icon: '📊',
+    requirement: '2 Temporal Images',
+    badgeClass: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
+  },
+
+  // --- ISRO Missions ---
   {
     label: '🇮🇳 Cartosat-2S High-Res',
     query: 'Analyze high-resolution 0.65m features to detect built structures and road networks in Cartosat-2S imagery.',
@@ -50,55 +187,24 @@ const DEMO_QUERIES: EnrichedDemoQuery[] = [
     badgeClass: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
   },
   {
-    label: 'Surface Shift Detection',
-    query: 'What changed between these two dates, and where did the change occur?',
-    category: 'change',
-    icon: '🔄',
-    requirement: '2 Temporal Images',
-    badgeClass: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
-  },
-  {
-    label: 'Urban Built-up Change',
-    query: 'Has the built-up area increased, decreased, or remained unchanged between the baseline and follow-up scenes?',
-    category: 'change',
-    icon: '🏗️',
-    requirement: '2 Temporal Images',
-    badgeClass: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
-  },
-  {
-    label: 'Optical + SAR Fusion',
+    label: '🇮🇳 Cartosat + RISAT Fusion',
     query: 'Use the Cartosat optical and RISAT SAR images together to identify built-up and water-covered regions through cloud layers.',
-    category: 'optical_sar',
+    category: 'isro',
     icon: '⚡',
-    requirement: 'Optical + SAR Pair',
-    badgeClass: 'text-sky-400 bg-sky-500/10 border-sky-500/30',
-  },
-  {
-    label: 'SAR Cloud Penetration',
-    query: 'Pierce cloud cover with SAR radar backscatter to uncover sub-cloud structures and water bodies.',
-    category: 'optical_sar',
-    icon: '🛰️',
-    requirement: 'Optical + SAR Pair',
-    badgeClass: 'text-sky-400 bg-sky-500/10 border-sky-500/30',
-  },
-  {
-    label: 'Quantify Change Footprint',
-    query: 'Measure and quantify the total area and hectares of building construction and land clearance between these dates.',
-    category: 'change',
-    icon: '📊',
-    requirement: '2 Temporal Images',
-    badgeClass: 'text-rose-400 bg-rose-500/10 border-rose-500/30',
+    requirement: 'Cartosat + RISAT Pair',
+    badgeClass: 'text-orange-400 bg-orange-500/10 border-orange-500/30',
   },
 ];
 
-type CategoryFilter = 'all' | 'single' | 'change' | 'optical_sar' | 'isro';
+type CategoryFilter = 'all' | 'single' | 'sar' | 'optical_sar' | 'change' | 'isro';
 
 const CATEGORY_TABS: { id: CategoryFilter; label: string }[] = [
   { id: 'all', label: 'All Queries' },
-  { id: 'single', label: 'Single Optical' },
-  { id: 'change', label: 'Bi-Temporal' },
-  { id: 'optical_sar', label: 'Optical + SAR' },
-  { id: 'isro', label: '🇮🇳 ISRO / SAC' },
+  { id: 'single', label: '🌿 Optical' },
+  { id: 'sar', label: '📡 SAR' },
+  { id: 'optical_sar', label: '⚡ Opt+SAR' },
+  { id: 'change', label: '🔄 Bi-Temporal' },
+  { id: 'isro', label: '🇮🇳 ISRO' },
 ];
 
 interface QueryInputProps {
@@ -131,6 +237,8 @@ export default function QueryInput({ onSubmit, disabled = false, isLoading = fal
       setActiveTip('💡 Tip: Ensure "Bi-Temporal" image mode is selected above with Before & After dates loaded.');
     } else if (demoQuery.category === 'optical_sar') {
       setActiveTip('💡 Tip: Ensure "Optical + SAR" mode is selected above with both optical and radar images loaded.');
+    } else if (demoQuery.category === 'sar') {
+      setActiveTip('💡 Tip: Load a SAR radar image (e.g., Sentinel-1 or RISAT-1A) to analyze calibrated backscatter, polarimetry, and double bounce.');
     } else {
       setActiveTip(null);
     }

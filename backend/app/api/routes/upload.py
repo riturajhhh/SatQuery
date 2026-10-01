@@ -292,9 +292,10 @@ def get_sample_pairs():
                     }
                 ],
                 "recommended_queries": [
-                    "Perform polarimetric radar decomposition to identify urban double-bounce structures and surface water.",
-                    "What is the calibrated VV and VH backscatter in decibels, and what land-cover does it indicate?",
-                    "Identify all vessels and double-bounce high-intensity structures in this SAR radar scene.",
+                    "Compute calibrated VV and VH backscatter in decibels (dB), evaluate the polarimetric ratio, and analyze surface roughness.",
+                    "Identify surface water bodies and flood inundation zones using specular radar scattering regardless of cloud cover.",
+                    "Detect high-intensity double-bounce corner reflections from high-rise buildings and metallic infrastructure.",
+                    "Detect maritime vessels, ships, and offshore structures via radar dielectric contrast against dark open sea.",
                 ],
             },
             {
@@ -364,9 +365,10 @@ def get_sample_pairs():
                     },
                 ],
                 "recommended_queries": [
-                    "Use optical and SAR fusion to identify built-up and water-covered regions through cloud layers.",
-                    "Analyze C-band SAR backscatter anomalies to identify water bodies and double-bounce structures regardless of clouds.",
-                    "Pierce cloud cover and extract sub-cloud structural footprints.",
+                    "Pierce optical cloud cover with SAR radar backscatter to uncover sub-cloud ground truth and water bodies.",
+                    "Fuse optical spectral reflectance with SAR double-bounce geometry to map urban building envelopes and road networks.",
+                    "Combine optical vegetation greenness with radar sub-canopy penetration to map wetlands and flooded agricultural fields.",
+                    "Reconcile optical multispectral observations with microwave radar signatures for verified terrain intelligence.",
                 ],
             },
             {
@@ -382,8 +384,10 @@ def get_sample_pairs():
                     },
                 ],
                 "recommended_queries": [
-                    "Describe the land-cover, vegetation, and major human-made objects visible in this satellite scene.",
-                    "Locate and pinpoint all airport runways and aircraft in the image with spatial bounding coordinates.",
+                    "Calculate NDVI vegetation health, assess chlorophyll vigor, and classify crop growth stages across agricultural parcels.",
+                    "Describe the land-cover classes, natural vegetation density, and human settlements visible in this optical scene.",
+                    "Identify built-up density, residential clusters, asphalt roads, and commercial building footprints.",
+                    "Delineate lakes, river channels, and canals using NDWI spectral absorption and water boundary extraction.",
                 ],
             },
         ]

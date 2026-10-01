@@ -143,6 +143,18 @@ models:
       architecture: "feature_concat"
       device: "cpu"
 
+  sar_specialist:
+    name: "sar-sentinel1-specialist"
+    architecture: "Sentinel1SARNet"
+    weights_path: "./models/optical_sar/sar_sentinel1_adapter.pt"
+    device: "auto"
+
+  optical_specialist:
+    name: "optical-sentinel2-specialist"
+    architecture: "Sentinel2OpticalNet"
+    weights_path: "./models/optical/optical_sentinel2_adapter.pt"
+    device: "auto"
+
 # ---- Agent ----
 agent:
   max_retries: 3

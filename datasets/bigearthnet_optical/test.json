@@ -1,0 +1,3152 @@
+[
+  {
+    "id": 294,
+    "sample_code": "S2A_MSIL2A_patch_0294_Pasture_and_Meadow",
+    "class_id": 4,
+    "class_name": "Pasture & Meadow",
+    "preview_image": "S2A_MSIL2A_patch_0294_Pasture_and_Meadow_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0294_Pasture_and_Meadow_spectral.npy",
+    "ndvi": 0.875,
+    "ndwi": -0.7016,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Pasture & Meadow"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.88."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.70)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Pasture & Meadow)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 297,
+    "sample_code": "S2A_MSIL2A_patch_0297_Pasture_and_Meadow",
+    "class_id": 4,
+    "class_name": "Pasture & Meadow",
+    "preview_image": "S2A_MSIL2A_patch_0297_Pasture_and_Meadow_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0297_Pasture_and_Meadow_spectral.npy",
+    "ndvi": 0.7533,
+    "ndwi": -0.7721,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Pasture & Meadow"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.75."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.77)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Pasture & Meadow)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 553,
+    "sample_code": "S2A_MSIL2A_patch_0553_Sea_and_Open_Lake",
+    "class_id": 9,
+    "class_name": "Sea & Open Lake",
+    "preview_image": "S2A_MSIL2A_patch_0553_Sea_and_Open_Lake_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0553_Sea_and_Open_Lake_spectral.npy",
+    "ndvi": -0.7753,
+    "ndwi": 0.9382,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Sea & Open Lake"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.78."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.94)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Sea & Open Lake)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 332,
+    "sample_code": "S2A_MSIL2A_patch_0332_Urban_Residential",
+    "class_id": 5,
+    "class_name": "Urban Residential",
+    "preview_image": "S2A_MSIL2A_patch_0332_Urban_Residential_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0332_Urban_Residential_spectral.npy",
+    "ndvi": 0.0026,
+    "ndwi": -0.1376,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Urban Residential"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.00."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.14)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Urban Residential."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 548,
+    "sample_code": "S2A_MSIL2A_patch_0548_Sea_and_Open_Lake",
+    "class_id": 9,
+    "class_name": "Sea & Open Lake",
+    "preview_image": "S2A_MSIL2A_patch_0548_Sea_and_Open_Lake_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0548_Sea_and_Open_Lake_spectral.npy",
+    "ndvi": -0.8868,
+    "ndwi": 0.9552,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Sea & Open Lake"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.89."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.96)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Sea & Open Lake)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 288,
+    "sample_code": "S2A_MSIL2A_patch_0288_Pasture_and_Meadow",
+    "class_id": 4,
+    "class_name": "Pasture & Meadow",
+    "preview_image": "S2A_MSIL2A_patch_0288_Pasture_and_Meadow_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0288_Pasture_and_Meadow_spectral.npy",
+    "ndvi": 0.8447,
+    "ndwi": -0.7445,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Pasture & Meadow"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.84."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.74)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Pasture & Meadow)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 545,
+    "sample_code": "S2A_MSIL2A_patch_0545_Sea_and_Open_Lake",
+    "class_id": 9,
+    "class_name": "Sea & Open Lake",
+    "preview_image": "S2A_MSIL2A_patch_0545_Sea_and_Open_Lake_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0545_Sea_and_Open_Lake_spectral.npy",
+    "ndvi": -0.8992,
+    "ndwi": 0.9549,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Sea & Open Lake"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.90."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.95)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Sea & Open Lake)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 61,
+    "sample_code": "S2A_MSIL2A_patch_0061_Annual_Agriculture",
+    "class_id": 1,
+    "class_name": "Annual Agriculture",
+    "preview_image": "S2A_MSIL2A_patch_0061_Annual_Agriculture_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0061_Annual_Agriculture_spectral.npy",
+    "ndvi": 0.7381,
+    "ndwi": -0.6441,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Annual Agriculture"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.74."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.64)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Annual Agriculture)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 520,
+    "sample_code": "S2A_MSIL2A_patch_0520_Inland_River___Canal",
+    "class_id": 8,
+    "class_name": "Inland River / Canal",
+    "preview_image": "S2A_MSIL2A_patch_0520_Inland_River___Canal_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0520_Inland_River___Canal_spectral.npy",
+    "ndvi": -0.6995,
+    "ndwi": 0.8081,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Inland River / Canal"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.70."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.81)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Inland River / Canal)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 212,
+    "sample_code": "S2A_MSIL2A_patch_0212_Herbaceous_Vegetation",
+    "class_id": 3,
+    "class_name": "Herbaceous Vegetation",
+    "preview_image": "S2A_MSIL2A_patch_0212_Herbaceous_Vegetation_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0212_Herbaceous_Vegetation_spectral.npy",
+    "ndvi": 0.5761,
+    "ndwi": -0.3802,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Herbaceous Vegetation"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Moderate vegetation cover with an estimated mean NDVI of 0.58."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.38)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Herbaceous Vegetation)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 143,
+    "sample_code": "S2A_MSIL2A_patch_0143_Permanent_Crops",
+    "class_id": 2,
+    "class_name": "Permanent Crops",
+    "preview_image": "S2A_MSIL2A_patch_0143_Permanent_Crops_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0143_Permanent_Crops_spectral.npy",
+    "ndvi": 0.7054,
+    "ndwi": -0.6108,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Permanent Crops"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.71."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.61)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Permanent Crops)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 170,
+    "sample_code": "S2A_MSIL2A_patch_0170_Permanent_Crops",
+    "class_id": 2,
+    "class_name": "Permanent Crops",
+    "preview_image": "S2A_MSIL2A_patch_0170_Permanent_Crops_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0170_Permanent_Crops_spectral.npy",
+    "ndvi": 0.7865,
+    "ndwi": -0.5527,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Permanent Crops"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.79."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.55)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Permanent Crops)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 439,
+    "sample_code": "S2A_MSIL2A_patch_0439_Highway_and_Transport",
+    "class_id": 7,
+    "class_name": "Highway & Transport",
+    "preview_image": "S2A_MSIL2A_patch_0439_Highway_and_Transport_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0439_Highway_and_Transport_spectral.npy",
+    "ndvi": 0.2048,
+    "ndwi": -0.2055,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Highway & Transport"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.20."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.21)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Highway & Transport."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 360,
+    "sample_code": "S2A_MSIL2A_patch_0360_Urban_Residential",
+    "class_id": 5,
+    "class_name": "Urban Residential",
+    "preview_image": "S2A_MSIL2A_patch_0360_Urban_Residential_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0360_Urban_Residential_spectral.npy",
+    "ndvi": 0.1304,
+    "ndwi": -0.3306,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Urban Residential"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.13."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.33)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Urban Residential."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 215,
+    "sample_code": "S2A_MSIL2A_patch_0215_Herbaceous_Vegetation",
+    "class_id": 3,
+    "class_name": "Herbaceous Vegetation",
+    "preview_image": "S2A_MSIL2A_patch_0215_Herbaceous_Vegetation_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0215_Herbaceous_Vegetation_spectral.npy",
+    "ndvi": 0.7037,
+    "ndwi": -0.5399,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Herbaceous Vegetation"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.70."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.54)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Herbaceous Vegetation)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 243,
+    "sample_code": "S2A_MSIL2A_patch_0243_Pasture_and_Meadow",
+    "class_id": 4,
+    "class_name": "Pasture & Meadow",
+    "preview_image": "S2A_MSIL2A_patch_0243_Pasture_and_Meadow_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0243_Pasture_and_Meadow_spectral.npy",
+    "ndvi": 0.7901,
+    "ndwi": -0.485,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Pasture & Meadow"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.79."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.48)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Pasture & Meadow)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 596,
+    "sample_code": "S2A_MSIL2A_patch_0596_Sea_and_Open_Lake",
+    "class_id": 9,
+    "class_name": "Sea & Open Lake",
+    "preview_image": "S2A_MSIL2A_patch_0596_Sea_and_Open_Lake_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0596_Sea_and_Open_Lake_spectral.npy",
+    "ndvi": -0.851,
+    "ndwi": 0.8958,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Sea & Open Lake"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.85."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.90)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Sea & Open Lake)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 450,
+    "sample_code": "S2A_MSIL2A_patch_0450_Highway_and_Transport",
+    "class_id": 7,
+    "class_name": "Highway & Transport",
+    "preview_image": "S2A_MSIL2A_patch_0450_Highway_and_Transport_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0450_Highway_and_Transport_spectral.npy",
+    "ndvi": 0.1251,
+    "ndwi": -0.0701,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Highway & Transport"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.13."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.07)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Highway & Transport."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 90,
+    "sample_code": "S2A_MSIL2A_patch_0090_Annual_Agriculture",
+    "class_id": 1,
+    "class_name": "Annual Agriculture",
+    "preview_image": "S2A_MSIL2A_patch_0090_Annual_Agriculture_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0090_Annual_Agriculture_spectral.npy",
+    "ndvi": 0.7725,
+    "ndwi": -0.6467,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Annual Agriculture"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.77."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.65)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Annual Agriculture)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 357,
+    "sample_code": "S2A_MSIL2A_patch_0357_Urban_Residential",
+    "class_id": 5,
+    "class_name": "Urban Residential",
+    "preview_image": "S2A_MSIL2A_patch_0357_Urban_Residential_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0357_Urban_Residential_spectral.npy",
+    "ndvi": 0.1432,
+    "ndwi": -0.2503,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Urban Residential"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.14."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.25)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Urban Residential."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 270,
+    "sample_code": "S2A_MSIL2A_patch_0270_Pasture_and_Meadow",
+    "class_id": 4,
+    "class_name": "Pasture & Meadow",
+    "preview_image": "S2A_MSIL2A_patch_0270_Pasture_and_Meadow_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0270_Pasture_and_Meadow_spectral.npy",
+    "ndvi": 0.7182,
+    "ndwi": -0.5433,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Pasture & Meadow"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.72."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.54)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Pasture & Meadow)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 461,
+    "sample_code": "S2A_MSIL2A_patch_0461_Highway_and_Transport",
+    "class_id": 7,
+    "class_name": "Highway & Transport",
+    "preview_image": "S2A_MSIL2A_patch_0461_Highway_and_Transport_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0461_Highway_and_Transport_spectral.npy",
+    "ndvi": -0.0126,
+    "ndwi": 0.0753,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Highway & Transport"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.01."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: 0.08)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Highway & Transport."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 552,
+    "sample_code": "S2A_MSIL2A_patch_0552_Sea_and_Open_Lake",
+    "class_id": 9,
+    "class_name": "Sea & Open Lake",
+    "preview_image": "S2A_MSIL2A_patch_0552_Sea_and_Open_Lake_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0552_Sea_and_Open_Lake_spectral.npy",
+    "ndvi": -0.9091,
+    "ndwi": 0.9376,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Sea & Open Lake"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.91."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.94)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Sea & Open Lake)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 600,
+    "sample_code": "S2A_MSIL2A_patch_0600_Sea_and_Open_Lake",
+    "class_id": 9,
+    "class_name": "Sea & Open Lake",
+    "preview_image": "S2A_MSIL2A_patch_0600_Sea_and_Open_Lake_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0600_Sea_and_Open_Lake_spectral.npy",
+    "ndvi": -0.8817,
+    "ndwi": 0.9226,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Sea & Open Lake"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.88."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.92)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Sea & Open Lake)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 254,
+    "sample_code": "S2A_MSIL2A_patch_0254_Pasture_and_Meadow",
+    "class_id": 4,
+    "class_name": "Pasture & Meadow",
+    "preview_image": "S2A_MSIL2A_patch_0254_Pasture_and_Meadow_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0254_Pasture_and_Meadow_spectral.npy",
+    "ndvi": 0.7109,
+    "ndwi": -0.7117,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Pasture & Meadow"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.71."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.71)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Pasture & Meadow)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 105,
+    "sample_code": "S2A_MSIL2A_patch_0105_Annual_Agriculture",
+    "class_id": 1,
+    "class_name": "Annual Agriculture",
+    "preview_image": "S2A_MSIL2A_patch_0105_Annual_Agriculture_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0105_Annual_Agriculture_spectral.npy",
+    "ndvi": 0.5599,
+    "ndwi": -0.5353,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Annual Agriculture"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Moderate vegetation cover with an estimated mean NDVI of 0.56."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.54)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Annual Agriculture)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 436,
+    "sample_code": "S2A_MSIL2A_patch_0436_Highway_and_Transport",
+    "class_id": 7,
+    "class_name": "Highway & Transport",
+    "preview_image": "S2A_MSIL2A_patch_0436_Highway_and_Transport_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0436_Highway_and_Transport_spectral.npy",
+    "ndvi": 0.0988,
+    "ndwi": -0.0692,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Highway & Transport"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.10."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.07)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Highway & Transport."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 224,
+    "sample_code": "S2A_MSIL2A_patch_0224_Herbaceous_Vegetation",
+    "class_id": 3,
+    "class_name": "Herbaceous Vegetation",
+    "preview_image": "S2A_MSIL2A_patch_0224_Herbaceous_Vegetation_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0224_Herbaceous_Vegetation_spectral.npy",
+    "ndvi": 0.6393,
+    "ndwi": -0.3998,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Herbaceous Vegetation"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.64."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.40)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Herbaceous Vegetation)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 452,
+    "sample_code": "S2A_MSIL2A_patch_0452_Highway_and_Transport",
+    "class_id": 7,
+    "class_name": "Highway & Transport",
+    "preview_image": "S2A_MSIL2A_patch_0452_Highway_and_Transport_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0452_Highway_and_Transport_spectral.npy",
+    "ndvi": -0.2293,
+    "ndwi": -0.0138,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Highway & Transport"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.23."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: -0.01)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Highway & Transport."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 43,
+    "sample_code": "S2A_MSIL2A_patch_0043_Dense_Forest",
+    "class_id": 0,
+    "class_name": "Dense Forest",
+    "preview_image": "S2A_MSIL2A_patch_0043_Dense_Forest_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0043_Dense_Forest_spectral.npy",
+    "ndvi": 0.8123,
+    "ndwi": -0.8222,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Dense Forest"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.81."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.82)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Dense Forest)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 376,
+    "sample_code": "S2A_MSIL2A_patch_0376_Industrial_and_Commercial",
+    "class_id": 6,
+    "class_name": "Industrial & Commercial",
+    "preview_image": "S2A_MSIL2A_patch_0376_Industrial_and_Commercial_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0376_Industrial_and_Commercial_spectral.npy",
+    "ndvi": 0.1584,
+    "ndwi": 0.0368,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Industrial & Commercial"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.16."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: 0.04)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Industrial & Commercial."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 275,
+    "sample_code": "S2A_MSIL2A_patch_0275_Pasture_and_Meadow",
+    "class_id": 4,
+    "class_name": "Pasture & Meadow",
+    "preview_image": "S2A_MSIL2A_patch_0275_Pasture_and_Meadow_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0275_Pasture_and_Meadow_spectral.npy",
+    "ndvi": 0.7747,
+    "ndwi": -0.637,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Pasture & Meadow"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.77."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.64)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Pasture & Meadow)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 117,
+    "sample_code": "S2A_MSIL2A_patch_0117_Annual_Agriculture",
+    "class_id": 1,
+    "class_name": "Annual Agriculture",
+    "preview_image": "S2A_MSIL2A_patch_0117_Annual_Agriculture_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0117_Annual_Agriculture_spectral.npy",
+    "ndvi": 0.7706,
+    "ndwi": -0.707,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Annual Agriculture"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.77."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.71)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Annual Agriculture)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 116,
+    "sample_code": "S2A_MSIL2A_patch_0116_Annual_Agriculture",
+    "class_id": 1,
+    "class_name": "Annual Agriculture",
+    "preview_image": "S2A_MSIL2A_patch_0116_Annual_Agriculture_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0116_Annual_Agriculture_spectral.npy",
+    "ndvi": 0.7237,
+    "ndwi": -0.6251,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Annual Agriculture"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.72."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.63)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Annual Agriculture)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 589,
+    "sample_code": "S2A_MSIL2A_patch_0589_Sea_and_Open_Lake",
+    "class_id": 9,
+    "class_name": "Sea & Open Lake",
+    "preview_image": "S2A_MSIL2A_patch_0589_Sea_and_Open_Lake_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0589_Sea_and_Open_Lake_spectral.npy",
+    "ndvi": -0.8294,
+    "ndwi": 0.9243,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Sea & Open Lake"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.83."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.92)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Sea & Open Lake)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 508,
+    "sample_code": "S2A_MSIL2A_patch_0508_Inland_River___Canal",
+    "class_id": 8,
+    "class_name": "Inland River / Canal",
+    "preview_image": "S2A_MSIL2A_patch_0508_Inland_River___Canal_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0508_Inland_River___Canal_spectral.npy",
+    "ndvi": -0.858,
+    "ndwi": 0.9129,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Inland River / Canal"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.86."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.91)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Inland River / Canal)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 469,
+    "sample_code": "S2A_MSIL2A_patch_0469_Highway_and_Transport",
+    "class_id": 7,
+    "class_name": "Highway & Transport",
+    "preview_image": "S2A_MSIL2A_patch_0469_Highway_and_Transport_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0469_Highway_and_Transport_spectral.npy",
+    "ndvi": 0.2022,
+    "ndwi": -0.0306,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Highway & Transport"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.20."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.03)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Highway & Transport."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 173,
+    "sample_code": "S2A_MSIL2A_patch_0173_Permanent_Crops",
+    "class_id": 2,
+    "class_name": "Permanent Crops",
+    "preview_image": "S2A_MSIL2A_patch_0173_Permanent_Crops_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0173_Permanent_Crops_spectral.npy",
+    "ndvi": 0.7084,
+    "ndwi": -0.6345,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Permanent Crops"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.71."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.63)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Permanent Crops)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 576,
+    "sample_code": "S2A_MSIL2A_patch_0576_Sea_and_Open_Lake",
+    "class_id": 9,
+    "class_name": "Sea & Open Lake",
+    "preview_image": "S2A_MSIL2A_patch_0576_Sea_and_Open_Lake_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0576_Sea_and_Open_Lake_spectral.npy",
+    "ndvi": -0.8533,
+    "ndwi": 0.907,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Sea & Open Lake"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.85."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.91)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Sea & Open Lake)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 231,
+    "sample_code": "S2A_MSIL2A_patch_0231_Herbaceous_Vegetation",
+    "class_id": 3,
+    "class_name": "Herbaceous Vegetation",
+    "preview_image": "S2A_MSIL2A_patch_0231_Herbaceous_Vegetation_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0231_Herbaceous_Vegetation_spectral.npy",
+    "ndvi": 0.6122,
+    "ndwi": -0.5038,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Herbaceous Vegetation"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.61."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.50)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Herbaceous Vegetation)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 282,
+    "sample_code": "S2A_MSIL2A_patch_0282_Pasture_and_Meadow",
+    "class_id": 4,
+    "class_name": "Pasture & Meadow",
+    "preview_image": "S2A_MSIL2A_patch_0282_Pasture_and_Meadow_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0282_Pasture_and_Meadow_spectral.npy",
+    "ndvi": 0.7496,
+    "ndwi": -0.768,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Pasture & Meadow"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.75."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.77)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Pasture & Meadow)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 34,
+    "sample_code": "S2A_MSIL2A_patch_0034_Dense_Forest",
+    "class_id": 0,
+    "class_name": "Dense Forest",
+    "preview_image": "S2A_MSIL2A_patch_0034_Dense_Forest_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0034_Dense_Forest_spectral.npy",
+    "ndvi": 0.9039,
+    "ndwi": -0.7034,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Dense Forest"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.90."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.70)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Dense Forest)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 300,
+    "sample_code": "S2A_MSIL2A_patch_0300_Pasture_and_Meadow",
+    "class_id": 4,
+    "class_name": "Pasture & Meadow",
+    "preview_image": "S2A_MSIL2A_patch_0300_Pasture_and_Meadow_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0300_Pasture_and_Meadow_spectral.npy",
+    "ndvi": 0.6682,
+    "ndwi": -0.5068,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Pasture & Meadow"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.67."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.51)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Pasture & Meadow)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 226,
+    "sample_code": "S2A_MSIL2A_patch_0226_Herbaceous_Vegetation",
+    "class_id": 3,
+    "class_name": "Herbaceous Vegetation",
+    "preview_image": "S2A_MSIL2A_patch_0226_Herbaceous_Vegetation_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0226_Herbaceous_Vegetation_spectral.npy",
+    "ndvi": 0.4992,
+    "ndwi": -0.5753,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Herbaceous Vegetation"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Moderate vegetation cover with an estimated mean NDVI of 0.50."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.58)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Herbaceous Vegetation)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 32,
+    "sample_code": "S2A_MSIL2A_patch_0032_Dense_Forest",
+    "class_id": 0,
+    "class_name": "Dense Forest",
+    "preview_image": "S2A_MSIL2A_patch_0032_Dense_Forest_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0032_Dense_Forest_spectral.npy",
+    "ndvi": 0.926,
+    "ndwi": -0.8201,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Dense Forest"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.93."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.82)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Dense Forest)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 85,
+    "sample_code": "S2A_MSIL2A_patch_0085_Annual_Agriculture",
+    "class_id": 1,
+    "class_name": "Annual Agriculture",
+    "preview_image": "S2A_MSIL2A_patch_0085_Annual_Agriculture_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0085_Annual_Agriculture_spectral.npy",
+    "ndvi": 0.6809,
+    "ndwi": -0.5056,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Annual Agriculture"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.68."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.51)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Annual Agriculture)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 172,
+    "sample_code": "S2A_MSIL2A_patch_0172_Permanent_Crops",
+    "class_id": 2,
+    "class_name": "Permanent Crops",
+    "preview_image": "S2A_MSIL2A_patch_0172_Permanent_Crops_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0172_Permanent_Crops_spectral.npy",
+    "ndvi": 0.7103,
+    "ndwi": -0.6587,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Permanent Crops"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.71."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.66)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Permanent Crops)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 501,
+    "sample_code": "S2A_MSIL2A_patch_0501_Inland_River___Canal",
+    "class_id": 8,
+    "class_name": "Inland River / Canal",
+    "preview_image": "S2A_MSIL2A_patch_0501_Inland_River___Canal_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0501_Inland_River___Canal_spectral.npy",
+    "ndvi": -0.8304,
+    "ndwi": 0.9348,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Inland River / Canal"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.83."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.93)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Inland River / Canal)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 455,
+    "sample_code": "S2A_MSIL2A_patch_0455_Highway_and_Transport",
+    "class_id": 7,
+    "class_name": "Highway & Transport",
+    "preview_image": "S2A_MSIL2A_patch_0455_Highway_and_Transport_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0455_Highway_and_Transport_spectral.npy",
+    "ndvi": -0.2301,
+    "ndwi": 0.122,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Highway & Transport"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.23."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.12)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Highway & Transport."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 426,
+    "sample_code": "S2A_MSIL2A_patch_0426_Highway_and_Transport",
+    "class_id": 7,
+    "class_name": "Highway & Transport",
+    "preview_image": "S2A_MSIL2A_patch_0426_Highway_and_Transport_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0426_Highway_and_Transport_spectral.npy",
+    "ndvi": 0.0832,
+    "ndwi": -0.0749,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Highway & Transport"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.08."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.07)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Highway & Transport."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 504,
+    "sample_code": "S2A_MSIL2A_patch_0504_Inland_River___Canal",
+    "class_id": 8,
+    "class_name": "Inland River / Canal",
+    "preview_image": "S2A_MSIL2A_patch_0504_Inland_River___Canal_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0504_Inland_River___Canal_spectral.npy",
+    "ndvi": -0.8931,
+    "ndwi": 0.9335,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Inland River / Canal"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.89."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.93)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Inland River / Canal)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 419,
+    "sample_code": "S2A_MSIL2A_patch_0419_Industrial_and_Commercial",
+    "class_id": 6,
+    "class_name": "Industrial & Commercial",
+    "preview_image": "S2A_MSIL2A_patch_0419_Industrial_and_Commercial_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0419_Industrial_and_Commercial_spectral.npy",
+    "ndvi": 0.0202,
+    "ndwi": 0.0542,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Industrial & Commercial"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.02."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: 0.05)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Industrial & Commercial."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 507,
+    "sample_code": "S2A_MSIL2A_patch_0507_Inland_River___Canal",
+    "class_id": 8,
+    "class_name": "Inland River / Canal",
+    "preview_image": "S2A_MSIL2A_patch_0507_Inland_River___Canal_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0507_Inland_River___Canal_spectral.npy",
+    "ndvi": -0.7632,
+    "ndwi": 0.8892,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Inland River / Canal"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.76."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.89)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Inland River / Canal)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 518,
+    "sample_code": "S2A_MSIL2A_patch_0518_Inland_River___Canal",
+    "class_id": 8,
+    "class_name": "Inland River / Canal",
+    "preview_image": "S2A_MSIL2A_patch_0518_Inland_River___Canal_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0518_Inland_River___Canal_spectral.npy",
+    "ndvi": -0.7674,
+    "ndwi": 0.9033,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Inland River / Canal"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.77."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.90)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Inland River / Canal)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 394,
+    "sample_code": "S2A_MSIL2A_patch_0394_Industrial_and_Commercial",
+    "class_id": 6,
+    "class_name": "Industrial & Commercial",
+    "preview_image": "S2A_MSIL2A_patch_0394_Industrial_and_Commercial_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0394_Industrial_and_Commercial_spectral.npy",
+    "ndvi": 0.1607,
+    "ndwi": -0.1024,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Industrial & Commercial"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.16."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.10)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Industrial & Commercial."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 200,
+    "sample_code": "S2A_MSIL2A_patch_0200_Herbaceous_Vegetation",
+    "class_id": 3,
+    "class_name": "Herbaceous Vegetation",
+    "preview_image": "S2A_MSIL2A_patch_0200_Herbaceous_Vegetation_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0200_Herbaceous_Vegetation_spectral.npy",
+    "ndvi": 0.6273,
+    "ndwi": -0.4718,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Herbaceous Vegetation"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.63."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.47)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Herbaceous Vegetation)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 140,
+    "sample_code": "S2A_MSIL2A_patch_0140_Permanent_Crops",
+    "class_id": 2,
+    "class_name": "Permanent Crops",
+    "preview_image": "S2A_MSIL2A_patch_0140_Permanent_Crops_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0140_Permanent_Crops_spectral.npy",
+    "ndvi": 0.6797,
+    "ndwi": -0.5703,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Permanent Crops"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.68."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.57)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Permanent Crops)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 497,
+    "sample_code": "S2A_MSIL2A_patch_0497_Inland_River___Canal",
+    "class_id": 8,
+    "class_name": "Inland River / Canal",
+    "preview_image": "S2A_MSIL2A_patch_0497_Inland_River___Canal_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0497_Inland_River___Canal_spectral.npy",
+    "ndvi": -0.8727,
+    "ndwi": 0.9445,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Inland River / Canal"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.87."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.94)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Inland River / Canal)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 10,
+    "sample_code": "S2A_MSIL2A_patch_0010_Dense_Forest",
+    "class_id": 0,
+    "class_name": "Dense Forest",
+    "preview_image": "S2A_MSIL2A_patch_0010_Dense_Forest_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0010_Dense_Forest_spectral.npy",
+    "ndvi": 0.8207,
+    "ndwi": -0.7558,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Dense Forest"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.82."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.76)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Dense Forest)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 368,
+    "sample_code": "S2A_MSIL2A_patch_0368_Industrial_and_Commercial",
+    "class_id": 6,
+    "class_name": "Industrial & Commercial",
+    "preview_image": "S2A_MSIL2A_patch_0368_Industrial_and_Commercial_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0368_Industrial_and_Commercial_spectral.npy",
+    "ndvi": -0.1123,
+    "ndwi": -0.082,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Industrial & Commercial"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.11."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.08)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Industrial & Commercial."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 55,
+    "sample_code": "S2A_MSIL2A_patch_0055_Dense_Forest",
+    "class_id": 0,
+    "class_name": "Dense Forest",
+    "preview_image": "S2A_MSIL2A_patch_0055_Dense_Forest_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0055_Dense_Forest_spectral.npy",
+    "ndvi": 0.8864,
+    "ndwi": -0.7124,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Dense Forest"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.89."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.71)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Dense Forest)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 462,
+    "sample_code": "S2A_MSIL2A_patch_0462_Highway_and_Transport",
+    "class_id": 7,
+    "class_name": "Highway & Transport",
+    "preview_image": "S2A_MSIL2A_patch_0462_Highway_and_Transport_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0462_Highway_and_Transport_spectral.npy",
+    "ndvi": -0.0842,
+    "ndwi": 0.1362,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Highway & Transport"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.08."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: 0.14)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Highway & Transport."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 323,
+    "sample_code": "S2A_MSIL2A_patch_0323_Urban_Residential",
+    "class_id": 5,
+    "class_name": "Urban Residential",
+    "preview_image": "S2A_MSIL2A_patch_0323_Urban_Residential_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0323_Urban_Residential_spectral.npy",
+    "ndvi": 0.1358,
+    "ndwi": -0.0709,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Urban Residential"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.14."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.07)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Urban Residential."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 192,
+    "sample_code": "S2A_MSIL2A_patch_0192_Herbaceous_Vegetation",
+    "class_id": 3,
+    "class_name": "Herbaceous Vegetation",
+    "preview_image": "S2A_MSIL2A_patch_0192_Herbaceous_Vegetation_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0192_Herbaceous_Vegetation_spectral.npy",
+    "ndvi": 0.626,
+    "ndwi": -0.4505,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Herbaceous Vegetation"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.63."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.45)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Herbaceous Vegetation)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 144,
+    "sample_code": "S2A_MSIL2A_patch_0144_Permanent_Crops",
+    "class_id": 2,
+    "class_name": "Permanent Crops",
+    "preview_image": "S2A_MSIL2A_patch_0144_Permanent_Crops_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0144_Permanent_Crops_spectral.npy",
+    "ndvi": 0.8221,
+    "ndwi": -0.6385,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Permanent Crops"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.82."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.64)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Permanent Crops)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 296,
+    "sample_code": "S2A_MSIL2A_patch_0296_Pasture_and_Meadow",
+    "class_id": 4,
+    "class_name": "Pasture & Meadow",
+    "preview_image": "S2A_MSIL2A_patch_0296_Pasture_and_Meadow_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0296_Pasture_and_Meadow_spectral.npy",
+    "ndvi": 0.8705,
+    "ndwi": -0.6285,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Pasture & Meadow"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.87."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.63)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Pasture & Meadow)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 502,
+    "sample_code": "S2A_MSIL2A_patch_0502_Inland_River___Canal",
+    "class_id": 8,
+    "class_name": "Inland River / Canal",
+    "preview_image": "S2A_MSIL2A_patch_0502_Inland_River___Canal_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0502_Inland_River___Canal_spectral.npy",
+    "ndvi": -0.8166,
+    "ndwi": 0.8958,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Inland River / Canal"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.82."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.90)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Inland River / Canal)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 171,
+    "sample_code": "S2A_MSIL2A_patch_0171_Permanent_Crops",
+    "class_id": 2,
+    "class_name": "Permanent Crops",
+    "preview_image": "S2A_MSIL2A_patch_0171_Permanent_Crops_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0171_Permanent_Crops_spectral.npy",
+    "ndvi": 0.7803,
+    "ndwi": -0.6884,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Permanent Crops"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.78."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.69)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Permanent Crops)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 569,
+    "sample_code": "S2A_MSIL2A_patch_0569_Sea_and_Open_Lake",
+    "class_id": 9,
+    "class_name": "Sea & Open Lake",
+    "preview_image": "S2A_MSIL2A_patch_0569_Sea_and_Open_Lake_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0569_Sea_and_Open_Lake_spectral.npy",
+    "ndvi": -0.8521,
+    "ndwi": 0.8926,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Sea & Open Lake"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.85."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.89)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Sea & Open Lake)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 178,
+    "sample_code": "S2A_MSIL2A_patch_0178_Permanent_Crops",
+    "class_id": 2,
+    "class_name": "Permanent Crops",
+    "preview_image": "S2A_MSIL2A_patch_0178_Permanent_Crops_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0178_Permanent_Crops_spectral.npy",
+    "ndvi": 0.7372,
+    "ndwi": -0.7668,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Permanent Crops"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.74."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.77)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Permanent Crops)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 551,
+    "sample_code": "S2A_MSIL2A_patch_0551_Sea_and_Open_Lake",
+    "class_id": 9,
+    "class_name": "Sea & Open Lake",
+    "preview_image": "S2A_MSIL2A_patch_0551_Sea_and_Open_Lake_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0551_Sea_and_Open_Lake_spectral.npy",
+    "ndvi": -0.7527,
+    "ndwi": 0.8573,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Sea & Open Lake"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.75."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.86)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Sea & Open Lake)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 499,
+    "sample_code": "S2A_MSIL2A_patch_0499_Inland_River___Canal",
+    "class_id": 8,
+    "class_name": "Inland River / Canal",
+    "preview_image": "S2A_MSIL2A_patch_0499_Inland_River___Canal_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0499_Inland_River___Canal_spectral.npy",
+    "ndvi": -0.889,
+    "ndwi": 0.9394,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Inland River / Canal"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.89."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.94)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Inland River / Canal)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 191,
+    "sample_code": "S2A_MSIL2A_patch_0191_Herbaceous_Vegetation",
+    "class_id": 3,
+    "class_name": "Herbaceous Vegetation",
+    "preview_image": "S2A_MSIL2A_patch_0191_Herbaceous_Vegetation_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0191_Herbaceous_Vegetation_spectral.npy",
+    "ndvi": 0.4508,
+    "ndwi": -0.4028,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Herbaceous Vegetation"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Moderate vegetation cover with an estimated mean NDVI of 0.45."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.40)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Herbaceous Vegetation)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 434,
+    "sample_code": "S2A_MSIL2A_patch_0434_Highway_and_Transport",
+    "class_id": 7,
+    "class_name": "Highway & Transport",
+    "preview_image": "S2A_MSIL2A_patch_0434_Highway_and_Transport_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0434_Highway_and_Transport_spectral.npy",
+    "ndvi": -0.1979,
+    "ndwi": -0.007,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Highway & Transport"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.20."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.01)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Highway & Transport."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 393,
+    "sample_code": "S2A_MSIL2A_patch_0393_Industrial_and_Commercial",
+    "class_id": 6,
+    "class_name": "Industrial & Commercial",
+    "preview_image": "S2A_MSIL2A_patch_0393_Industrial_and_Commercial_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0393_Industrial_and_Commercial_spectral.npy",
+    "ndvi": -0.0695,
+    "ndwi": -0.2302,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Industrial & Commercial"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.07."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.23)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Industrial & Commercial."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 142,
+    "sample_code": "S2A_MSIL2A_patch_0142_Permanent_Crops",
+    "class_id": 2,
+    "class_name": "Permanent Crops",
+    "preview_image": "S2A_MSIL2A_patch_0142_Permanent_Crops_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0142_Permanent_Crops_spectral.npy",
+    "ndvi": 0.8612,
+    "ndwi": -0.6769,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Permanent Crops"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.86."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.68)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Permanent Crops)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 429,
+    "sample_code": "S2A_MSIL2A_patch_0429_Highway_and_Transport",
+    "class_id": 7,
+    "class_name": "Highway & Transport",
+    "preview_image": "S2A_MSIL2A_patch_0429_Highway_and_Transport_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0429_Highway_and_Transport_spectral.npy",
+    "ndvi": 0.0864,
+    "ndwi": -0.013,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Highway & Transport"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.09."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.01)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Highway & Transport."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 398,
+    "sample_code": "S2A_MSIL2A_patch_0398_Industrial_and_Commercial",
+    "class_id": 6,
+    "class_name": "Industrial & Commercial",
+    "preview_image": "S2A_MSIL2A_patch_0398_Industrial_and_Commercial_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0398_Industrial_and_Commercial_spectral.npy",
+    "ndvi": 0.0026,
+    "ndwi": -0.03,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Industrial & Commercial"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.00."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.03)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Industrial & Commercial."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 524,
+    "sample_code": "S2A_MSIL2A_patch_0524_Inland_River___Canal",
+    "class_id": 8,
+    "class_name": "Inland River / Canal",
+    "preview_image": "S2A_MSIL2A_patch_0524_Inland_River___Canal_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0524_Inland_River___Canal_spectral.npy",
+    "ndvi": -0.7003,
+    "ndwi": 0.8723,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Inland River / Canal"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.70."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "Open water body identified (mean NDWI: 0.87)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Inland River / Canal)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 145,
+    "sample_code": "S2A_MSIL2A_patch_0145_Permanent_Crops",
+    "class_id": 2,
+    "class_name": "Permanent Crops",
+    "preview_image": "S2A_MSIL2A_patch_0145_Permanent_Crops_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0145_Permanent_Crops_spectral.npy",
+    "ndvi": 0.7858,
+    "ndwi": -0.7067,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Permanent Crops"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.79."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.71)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Permanent Crops)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 383,
+    "sample_code": "S2A_MSIL2A_patch_0383_Industrial_and_Commercial",
+    "class_id": 6,
+    "class_name": "Industrial & Commercial",
+    "preview_image": "S2A_MSIL2A_patch_0383_Industrial_and_Commercial_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0383_Industrial_and_Commercial_spectral.npy",
+    "ndvi": 0.1886,
+    "ndwi": -0.0348,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Industrial & Commercial"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.19."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.03)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Industrial & Commercial."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 188,
+    "sample_code": "S2A_MSIL2A_patch_0188_Herbaceous_Vegetation",
+    "class_id": 3,
+    "class_name": "Herbaceous Vegetation",
+    "preview_image": "S2A_MSIL2A_patch_0188_Herbaceous_Vegetation_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0188_Herbaceous_Vegetation_spectral.npy",
+    "ndvi": 0.6878,
+    "ndwi": -0.617,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Herbaceous Vegetation"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.69."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.62)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Herbaceous Vegetation)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 120,
+    "sample_code": "S2A_MSIL2A_patch_0120_Annual_Agriculture",
+    "class_id": 1,
+    "class_name": "Annual Agriculture",
+    "preview_image": "S2A_MSIL2A_patch_0120_Annual_Agriculture_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0120_Annual_Agriculture_spectral.npy",
+    "ndvi": 0.6639,
+    "ndwi": -0.6025,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Annual Agriculture"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.66."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.60)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Annual Agriculture)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 313,
+    "sample_code": "S2A_MSIL2A_patch_0313_Urban_Residential",
+    "class_id": 5,
+    "class_name": "Urban Residential",
+    "preview_image": "S2A_MSIL2A_patch_0313_Urban_Residential_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0313_Urban_Residential_spectral.npy",
+    "ndvi": 0.0543,
+    "ndwi": -0.0947,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Urban Residential"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.05."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.09)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Urban Residential."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 245,
+    "sample_code": "S2A_MSIL2A_patch_0245_Pasture_and_Meadow",
+    "class_id": 4,
+    "class_name": "Pasture & Meadow",
+    "preview_image": "S2A_MSIL2A_patch_0245_Pasture_and_Meadow_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0245_Pasture_and_Meadow_spectral.npy",
+    "ndvi": 0.8129,
+    "ndwi": -0.5555,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Pasture & Meadow"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.81."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.56)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Pasture & Meadow)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 121,
+    "sample_code": "S2A_MSIL2A_patch_0121_Permanent_Crops",
+    "class_id": 2,
+    "class_name": "Permanent Crops",
+    "preview_image": "S2A_MSIL2A_patch_0121_Permanent_Crops_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0121_Permanent_Crops_spectral.npy",
+    "ndvi": 0.803,
+    "ndwi": -0.793,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Permanent Crops"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.80."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.79)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Permanent Crops)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 321,
+    "sample_code": "S2A_MSIL2A_patch_0321_Urban_Residential",
+    "class_id": 5,
+    "class_name": "Urban Residential",
+    "preview_image": "S2A_MSIL2A_patch_0321_Urban_Residential_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0321_Urban_Residential_spectral.npy",
+    "ndvi": -0.0424,
+    "ndwi": -0.1862,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Urban Residential"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of -0.04."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.19)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Urban Residential."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 138,
+    "sample_code": "S2A_MSIL2A_patch_0138_Permanent_Crops",
+    "class_id": 2,
+    "class_name": "Permanent Crops",
+    "preview_image": "S2A_MSIL2A_patch_0138_Permanent_Crops_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0138_Permanent_Crops_spectral.npy",
+    "ndvi": 0.7297,
+    "ndwi": -0.7694,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Permanent Crops"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Dense healthy vegetation with an estimated mean NDVI of 0.73."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.77)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Permanent Crops)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 87,
+    "sample_code": "S2A_MSIL2A_patch_0087_Annual_Agriculture",
+    "class_id": 1,
+    "class_name": "Annual Agriculture",
+    "preview_image": "S2A_MSIL2A_patch_0087_Annual_Agriculture_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0087_Annual_Agriculture_spectral.npy",
+    "ndvi": 0.5751,
+    "ndwi": -0.4907,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Annual Agriculture"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Moderate vegetation cover with an estimated mean NDVI of 0.58."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.49)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "No, natural or agricultural terrain (Annual Agriculture)."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  },
+  {
+    "id": 305,
+    "sample_code": "S2A_MSIL2A_patch_0305_Urban_Residential",
+    "class_id": 5,
+    "class_name": "Urban Residential",
+    "preview_image": "S2A_MSIL2A_patch_0305_Urban_Residential_rgb.png",
+    "spectral_file": "S2A_MSIL2A_patch_0305_Urban_Residential_spectral.npy",
+    "ndvi": 0.0883,
+    "ndwi": -0.1171,
+    "qa_pairs": [
+      {
+        "question": "What is the primary land-cover classification in this optical scene?",
+        "answer": "Urban Residential"
+      },
+      {
+        "question": "What is the vegetation vigor and NDVI status of this area?",
+        "answer": "Non-vegetated or built surface with an estimated mean NDVI of 0.09."
+      },
+      {
+        "question": "Is surface water present in this satellite image?",
+        "answer": "No open surface water detected (mean NDWI: -0.12)."
+      },
+      {
+        "question": "Are man-made urban structures or impervious surfaces prominent?",
+        "answer": "Yes, high impervious surface density corresponding to Urban Residential."
+      }
+    ],
+    "sensor": "Sentinel-2 MSI",
+    "bands": [
+      "B02_Blue",
+      "B03_Green",
+      "B04_Red",
+      "B08_NIR"
+    ]
+  }
+]

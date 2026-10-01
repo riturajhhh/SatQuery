@@ -434,8 +434,9 @@ python scripts/train_sar.py --epochs 6 --batch-size 16 --output ./models/optical
 
 ```bash
 # Ingestion & Download scripts
-python scripts/download_bigearthnet.py --output ./datasets/bigearthnet_txt/
+python scripts/download_optical_data.py --samples 600 --output ./datasets/bigearthnet_optical/
 python scripts/download_sar_data.py --samples 600 --output ./datasets/bigearthnet_sar/
+python scripts/download_bigearthnet.py --output ./datasets/bigearthnet_txt/
 python scripts/download_vrsbench.py --output ./datasets/vrsbench/
 python scripts/download_rsvqa.py --variant lr --output ./datasets/rsvqa/
 python scripts/download_cdvqa.py --output ./datasets/cdvqa/

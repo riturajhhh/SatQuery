@@ -1,0 +1,29 @@
+{
+  "dataset_name": "BigEarthNet-S2-Calibrated-Benchmark",
+  "sensor": "Sentinel-2A/B MultiSpectral Instrument (MSI)",
+  "bands": [
+    "B02 (Blue)",
+    "B03 (Green)",
+    "B04 (Red)",
+    "B08 (NIR)"
+  ],
+  "num_classes": 10,
+  "classes": [
+    "Dense Forest",
+    "Annual Agriculture",
+    "Permanent Crops",
+    "Herbaceous Vegetation",
+    "Pasture & Meadow",
+    "Urban Residential",
+    "Industrial & Commercial",
+    "Highway & Transport",
+    "Inland River / Canal",
+    "Sea & Open Lake"
+  ],
+  "total_samples": 600,
+  "splits": {
+    "train": 420,
+    "val": 90,
+    "test": 90
+  }
+}

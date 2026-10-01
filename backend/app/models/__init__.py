@@ -26,6 +26,7 @@ from app.models.optical_sar import RSOpticalSAR_Model, RSOpticalSAR_Fallback
 from app.models.florence2 import RSFlorence2_Unified
 from app.models.qwen2_vl import RSQwen2VL_Model
 from app.models.sar_specialist import RSSAR_Specialist
+from app.models.optical_specialist import RSOptical_Specialist
 
 
 def init_default_models():
@@ -79,7 +80,11 @@ def init_default_models():
         pass
     registry.register(RSChangeVQA_Fallback())
 
-    # 6. Register Optical-SAR & Dedicated Fine-Tuned Sentinel-1 SAR Specialist
+    # 6. Register Optical & SAR Dedicated Specialists & Cross-Modal Fusion
+    try:
+        registry.register(RSOptical_Specialist())
+    except Exception:
+        pass
     try:
         registry.register(RSSAR_Specialist())
     except Exception:
@@ -119,6 +124,7 @@ __all__ = [
     "RSChangeVQA_Model",
     "RSChangeVQA_Fallback",
     "RSSAR_Specialist",
+    "RSOptical_Specialist",
     "RSOpticalSAR_Model",
     "RSOpticalSAR_Fallback",
 ]

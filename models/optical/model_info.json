@@ -1,0 +1,14 @@
+{
+  "model_name": "optical-sentinel2-specialist",
+  "architecture": "Sentinel2OpticalNet (Spectral-Spatial Multi-Task ResNet)",
+  "sensor": "Sentinel-2 MSI (B02 Blue, B03 Green, B04 Red, B08 NIR)",
+  "num_classes": 10,
+  "test_overall_accuracy": 0.6444,
+  "test_macro_f1": 0.654,
+  "test_macro_precision": 0.6714,
+  "test_macro_recall": 0.6902,
+  "test_ndvi_mae": 0.0624,
+  "checkpoint_file": "optical_sentinel2_adapter.pt",
+  "training_epochs": 8,
+  "timestamp": "2026-10-01 17:03:54Z"
+}
