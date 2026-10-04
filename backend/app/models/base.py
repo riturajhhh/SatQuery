@@ -71,6 +71,8 @@ class ModelOutput:
     model_info: Optional[ModelInfo] = None
     execution_time_ms: float = 0.0
     is_fallback: bool = False
+    metadata: Optional[Dict[str, Any]] = None
+    artifacts: Optional[List[Any]] = None
 
 
 class RemoteSensingModel(ABC):

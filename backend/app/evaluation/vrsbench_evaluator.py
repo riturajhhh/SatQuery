@@ -14,8 +14,10 @@ from PIL import Image
 from app.evaluation.metrics import (
     compute_bleu,
     compute_box_iou,
+    compute_exact_match,
     compute_grounding_map,
     compute_rouge_l,
+    compute_token_accuracy,
 )
 from app.models.base import InputType, ModelInput, TaskType
 from app.models.registry import get_model_registry
@@ -40,6 +42,15 @@ class VRSBenchCaptionSample:
 
 
 @dataclass
+class VRSBenchVQASample:
+    sample_id: str
+    image: Image.Image
+    question: str
+    ground_truth_answer: str
+    category: str = "vrsbench_vqa"
+
+
+@dataclass
 class VRSBenchEvaluationReport:
     """Evaluation summary metrics for VRSBench."""
     grounding_samples: int
@@ -52,10 +63,13 @@ class VRSBenchEvaluationReport:
     bleu_4: float
     rouge_l_f1: float
     average_latency_ms: float
+    vqa_samples: int = 0
+    vqa_exact_match: float = 0.0
+    vqa_token_accuracy: float = 0.0
     detailed_results: List[Dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        res = {
             "benchmark": "VRSBench",
             "grounding": {
                 "samples": self.grounding_samples,
@@ -72,6 +86,13 @@ class VRSBenchEvaluationReport:
             },
             "average_latency_ms": round(self.average_latency_ms, 2),
         }
+        if self.vqa_samples > 0:
+            res["vqa"] = {
+                "samples": self.vqa_samples,
+                "exact_match": round(self.vqa_exact_match, 4),
+                "token_accuracy": round(self.vqa_token_accuracy, 4),
+            }
+        return res
 
 
 class VRSBenchEvaluator:
@@ -158,11 +179,89 @@ class VRSBenchEvaluator:
                     if len(cap_items) >= max_samples:
                         break
 
+                # 3. Load VQA
+                vqa_items = []
+                vqa_file = root / "VRSBench_EVAL_vqa.json"
+                if vqa_file.exists():
+                    with open(vqa_file, "r", encoding="utf-8") as f:
+                        vqa_data = json.load(f)
+                    for v in vqa_data:
+                        img_name = v.get("image_id")
+                        ans = str(v.get("ground_truth", "")).strip()
+                        if img_name not in valid_images or not ans:
+                            continue
+                        with zf.open(f"Images_val/{img_name}") as img_f:
+                            with Image.open(io.BytesIO(img_f.read())) as pil_img:
+                                image_obj = pil_img.convert("RGB")
+                        vqa_items.append(VRSBenchVQASample(
+                            sample_id=f"vrs_vqa_{v.get('question_id', len(vqa_items))}",
+                            image=image_obj,
+                            question=v.get("question", ""),
+                            ground_truth_answer=ans,
+                            category=v.get("type", "vrsbench_vqa"),
+                        ))
+                        if len(vqa_items) >= max_samples:
+                            break
+
         except Exception as e:
             logger.warning("failed_to_load_real_vrsbench", error=str(e))
             return [], []
 
         return grd_items, cap_items
+
+    @classmethod
+    def load_real_vqa_suite(
+        cls,
+        data_dir: str = "datasets/vrsbench",
+        max_samples: int = 5,
+    ) -> List[VRSBenchVQASample]:
+        """Load real single-image VQA samples from VRSBench dataset files."""
+        import io
+        import json
+        from pathlib import Path
+        import zipfile
+
+        root = Path(data_dir)
+        if not root.exists():
+            for alt in [Path("../") / data_dir, Path(__file__).resolve().parents[3] / data_dir]:
+                if alt.exists():
+                    root = alt
+                    break
+
+        zip_path = root / "Images_val.zip"
+        vqa_file = root / "VRSBench_EVAL_vqa.json"
+
+        if not (zip_path.exists() and vqa_file.exists()):
+            return []
+
+        vqa_items = []
+        try:
+            with zipfile.ZipFile(zip_path) as zf:
+                valid_images = set(n.split("/")[-1] for n in zf.namelist() if n.endswith(".png"))
+                with open(vqa_file, "r", encoding="utf-8") as f:
+                    vqa_data = json.load(f)
+                for v in vqa_data:
+                    img_name = v.get("image_id")
+                    ans = str(v.get("ground_truth", "")).strip()
+                    if img_name not in valid_images or not ans:
+                        continue
+                    with zf.open(f"Images_val/{img_name}") as img_f:
+                        with Image.open(io.BytesIO(img_f.read())) as pil_img:
+                            image_obj = pil_img.convert("RGB")
+                    vqa_items.append(VRSBenchVQASample(
+                        sample_id=f"vrs_vqa_{v.get('question_id', len(vqa_items))}",
+                        image=image_obj,
+                        question=v.get("question", ""),
+                        ground_truth_answer=ans,
+                        category=v.get("type", "vrsbench_vqa"),
+                    ))
+                    if len(vqa_items) >= max_samples:
+                        break
+        except Exception as e:
+            logger.warning("failed_to_load_real_vrsbench_vqa", error=str(e))
+            return []
+
+        return vqa_items
 
     @classmethod
     def get_synthetic_grounding_suite(cls) -> List[VRSBenchGroundingSample]:
@@ -233,28 +332,70 @@ class VRSBenchEvaluator:
         return suite
 
     @classmethod
+    def get_synthetic_vqa_suite(cls) -> List[VRSBenchVQASample]:
+        """Generate representative single-image VQA samples."""
+        suite = []
+
+        forest_arr = np.zeros((64, 64, 3), dtype=np.uint8)
+        forest_arr[:, :, 0] = 30
+        forest_arr[:, :, 1] = 190
+        forest_arr[:, :, 2] = 40
+        suite.append(
+            VRSBenchVQASample(
+                sample_id="vrs_vqa_001",
+                image=Image.fromarray(forest_arr),
+                question="Is there vegetation or forest canopy present in this image?",
+                ground_truth_answer="yes",
+                category="presence",
+            )
+        )
+
+        water_arr = np.zeros((64, 64, 3), dtype=np.uint8)
+        water_arr[:, :, 0] = 15
+        water_arr[:, :, 1] = 45
+        water_arr[:, :, 2] = 180
+        suite.append(
+            VRSBenchVQASample(
+                sample_id="vrs_vqa_002",
+                image=Image.fromarray(water_arr),
+                question="Is it a rural or an urban area?",
+                ground_truth_answer="rural",
+                category="rural_urban",
+            )
+        )
+
+        return suite
+
+    @classmethod
     def evaluate(
         cls,
         grounding_samples: Optional[List[VRSBenchGroundingSample]] = None,
         captioning_samples: Optional[List[VRSBenchCaptionSample]] = None,
+        vqa_samples: Optional[List[VRSBenchVQASample]] = None,
         use_real_if_available: bool = True,
         max_samples: int = 5,
+        evaluate_vqa: bool = True,
     ) -> VRSBenchEvaluationReport:
-        """Run complete VRSBench evaluation for visual grounding and scene captioning."""
+        """Run complete VRSBench evaluation for visual grounding, scene captioning, and VQA."""
         if grounding_samples is not None and captioning_samples is not None:
             grd_items = grounding_samples
             cap_items = captioning_samples
+            v_items = vqa_samples or cls.get_synthetic_vqa_suite()
         elif use_real_if_available:
             real_grd, real_cap = cls.load_real_benchmark_suite(max_samples=max_samples)
             grd_items = real_grd if real_grd else cls.get_synthetic_grounding_suite()
             cap_items = real_cap if real_cap else cls.get_synthetic_captioning_suite()
+            real_vqa = cls.load_real_vqa_suite(max_samples=max_samples)
+            v_items = real_vqa if real_vqa else cls.get_synthetic_vqa_suite()
         else:
             grd_items = cls.get_synthetic_grounding_suite()
             cap_items = cls.get_synthetic_captioning_suite()
+            v_items = cls.get_synthetic_vqa_suite()
 
         registry = get_model_registry()
         grd_model = registry.select_best_model(TaskType.GROUNDING, InputType.SINGLE_OPTICAL)
         cap_model = registry.select_best_model(TaskType.CAPTIONING, InputType.SINGLE_OPTICAL)
+        vqa_model = registry.select_best_model(TaskType.VQA, InputType.SINGLE_OPTICAL)
 
         durations: List[float] = []
         detailed_records: List[Dict[str, Any]] = []
@@ -329,6 +470,44 @@ class VRSBenchEvaluator:
                 "latency_ms": round(lat, 2),
             })
 
+        # --- 3. Evaluate Single-Image VQA ---
+        vqa_em_list: List[float] = []
+        vqa_tok_list: List[float] = []
+
+        if evaluate_vqa and v_items:
+            for sample in v_items:
+                t0 = time.perf_counter()
+                inp = ModelInput(images=[sample.image], query=sample.question)
+                out = vqa_model.predict(inp)
+                lat = (time.perf_counter() - t0) * 1000.0
+                durations.append(lat)
+
+                pred = out.answer
+                ref = sample.ground_truth_answer
+                raw_token = (out.evidence or {}).get("raw_token")
+
+                em = max(
+                    compute_exact_match(pred, ref),
+                    compute_exact_match(str(raw_token), ref) if raw_token is not None else 0.0,
+                )
+                tok_acc = max(
+                    compute_token_accuracy(pred, ref),
+                    compute_token_accuracy(str(raw_token), ref) if raw_token is not None else 0.0,
+                )
+                vqa_em_list.append(em)
+                vqa_tok_list.append(tok_acc)
+
+                detailed_records.append({
+                    "sample_id": sample.sample_id,
+                    "task": "vqa",
+                    "query": sample.question,
+                    "prediction": pred,
+                    "ground_truth": ref,
+                    "exact_match": em,
+                    "token_accuracy": tok_acc,
+                    "latency_ms": round(lat, 2),
+                })
+
         return VRSBenchEvaluationReport(
             grounding_samples=len(grd_items),
             mean_iou=sum(ious) / max(1, len(ious)),
@@ -340,5 +519,8 @@ class VRSBenchEvaluator:
             bleu_4=sum(bleu4_list) / max(1, len(bleu4_list)),
             rouge_l_f1=sum(rouge_list) / max(1, len(rouge_list)),
             average_latency_ms=sum(durations) / max(1, len(durations)),
+            vqa_samples=len(v_items) if evaluate_vqa else 0,
+            vqa_exact_match=sum(vqa_em_list) / max(1, len(vqa_em_list)) if vqa_em_list else 0.0,
+            vqa_token_accuracy=sum(vqa_tok_list) / max(1, len(vqa_tok_list)) if vqa_tok_list else 0.0,
             detailed_results=detailed_records,
         )

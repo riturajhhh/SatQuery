@@ -45,10 +45,15 @@ async function request<T>(url: string, options?: RequestInit): Promise<T> {
       error: 'unknown_error',
       message: `HTTP ${response.status}: ${response.statusText}`,
     }));
+    const message =
+      errorBody.message ||
+      (typeof errorBody.detail === 'string' ? errorBody.detail : null) ||
+      errorBody.error ||
+      'An unexpected error occurred';
     throw new ApiError(
       response.status,
       errorBody.error || 'unknown_error',
-      errorBody.message || 'An unexpected error occurred',
+      message,
       errorBody.details,
     );
   }
@@ -77,7 +82,11 @@ export async function uploadFiles(files: File[], inputType?: string): Promise<Up
       error: 'upload_error',
       message: 'Upload failed',
     }));
-    throw new ApiError(response.status, errorBody.error, errorBody.message, errorBody.details);
+    const message =
+      errorBody.message ||
+      (typeof errorBody.detail === 'string' ? errorBody.detail : null) ||
+      'Upload failed';
+    throw new ApiError(response.status, errorBody.error || 'upload_error', message, errorBody.details);
   }
 
   return response.json();

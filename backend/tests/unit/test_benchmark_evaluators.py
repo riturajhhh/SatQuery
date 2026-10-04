@@ -33,6 +33,7 @@ def test_vrsbench_evaluator():
     assert isinstance(report, VRSBenchEvaluationReport)
     assert report.grounding_samples > 0
     assert report.captioning_samples > 0
+    assert report.vqa_samples >= 0
     assert report.mean_iou >= 0.0
     assert report.map_at_50 >= 0.0
     assert report.bleu_1 > 0.0
@@ -54,6 +55,13 @@ def test_vrsbench_real_dataset_loader():
         for item in cap_samples:
             assert item.sample_id.startswith("vrs_cap_")
             assert item.ground_truth_caption
+    vqa_samples = VRSBenchEvaluator.load_real_vqa_suite(max_samples=3)
+    if vqa_samples:
+        assert len(vqa_samples) == 3
+        for item in vqa_samples:
+            assert item.sample_id.startswith("vrs_vqa_")
+            assert item.question
+            assert item.ground_truth_answer
 
 
 def test_cdvqa_evaluator():

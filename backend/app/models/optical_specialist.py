@@ -175,6 +175,15 @@ class RSOptical_Specialist(RemoteSensingModel):
         self.device = "cpu"
         self.vocab = None
         self.metrics = {}
+        self._loaded = False
+
+    @property
+    def is_loaded(self) -> bool:
+        return self._loaded
+
+    def unload(self) -> None:
+        self.net = None
+        self._loaded = False
 
     @property
     def info(self) -> ModelInfo:
@@ -205,15 +214,17 @@ class RSOptical_Specialist(RemoteSensingModel):
 
     def explain(self, model_input: ModelInput, output: ModelOutput) -> Dict[str, Any]:
         """Returns visual and physical explanation metrics for evidence generation."""
-        meta = output.metadata or {}
+        ev = output.evidence or {}
         return {
             "evidence_type": "optical_spectral_indices",
             "model_name": self.info.name,
-            "land_cover_class": meta.get("land_cover_class", "Optical Terrain"),
-            "mean_ndvi": meta.get("mean_ndvi", 0.0),
-            "mean_ndwi": meta.get("mean_ndwi", 0.0),
-            "vegetation_level": meta.get("vegetation_level", "Unknown"),
-            "artifacts": output.artifacts or [],
+            "land_cover_class": ev.get("predicted_land_cover") or ev.get("land_cover_class", "Optical Terrain"),
+            "mean_ndvi": ev.get("mean_ndvi", 0.0),
+            "mean_ndwi": ev.get("mean_ndwi", 0.0),
+            "vegetation_level": ev.get("vegetation_level", "Unknown"),
+            "overlay_path": ev.get("overlay_path"),
+            "overlay_url": ev.get("overlay_url"),
+            "artifacts": ev.get("artifacts", []),
         }
 
     def load(self) -> None:
@@ -395,11 +406,11 @@ class RSOptical_Specialist(RemoteSensingModel):
 
         # Generate CIR false color visual artifact
         cir_image = self._generate_cir_overlay(g, r, nir)
-        upload_dir = Path("uploads")
-        upload_dir.mkdir(exist_ok=True)
+        evidence_dir = Path("outputs/evidence")
+        evidence_dir.mkdir(parents=True, exist_ok=True)
         ts_str = datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f")
         cir_filename = f"optical_cir_{ts_str}.png"
-        cir_path = upload_dir / cir_filename
+        cir_path = evidence_dir / cir_filename
         cir_image.save(cir_path)
 
         # Detect built-up clusters / objects
@@ -471,12 +482,12 @@ class RSOptical_Specialist(RemoteSensingModel):
                 "is_water": indices["is_water"],
                 "boxes": boxes,
                 "overlay_path": str(cir_path),
-                "overlay_url": f"/api/uploads/{cir_filename}",
+                "overlay_url": f"/api/files/evidence/{cir_filename}",
                 "artifacts": [
                     {
                         "type": "cir_false_color",
                         "title": "Color-Infrared (CIR) Vegetation Composite",
-                        "url": f"/api/uploads/{cir_filename}",
+                        "url": f"/api/files/evidence/{cir_filename}",
                         "description": "NIR (Band 8) mapped to Red channel highlighting dense vegetation vigor in bright magenta/red tones.",
                     }
                 ],

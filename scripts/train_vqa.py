@@ -1,7 +1,7 @@
 """SatQuery AI — RSVQA Model Training Pipeline.
 
 Trains a parameter-efficient remote-sensing visual question answering adapter
-on the RSVQA dataset (LR or HR).
+on the RSVQA dataset (LR or HR) and VRSBench VQA.
 
 Outputs:
 - models/vqa/rsvqa_adapter.pt (Model weights & vocabulary)
@@ -9,9 +9,12 @@ Outputs:
 """
 
 import argparse
+from collections import Counter
 import json
 import os
 from pathlib import Path
+import random
+import re
 import sys
 import time
 from typing import Any, Dict, List, Optional, Tuple
@@ -20,10 +23,12 @@ import numpy as np
 from PIL import Image
 from tqdm import tqdm
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "backend"))
+from app.models.rsvqa_net import ResSingleRSVQAModel
 
-def build_vocab(answers: List[str], max_vocab: int = 500) -> Tuple[Dict[str, int], Dict[int, str]]:
-    """Build answer vocabulary from training set."""
-    from collections import Counter
+
+def build_vocab(answers: List[str], max_vocab: int = 36) -> Tuple[Dict[str, int], Dict[int, str]]:
+    """Build answer vocabulary from training set focusing on high-frequency semantic classes."""
     counts = Counter(ans.strip().lower() for ans in answers if ans.strip())
     top_answers = [ans for ans, _ in counts.most_common(max_vocab)]
     ans2idx = {ans: idx for idx, ans in enumerate(top_answers)}
@@ -33,8 +38,7 @@ def build_vocab(answers: List[str], max_vocab: int = 500) -> Tuple[Dict[str, int
 
 def simple_tokenize(text: str, max_len: int = 24) -> List[str]:
     """Tokenize and pad/truncate query text."""
-    import re
-    tokens = re.findall(r"\w+", text.lower())
+    tokens = re.findall(r"\w+", str(text).lower())
     return tokens[:max_len]
 
 
@@ -68,7 +72,6 @@ def load_dataset_samples(
     include_vrsbench: bool = True,
 ) -> Tuple[List[Dict[str, Any]], Path]:
     """Load question-answer records and images folder with category stratification."""
-    import random
     images_dir = data_dir / "images"
     splits_dir = data_dir / "splits"
     q_file = splits_dir / f"{split}_questions.json"
@@ -84,12 +87,14 @@ def load_dataset_samples(
     with open(a_file, "r", encoding="utf-8") as f:
         a_data = json.load(f).get("answers", [])
 
-    ans_map = {a["id"]: str(a.get("answer", "")).strip().lower() for a in a_data if a.get("active", True)}
+    ans_map = {
+        a["id"]: str(a.get("answer", "")).strip().lower()
+        for a in a_data
+        if a.get("active", True) and "answer" in a
+    }
 
     # Group questions by category to ensure balanced representation
     cat_buckets: Dict[str, List[Dict[str, Any]]] = {}
-    
-    # Pre-scan image existence to avoid disk overhead
     existing_images = set(os.listdir(images_dir)) if images_dir.exists() else set()
 
     for q in q_data:
@@ -128,7 +133,7 @@ def load_dataset_samples(
 
     target_total = limit or 2500
     num_cats = max(1, len(cat_buckets))
-    per_cat = max(20, target_total // num_cats)
+    per_cat = max(25, target_total // num_cats)
 
     for cat, items in cat_buckets.items():
         from collections import defaultdict
@@ -149,7 +154,6 @@ def load_dataset_samples(
         vrs_zip_file = Path("datasets/vrsbench/Images_val.zip")
         if vrs_vqa_file.exists() and vrs_zip_file.exists():
             try:
-                import zipfile
                 with open(vrs_vqa_file, "r", encoding="utf-8") as vf:
                     vrs_data = json.load(vf)
                 vrs_count = min(300, len(vrs_data))
@@ -180,7 +184,7 @@ def main() -> None:
     parser.add_argument("--epochs", type=int, default=5)
     parser.add_argument("--batch-size", type=int, default=32)
     parser.add_argument("--lr", type=float, default=1e-3)
-    parser.add_argument("--limit-samples", type=int, default=1000)
+    parser.add_argument("--limit-samples", type=int, default=1500)
     parser.add_argument("--device", type=str, default="auto")
 
     args = parser.parse_args()
@@ -203,7 +207,7 @@ def main() -> None:
 
     data_dir = Path(args.data_dir)
     train_samples, _ = load_dataset_samples(data_dir, split="train", limit=args.limit_samples)
-    val_samples, _ = load_dataset_samples(data_dir, split="val", limit=max(50, args.limit_samples // 5))
+    val_samples, _ = load_dataset_samples(data_dir, split="val", limit=max(60, args.limit_samples // 4))
 
     print(f"Loaded {len(train_samples)} training samples, {len(val_samples)} validation samples")
 
@@ -212,23 +216,32 @@ def main() -> None:
         sys.exit(1)
 
     # Build vocabularies
-    ans2idx, idx2ans = build_vocab([s["answer"] for s in train_samples])
+    ans2idx, idx2ans = build_vocab([s["answer"] for s in train_samples], max_vocab=36)
     word_vocab = WordVocab()
     word_vocab.fit([s["question"] for s in train_samples])
 
-    print(f"Answer vocabulary size: {len(ans2idx)}")
+    print(f"Answer vocabulary size: {len(ans2idx)} (Top classes: {list(ans2idx.keys())[:10]})")
     print(f"Word vocabulary size: {len(word_vocab.w2i)}")
 
-    # PyTorch Dataset
-    transform = T.Compose([
+    train_transform = T.Compose([
+        T.Resize((128, 128)),
+        T.RandomHorizontalFlip(),
+        T.RandomVerticalFlip(),
+        T.ColorJitter(brightness=0.1, contrast=0.1),
+        T.ToTensor(),
+        T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
+
+    val_transform = T.Compose([
         T.Resize((128, 128)),
         T.ToTensor(),
         T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
 
     class RSVQA_TorchDataset(Dataset):
-        def __init__(self, samples):
+        def __init__(self, samples, transform_fn):
             self.samples = [s for s in samples if s["answer"] in ans2idx]
+            self.transform_fn = transform_fn
             self._zip_handles = {}
 
         def _get_zip(self, zip_path):
@@ -247,66 +260,30 @@ def main() -> None:
                 zf = self._get_zip(item["zip_source"])
                 with zf.open(item["zip_inner_path"]) as img_f:
                     with Image.open(io.BytesIO(img_f.read())) as img:
-                        img_t = transform(img.convert("RGB"))
+                        img_t = self.transform_fn(img.convert("RGB"))
             else:
                 with Image.open(item["img_path"]) as img:
-                    img_t = transform(img.convert("RGB"))
+                    img_t = self.transform_fn(img.convert("RGB"))
             q_ids = torch.tensor(word_vocab.transform(item["question"]), dtype=torch.long)
             target = torch.tensor(ans2idx[item["answer"]], dtype=torch.long)
             return img_t, q_ids, target
 
-    train_ds = RSVQA_TorchDataset(train_samples)
-    val_ds = RSVQA_TorchDataset(val_samples)
+    train_ds = RSVQA_TorchDataset(train_samples, train_transform)
+    val_ds = RSVQA_TorchDataset(val_samples, val_transform)
 
     train_loader = DataLoader(train_ds, batch_size=args.batch_size, shuffle=True, drop_last=False)
     val_loader = DataLoader(val_ds, batch_size=args.batch_size, shuffle=False)
 
-    # Lightweight Model Architecture
-    class RSVQAModel(nn.Module):
-        def __init__(self, vocab_size, embed_dim, num_classes):
-            super().__init__()
-            # CNN Visual Feature Extractor
-            self.visual_encoder = nn.Sequential(
-                nn.Conv2d(3, 32, kernel_size=3, stride=2, padding=1),
-                nn.BatchNorm2d(32),
-                nn.ReLU(),
-                nn.Conv2d(32, 64, kernel_size=3, stride=2, padding=1),
-                nn.BatchNorm2d(64),
-                nn.ReLU(),
-                nn.Conv2d(64, 128, kernel_size=3, stride=2, padding=1),
-                nn.BatchNorm2d(128),
-                nn.ReLU(),
-                nn.AdaptiveAvgPool2d((1, 1)),
-                nn.Flatten(),
-            )
-            # Question Text Encoder
-            self.embedding = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
-            self.gru = nn.GRU(embed_dim, 128, batch_first=True)
-
-            # Fusion Head
-            self.classifier = nn.Sequential(
-                nn.Linear(128 + 128, 256),
-                nn.ReLU(),
-                nn.Dropout(0.2),
-                nn.Linear(256, num_classes),
-            )
-
-        def forward(self, img, text_ids):
-            v_feat = self.visual_encoder(img)  # (B, 128)
-            emb = self.embedding(text_ids)      # (B, L, embed_dim)
-            _, h_n = self.gru(emb)
-            t_feat = h_n.squeeze(0)            # (B, 128)
-            fused = torch.cat([v_feat, t_feat], dim=1)
-            return self.classifier(fused)
-
-    model = RSVQAModel(
+    model = ResSingleRSVQAModel(
         vocab_size=len(word_vocab.w2i),
         embed_dim=64,
         num_classes=len(ans2idx),
+        hidden_dim=128,
     ).to(device)
 
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-4)
+    criterion = nn.CrossEntropyLoss(label_smoothing=0.06)
+    optimizer = optim.AdamW(model.parameters(), lr=args.lr, weight_decay=1e-3)
+    scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=args.epochs, eta_min=1e-5)
 
     # Training Loop
     print("\n--- Starting Training ---")
@@ -348,17 +325,19 @@ def main() -> None:
                 val_correct += (preds == targets).sum().item()
                 val_total += targets.size(0)
 
+        scheduler.step()
         val_acc = val_correct / max(1, val_total)
-        print(f"Epoch {epoch}: Train Loss = {train_loss:.4f}, Train Acc = {train_acc*100:.2f}%, Val Acc = {val_acc*100:.2f}%")
+        print(f"Epoch {epoch}: Train Loss = {train_loss:.4f}, Train Acc = {train_acc*100:.2f}%, Val Acc = {val_acc*100:.2f}% (LR = {scheduler.get_last_lr()[0]:.6f})")
         training_history.append({"epoch": epoch, "train_loss": train_loss, "train_acc": train_acc, "val_acc": val_acc})
 
-    # Save Model & Artifacts
+    # Save Model & Checkpoint
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
     checkpoint_path = output_dir / "rsvqa_adapter.pt"
 
     checkpoint = {
         "model_state_dict": model.state_dict(),
+        "architecture": "ResSingleRSVQAModel",
         "ans2idx": ans2idx,
         "idx2ans": idx2ans,
         "word2idx": word_vocab.w2i,
@@ -367,6 +346,7 @@ def main() -> None:
             "vocab_size": len(word_vocab.w2i),
             "embed_dim": 64,
             "num_classes": len(ans2idx),
+            "hidden_dim": 128,
         },
         "history": training_history,
         "final_val_acc": val_acc,
@@ -376,8 +356,9 @@ def main() -> None:
 
     # Metadata report
     metadata = {
-        "model_name": "rsvqa-spectral-vqa",
+        "model_name": "res-single-rsvqa-adapter",
         "task": "single-image VQA",
+        "architecture": "ResSingleRSVQAModel (4-stage ResNet + Dual Pooling + BiGRU + Multimodal Gating)",
         "dataset": str(data_dir.name),
         "total_training_samples": len(train_ds),
         "num_classes": len(ans2idx),

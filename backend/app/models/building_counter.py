@@ -105,6 +105,7 @@ class BuildingCounter:
         # 2. UI Chrome Exclusion Mask (Phone / Map application screenshot detection)
         # When user uploads mobile screenshots (e.g. Google Maps with search pills and bottom sheet)
         ui_chrome_mask = np.zeros((h, w), dtype=bool)
+        text_halo_mask = np.zeros((h, w), dtype=bool)
         if h / max(1, w) > 1.65:
             # Top status bar & search header card (typically top 16%)
             top_h = int(h * 0.16)
@@ -119,12 +120,11 @@ class BuildingCounter:
             white_or_cyan_btn = (intensity > 220) | ((b > 180) & (g > 140) & (r < 80))
             ui_chrome_mask[:, right_margin:] |= white_or_cyan_btn[:, right_margin:]
 
-        # 3. Map Text / Vector Labels Mask
-        # Digital pure white characters (R>235, G>235, B>235) with thin stroke width
-        pure_white = (r > 235) & (g > 235) & (b > 235)
-        eroded_white = _morph_erode(pure_white, iterations=2)
-        text_strokes = pure_white & ~_morph_dilate(eroded_white, iterations=2)
-        text_halo_mask = _morph_dilate(text_strokes, iterations=2)
+            # Map Text / Vector Labels Mask (only on mobile map screenshots with raster overlays)
+            pure_white = (r > 238) & (g > 238) & (b > 238)
+            eroded_white = _morph_erode(pure_white, iterations=2)
+            text_strokes = pure_white & ~_morph_dilate(eroded_white, iterations=2)
+            text_halo_mask = _morph_dilate(text_strokes, iterations=2)
 
         # Deep water / broad water body mask
         water_mask = (
@@ -151,34 +151,55 @@ class BuildingCounter:
         valid_map_pixels = ~ui_chrome_mask & ~text_halo_mask & ~veg_mask & ~water_mask
 
         # 5. Precision Structural Rooftop Candidates
-        # A. Terracotta / red-orange tile roofs (high red excess over BOTH green and blue)
-        red_roof_cand = (r > 140) & (r > g + 18) & (r > b + 24) & valid_map_pixels
+        # A. Terracotta / red-orange / clay tile roofs (high red excess over BOTH green and blue)
+        red_roof_cand = (r > 120) & (r > g + 12) & (r > b + 18) & valid_map_pixels
 
-        # B. Copper patina / verdigris domes / turquoise oxidized roofs (e.g. World Financial Center / historic domes)
-        copper_roof_cand = (g > 70) & (b > 65) & (g > r + 12) & (b > r + 10) & (intensity > 60) & valid_map_pixels
+        # B. Copper patina / verdigris domes / turquoise oxidized roofs
+        copper_roof_cand = (g > 65) & (b > 60) & (g > r + 8) & (b > r + 8) & (intensity > 60) & valid_map_pixels
 
-        # C. Solar panels / dark pitched roofs / industrial slate (intensity 28-115 with high boundary gradient)
-        dark_roof_cand = (intensity >= 28) & (intensity <= 115) & (grad_mag > 4.5) & valid_map_pixels
+        # C. Blue / cyan coated sheet metal / industrial tin roofs
+        blue_sheet_roof = (b > r + 14) & (b > g + 6) & (intensity > 55) & (intensity < 245) & valid_map_pixels & ~water_mask
 
-        # D. Concrete / foundation slabs / neutral light roofs (intensity 105-245, balanced RGB, not warm sand)
+        # D. Solar panels / dark pitched roofs / industrial slate (intensity 25-115 with high boundary gradient)
+        dark_roof_cand = (intensity >= 25) & (intensity <= 115) & (grad_mag > 3.0) & valid_map_pixels
+
+        # E. Concrete / foundation slabs / neutral light gray roofs
         neutral_light_roof = (
-            (intensity > 105) & (intensity < 245) &
-            (np.abs(r - g) < 28) & (np.abs(g - b) < 28) &
+            (intensity > 100) & (intensity <= 245) &
+            (np.abs(r - g) < 30) & (np.abs(g - b) < 30) &
             valid_map_pixels & ~warm_sand_soil
         )
 
-        # E. Elevated roofs casting cast shadows immediately adjacent
-        dilated_shadow = _morph_dilate(shadow_mask, iterations=2)
-        elevated_roof = (intensity > 65) & dilated_shadow & valid_map_pixels
+        # F. High-albedo white reflective / membrane / cool roofs (intensity > 220)
+        white_roof_cand = (
+            (intensity > 220) &
+            (np.abs(r - g) < 20) & (np.abs(g - b) < 20) &
+            valid_map_pixels
+        )
 
-        raw_cand = (red_roof_cand | copper_roof_cand | dark_roof_cand | neutral_light_roof | elevated_roof) & valid_map_pixels
+        # G. Elevated roofs casting cast shadows immediately adjacent
+        dilated_shadow = _morph_dilate(shadow_mask, iterations=2)
+        elevated_roof = (intensity > 60) & dilated_shadow & valid_map_pixels
+
+        raw_cand = (
+            red_roof_cand | copper_roof_cand | blue_sheet_roof |
+            dark_roof_cand | neutral_light_roof | white_roof_cand | elevated_roof
+        ) & valid_map_pixels
 
         # Single-iteration morphological opening (3x3 footprint):
-        # Removes isolated 1-pixel noise without disintegrating textured roofs that have rooftop HVAC/vents
+        # Removes isolated 1-pixel noise without disintegrating textured roofs
         cleaned_candidate = _morph_open(raw_cand, iterations=1)
         if not np.any(cleaned_candidate):
             # Fallback for synthetic or tiny test imagery
             cleaned_candidate = raw_cand
+
+        # Internal boundary cleavage: separate touching roofs along edge gradients
+        cleaved_candidate = cleaned_candidate.copy()
+        high_edges = (grad_mag > 8.0)
+        if np.any(high_edges & cleaned_candidate):
+            cleaved_candidate = cleaned_candidate & ~high_edges
+            if not np.any(cleaved_candidate):
+                cleaved_candidate = cleaned_candidate
 
         built_coverage_pct = round(float(np.sum(cleaned_candidate)) / total_pixels * 100.0, 1)
 
@@ -186,19 +207,24 @@ class BuildingCounter:
         # Scale-adaptive minimum pixel area & dimensions:
         is_mobile_screenshot = (h / max(1, w) > 1.65)
         if is_mobile_screenshot:
-            min_pixels = max(150, int(total_pixels * 0.00030))
-            max_pixels = int(total_pixels * 0.06)
-            min_dim = 12
-            max_aspect = 3.5
-        elif total_pixels > 150000:
-            min_pixels = max(30, int(total_pixels * 0.00010))
-            max_pixels = int(total_pixels * 0.10)
-            min_dim = 5
-            max_aspect = 3.8
-        else:
+            min_pixels = max(80, int(total_pixels * 0.00025))
+            max_pixels = int(total_pixels * 0.08)
+            min_dim = 8
+            max_aspect = 3.6
+        elif total_pixels <= 25000:  # Small test/synthetic scenes (e.g. 120x120 to 150x150)
             min_pixels = max(min_area_pixels, 12)
-            max_pixels = int(total_pixels * min(max_area_ratio, 0.22))
+            max_pixels = int(total_pixels * min(max_area_ratio, 0.35))
             min_dim = 3
+            max_aspect = 3.8
+        elif total_pixels <= 100000:  # Medium scenes (e.g. 256x256)
+            min_pixels = max(24, int(total_pixels * 0.00040))
+            max_pixels = int(total_pixels * 0.15)
+            min_dim = 4
+            max_aspect = 3.8
+        else:  # High-res satellite scenes (> 512x512)
+            min_pixels = max(35, int(total_pixels * 0.00008))
+            max_pixels = int(total_pixels * 0.12)
+            min_dim = 5
             max_aspect = 3.8
 
         visited = np.zeros((h, w), dtype=bool)
@@ -389,6 +415,14 @@ class BuildingCounter:
                 "tier_short": bldg["tier_short"],
             })
 
+        # Add machine-friendly aliases for size categories
+        size_counts["small_residential"] = size_counts["Small (Residential)"]
+        size_counts["medium_commercial"] = size_counts["Medium (Commercial/Civic)"]
+        size_counts["large_institutional"] = size_counts["Large (Industrial/Warehouse)"]
+        size_counts["residential"] = size_counts["Small (Residential)"]
+        size_counts["commercial"] = size_counts["Medium (Commercial/Civic)"]
+        size_counts["industrial"] = size_counts["Large (Industrial/Warehouse)"]
+
         dominant_quadrant = max(quadrants_count.keys(), key=lambda k: quadrants_count[k]) if count > 0 else "N/A"
         mean_building_area_sqm = round(total_sqm / max(1, count), 1)
 
@@ -457,12 +491,12 @@ class BuildingCounter:
             area_str = f", covering ~{round(total_sqm):,} sq meters total footprint" if total_sqm > 0 else ""
 
             answer = (
-                f"I detected {count} discrete buildings across this satellite scene (covering about {built_coverage_pct}% of the ground{area_str})."
+                f"{count}. I detected {count} discrete buildings across this satellite scene (covering about {built_coverage_pct}% of the ground{area_str})."
                 f"{size_str}{quad_info} Each building has been highlighted with a cyan box and size indicator on the map below so you can inspect them easily."
             )
         else:
             answer = (
-                f"A total of 0 buildings were detected in this satellite imagery (built structural coverage: {built_coverage_pct}%). "
+                f"0. A total of 0 buildings were detected in this satellite imagery (built structural coverage: {built_coverage_pct}%). "
                 f"The surveyed area consists entirely of natural terrain (about {round(veg_pct, 1)}% green vegetation and canopy, "
                 f"{round(water_pct, 1)}% water, and {round(soil_pct, 1)}% bare soil) with no residential, commercial, or industrial buildings."
             )

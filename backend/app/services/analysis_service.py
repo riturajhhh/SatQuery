@@ -190,13 +190,15 @@ def execute_analysis(
                     step_model = registry.select_best_model(plan_step.task, sub_input_type)
             elif sub_input_type in (InputType.SINGLE_OPTICAL, InputType.SINGLE_MULTISPECTRAL):
                 q_lower = (query or "").lower()
-                optical_keywords = [
-                    "ndvi", "ndwi", "vegetation", "chlorophyll", "crop", "vigor",
-                    "forest canopy", "land cover", "spectral", "multispectral",
-                    "tree health", "biomass", "water body", "river", "lake", "canal"
+                pure_spectral_keywords = [
+                    "ndvi", "ndwi", "spectral index", "spectral indices",
+                    "band 8", "nir reflectance", "cir composite", "false color cir"
                 ]
                 opt_spec = registry.get_model("optical-sentinel2-specialist")
-                if opt_spec and (any(k in q_lower for k in optical_keywords) or plan_step.task == TaskType.OPTICAL_SAR):
+                is_pure_spectral_query = any(k in q_lower for k in pure_spectral_keywords) and not any(
+                    w in q_lower for w in ["describe", "caption", "tell me", "what is", "is there", "are there", "how many", "count", "locate", "highlight", "overview"]
+                )
+                if opt_spec and (plan_step.task == TaskType.OPTICAL_SAR or is_pure_spectral_query):
                     step_model = opt_spec
                 else:
                     step_model = registry.select_best_model(plan_step.task, sub_input_type)

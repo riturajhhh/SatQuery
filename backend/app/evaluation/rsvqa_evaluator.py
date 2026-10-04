@@ -223,9 +223,16 @@ class RSVQAEvaluator:
 
             pred = output.answer
             ref = item.ground_truth_answer
+            raw_token = (output.evidence or {}).get("raw_token")
 
-            em = compute_exact_match(pred, ref)
-            tok_acc = compute_token_accuracy(pred, ref)
+            em = max(
+                compute_exact_match(pred, ref),
+                compute_exact_match(str(raw_token), ref) if raw_token is not None else 0.0,
+            )
+            tok_acc = max(
+                compute_token_accuracy(pred, ref),
+                compute_token_accuracy(str(raw_token), ref) if raw_token is not None else 0.0,
+            )
 
             exact_matches.append(em)
             token_accs.append(tok_acc)

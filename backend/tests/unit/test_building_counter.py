@@ -163,3 +163,32 @@ def test_vqa_land_cover_query(synthetic_forest_image: Image.Image):
     assert out.evidence is not None
     assert "land_cover_breakdown" in out.evidence
     assert out.evidence["land_cover_breakdown"]["vegetation_percent"] > 50.0
+
+
+def test_predict_buildings_number_phrasings(synthetic_urban_with_buildings: Image.Image):
+    """Verify that user queries like 'predict the buildings number' count exactly 3 buildings."""
+    queries = [
+        "predict the buildings number",
+        "predict buildings number",
+        "buildings number",
+        "how many buildings are in this satellite image?",
+        "Count the buildings in this scene",
+    ]
+    blip2_model = RSVQA_BLIP2()
+    fallback_model = RSVQA_Fallback()
+
+    for q in queries:
+        inp = ModelInput(images=[synthetic_urban_with_buildings], query=q)
+
+        # 1. Test BLIP-2 VQA specialist
+        out_b = blip2_model.predict(inp)
+        assert out_b.evidence is not None
+        assert out_b.evidence.get("building_count") == 3, f"BLIP2 expected 3 buildings for '{q}', got {out_b.evidence.get('building_count')}"
+        assert out_b.answer.startswith("3."), f"BLIP2 expected answer starting with '3.', got: {out_b.answer}"
+
+        # 2. Test Fallback VQA specialist
+        out_f = fallback_model.predict(inp)
+        assert out_f.evidence is not None
+        assert out_f.evidence.get("building_count") == 3, f"Fallback expected 3 buildings for '{q}', got {out_f.evidence.get('building_count')}"
+        assert out_f.answer.startswith("3."), f"Fallback expected answer starting with '3.', got: {out_f.answer}"
+
